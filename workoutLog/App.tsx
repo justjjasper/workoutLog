@@ -10,7 +10,7 @@ import Home from './screens/Home'
 const Stack = createNativeStackNavigator();
 const store = createStore(rootReducer);
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof rootReducer>;
 
 export default function App() {
 

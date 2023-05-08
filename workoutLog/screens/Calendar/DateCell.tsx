@@ -5,7 +5,7 @@ interface DateCellProps {
   month: number
 }
 export default function DateCell(props: DateCellProps) {
-  const { day, month } = props;
+  const { day, month } = props; // might need to incorporate year/ todays date
 
   // data below is for testing console logs
   // Get current date
