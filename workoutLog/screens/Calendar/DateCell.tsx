@@ -2,10 +2,11 @@ import { View, Text, StyleSheet, Alert, AlertButton, TouchableOpacity } from 're
 
 interface DateCellProps {
   day: string | number | null,
-  month: number
+  month: number,
+  isOutsideMonth: boolean
 }
 export default function DateCell(props: DateCellProps) {
-  const { day, month } = props; // might need to incorporate year/ todays date
+  const { day, month, isOutsideMonth } = props; // might need to incorporate year/ todays date
 
   // data below is for testing console logs
   // Get current date
@@ -33,7 +34,10 @@ export default function DateCell(props: DateCellProps) {
   if (day === 1) {
     return (
       <TouchableOpacity
-      style={styles.dateCell}
+      style={[
+        styles.dateCell,
+        isOutsideMonth ? styles.outsideMonth : undefined
+      ]}
       onPress = {handlePress}
       >
       <Text style={styles.text}>{monthName.slice(0, 3)} {day}</Text>
@@ -42,7 +46,10 @@ export default function DateCell(props: DateCellProps) {
   }
   return (
     <TouchableOpacity
-      style={styles.dateCell}
+      style={[
+        styles.dateCell,
+        isOutsideMonth ? styles.outsideMonth : undefined
+      ]}
       onPress = {handlePress}
       >
       <Text style={styles.text}>{day}</Text>
@@ -63,5 +70,8 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'right',
     width: '100%'
+  },
+  outsideMonth: {
+    opacity: 0.5
   }
 })
