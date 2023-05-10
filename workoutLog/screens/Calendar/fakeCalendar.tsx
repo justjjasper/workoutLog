@@ -361,3 +361,64 @@
 //     fontSize: 22
 //   }
 // })
+
+
+
+/*
+Implementing workout titles for each DateCell
+
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import DateCell from './DateCell';
+import SubHeading from './Subheading';
+import Weekdays from './Weekdays';
+import { RootState } from '../../App';
+import { useSelector } from 'react-redux';
+
+export default function Calendar() {
+  const currentDate = useSelector<RootState, Date>(state => state.currentDate.currentDate);
+  const currentMonth = useSelector<RootState, number>(state => state.currentDate.currentMonth);
+  const workoutTitles = useSelector<RootState, WorkoutTitle[]>(state => state.workoutTitles);
+
+  const dateCells = [];
+
+  const year = currentDate.getFullYear();
+  // const month = currentDate.getMonth();
+  const numDaysInMonth = new Date(year, currentMonth + 1, 0).getDate();
+
+  // Determine the starting and ending dates of the month
+  const startDate = new Date(year, currentMonth, 1);
+  const endDate = new Date(year, currentMonth, numDaysInMonth);
+
+  // Determine the day of the week for the starting date of the month (Sunday = 0, Monday = 1, etc.)
+  const startDayOfWeek = startDate.getDay();
+
+  // Determine the day of the week for the ending date of the month
+  const endDayOfWeek = endDate.getDay();
+
+  // Determine the last few days of the previous month
+  const lastMonthEndDate = new Date(year, currentMonth, 0);
+  const numDaysInLastMonth = lastMonthEndDate.getDate();
+  const lastMonthEndDayOfWeek = lastMonthEndDate.getDay();
+
+  // Add the days of the previous month
+  for (let i = startDayOfWeek - 1; i >= 0 && dateCells.length < 35; i--) {
+    const dayOfMonth = numDaysInLastMonth - i;
+    const workoutTitle = workoutTitles.find(title => title.date === dayOfMonth && title.month === currentMonth - 1)?.title;
+    dateCells.push(
+      <DateCell key={`prev-month-${i}`} day={dayOfMonth} month={currentMonth - 1} workoutTitle={workoutTitle} />
+    );
+  }
+
+  // Add the days of the current month
+  for (let dayOfMonth = 1; dayOfMonth <= numDaysInMonth && dateCells.length < 35; dayOfMonth++) {
+    const workoutTitle = workoutTitles.find(title => title.date === dayOfMonth && title.month === currentMonth)?.title;
+    dateCells.push(<DateCell key={dayOfMonth} day={dayOfMonth} month={currentMonth} workoutTitle={workoutTitle} />);
+  }
+
+  // Determine the first few days of the next month
+  const emptyCellsAtEnd = 6 - endDayOfWeek;
+  const nextMonthStartDate = new Date(year, currentMonth + 1, 1);
+  for (let i = 1; i <= emptyCellsAtEnd && dateCells
+
+*/
