@@ -6,6 +6,7 @@ import SubHeading from './Subheading';
 import Weekdays from './Weekdays';
 import { RootState } from '../../App';
 import { useSelector } from 'react-redux';
+import { LOCALTUNNEL } from '../../config';
 
 export default function Calendar() {
   const currentDate = useSelector<RootState, Date>(state => state.currentDate.currentDate);
@@ -13,6 +14,22 @@ export default function Calendar() {
 
   const dateCells = [];
 
+  // useEffect(() => {
+  //   const getActivities = async () => {
+  //     const results = await axios.get(`https://angry-dodos-scream.loca.lt/activities`)
+
+  //     try {
+  //       console.log('waht are results', results)
+  //     }
+  //     catch(err) {
+  //       console.log('thee was an error in fron tend', err)
+  //     }
+  //   }
+
+  //   getActivities();
+  // }, [])
+
+  console.log('what isthis', LOCALTUNNEL)
   const year = currentDate.getFullYear();
   // const month = currentDate.getMonth();
   const numDaysInMonth = new Date(year, currentMonth + 1, 0).getDate();

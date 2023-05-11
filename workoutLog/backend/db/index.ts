@@ -1,4 +1,5 @@
-var { Client } = require('pg')
+var { Client } = require('pg');
+require('dotenv').config();
 
 var client = new Client({
   user: process.env.PGUSER,
@@ -6,7 +7,7 @@ var client = new Client({
   password: process.env.PGPASSWORD,
   host: process.env.PGHOST,
   port: process.env.PGPORT
-})
+});
 
 client.connect(() => console.log('db connection working'));
 

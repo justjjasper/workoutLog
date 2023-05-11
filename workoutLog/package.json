@@ -4,21 +4,23 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "server": "nodemon backend/index.tsx",
+    "server": "nodemon backend/index.ts",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "postinstall": "npx react-native config"
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
+    "@types/express": "^4.17.17",
+    "dotenv": "^16.0.3",
     "expo": "~48.0.11",
     "expo-status-bar": "~1.4.4",
     "express": "^4.18.2",
     "localtunnel": "^2.0.2",
     "pg": "^8.10.0",
     "react": "18.2.0",
-    "react-native": "0.71.7",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
     "ts-node": "^10.9.1"
