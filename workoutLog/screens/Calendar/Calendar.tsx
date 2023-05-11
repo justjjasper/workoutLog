@@ -14,22 +14,21 @@ export default function Calendar() {
 
   const dateCells = [];
 
-  // useEffect(() => {
-  //   const getActivities = async () => {
-  //     const results = await axios.get(`https://angry-dodos-scream.loca.lt/activities`)
+  useEffect(() => {
+    const getActivities = async () => {
+      const results = await axios.get(`${LOCALTUNNEL}/activities`)
 
-  //     try {
-  //       console.log('waht are results', results)
-  //     }
-  //     catch(err) {
-  //       console.log('thee was an error in fron tend', err)
-  //     }
-  //   }
+      try {
+        console.log('waht are results', results.data)
+      }
+      catch(err) {
+        console.log('thee was an error in fron tend', err)
+      }
+    }
 
-  //   getActivities();
-  // }, [])
+    getActivities();
+  }, [])
 
-  console.log('what isthis', LOCALTUNNEL)
   const year = currentDate.getFullYear();
   // const month = currentDate.getMonth();
   const numDaysInMonth = new Date(year, currentMonth + 1, 0).getDate();
