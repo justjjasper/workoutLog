@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
-import { currentDateReducer } from './Reducers';
+import { currentDateReducer, loginReducer } from './Reducers';
 
 export const rootReducer = combineReducers({
-  currentDate: currentDateReducer
+  currentDate: currentDateReducer,
+  username: loginReducer
 })

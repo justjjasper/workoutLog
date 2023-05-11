@@ -1,13 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
 import { rootReducer } from './reducers';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import Home from './screens/Home'
+import Root from './Root';
 
-const Stack = createNativeStackNavigator();
 const store = createStore(rootReducer);
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -16,13 +13,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name= 'Home'
-            children= {() => <Home/>} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Root/>
     </Provider>
   );
 }
