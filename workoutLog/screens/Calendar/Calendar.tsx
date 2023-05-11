@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { LOCALTUNNEL } from '../../config';
 
 export default function Calendar() {
+  const username = useSelector<RootState, string | null>(state => state.username.username)
   const currentDate = useSelector<RootState, Date>(state => state.currentDate.currentDate);
   const currentMonth = useSelector<RootState, number>(state => state.currentDate.currentMonth);
 
@@ -16,7 +17,7 @@ export default function Calendar() {
 
   useEffect(() => {
     const getActivities = async () => {
-      const results = await axios.get(`${LOCALTUNNEL}/activities`)
+      const results = await axios.get(`${LOCALTUNNEL}/activities?usernameParam=${username}`)
 
       try {
         console.log('waht are results', results.data)

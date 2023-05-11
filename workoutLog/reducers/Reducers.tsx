@@ -49,7 +49,7 @@ interface loginInitialState {
 };
 
 const loginInitialState: loginInitialState = {
-  username: null
+  username: 'johndoe'
 };
 
 export const loginReducer = (state: loginInitialState = loginInitialState, action: AnyAction) => {

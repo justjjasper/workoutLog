@@ -8,7 +8,8 @@ import { RootState } from './App';
 const Stack = createNativeStackNavigator();
 
 export default function Root() {
-  const username = useSelector<RootState, string | null>(state => state.username.username)
+  const username = useSelector<RootState, string | null>(state => state.username.username);
+
   return (
    <NavigationContainer>
       <Stack.Navigator>
