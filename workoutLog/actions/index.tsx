@@ -1,4 +1,5 @@
 import { ACTIONS } from '../reducers/Reducers';
+import { Activity } from '../types';
 
 export const setCurrentDate = (date: Date) => {
   return {
@@ -24,4 +25,19 @@ export const loginUsername = (username: string) => {
     type: ACTIONS.LOGIN_USER,
     payload: username
   }
+};
+
+export const toggleModal = () => {
+  return {
+    type: ACTIONS.TOGGLE_MODAL
+  }
+};
+
+interface SetActivitiesAction {
+  type: typeof ACTIONS.SET_ACTIVITIES;
+  payload: Activity[];
 }
+export const setActivities = (activities: Activity[]): SetActivitiesAction => ({
+  type: ACTIONS.SET_ACTIVITIES,
+  payload: activities
+})

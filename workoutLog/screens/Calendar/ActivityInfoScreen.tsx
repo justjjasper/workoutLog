@@ -1,0 +1,1 @@
+// implement algorithm that iterates through the state of activities

@@ -1,10 +1,14 @@
+import { ActionSheetIOS } from 'react-native';
 import { AnyAction } from 'redux';
+import { Activity } from '../types';
 
 export const ACTIONS = {
   SET_CURRENT_DATE: 'Set the current date',
   SET_PREVIOUS_MONTH: 'Changes to previous month',
   SET_NEXT_MONTH: 'Changes to next month',
-  LOGIN_USER: 'Sets login username'
+  LOGIN_USER: 'Sets login username',
+  TOGGLE_MODAL: 'Toggles modal state',
+  SET_ACTIVITIES: 'Set Activities Data'
 };
 
 interface CurrentDateState {
@@ -44,15 +48,15 @@ export const currentDateReducer = (state: CurrentDateState = dateInitialState, a
   }
 };
 
-interface loginInitialState {
+interface LoginInitialState {
   username: string | null
 };
 
-const loginInitialState: loginInitialState = {
+const loginInitialState: LoginInitialState = {
   username: 'johndoe'
 };
 
-export const loginReducer = (state: loginInitialState = loginInitialState, action: AnyAction) => {
+export const loginReducer = (state: LoginInitialState = loginInitialState, action: AnyAction) => {
   switch (action.type) {
     case ACTIONS.LOGIN_USER:
       return {
@@ -61,5 +65,31 @@ export const loginReducer = (state: loginInitialState = loginInitialState, actio
       }
       default:
         return state;
+  }
+};
+
+export const modalReducer = (state: boolean = false, action: AnyAction) => {
+  switch(action.type) {
+    case ACTIONS.TOGGLE_MODAL:
+      return !state
+    default:
+      return state
+  }
+};
+
+interface ActiivtiesState {
+  activities: Activity[];
+};
+
+const initialActivitiesState = {
+  activities: []
+};
+
+export const activitiesReducer = (state: ActiivtiesState = initialActivitiesState, action: AnyAction) => {
+  switch(action.type) {
+    case ACTIONS.SET_ACTIVITIES:
+      return action.payload
+    default:
+      return state
   }
 }
