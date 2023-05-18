@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
   container : {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: '100%',
-    top: 8
+    width: '100%'
   }
 })

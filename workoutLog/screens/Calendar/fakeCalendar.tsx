@@ -426,7 +426,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { View, Text, StyleSheet, ActivityIndicatorBase } from 'react-native';
 import DateCell from './DateCell';
-import SubHeading from './Subheading';
+import SubHeading from './Heading';
 import Weekdays from './Weekdays';
 import { RootState } from '../../App';
 import { useSelector } from 'react-redux';

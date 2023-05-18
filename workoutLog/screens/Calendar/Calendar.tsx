@@ -5,7 +5,7 @@ import { RootState } from '../../App';
 import { useSelector } from 'react-redux';
 import { LOCALTUNNEL } from '../../config';
 import DateCell from './DateCell';
-import SubHeading from './Subheading';
+import Heading from './Heading';
 import Weekdays from './Weekdays';
 
 interface Activity {
@@ -15,7 +15,7 @@ interface Activity {
   day: number;
   month: number;
   year: number;
-}
+};
 
 export default function Calendar() {
   const username = useSelector<RootState, string | null>(state => state.username.username);
@@ -41,6 +41,7 @@ export default function Calendar() {
     getActivities();
   }, []);
 
+  console.log('these are activitids', activities.length)
   const year = currentDate.getFullYear();
   const numDaysInMonth = new Date(year, currentMonth + 1, 0).getDate();
 
@@ -59,11 +60,13 @@ export default function Calendar() {
   // Add the days of the previous month
   for (let i = startDayOfWeek - 1; i >= 0 && dateCells.length < 35; i--) {
     const date = new Date(year, currentMonth - 1, numDaysInLastMonth - i);
-    const filteredActivities: Activity[] = activities.filter(activity =>
-      activity.year === date.getFullYear() &&
-      activity.month === date.getMonth() &&
-      activity.day === date.getDate()
-    );
+    const filteredActivities: Activity[] = activities.filter(activity => {
+      const activityDate = new Date(activity.year, activity.month, activity.day);
+
+      return (
+        activityDate.toDateString() === date.toDateString()
+      );
+    });
 
     dateCells.push(
       <DateCell
@@ -79,11 +82,13 @@ export default function Calendar() {
   // Add the days of the current month
   for (let dayOfMonth = 1; dayOfMonth <= numDaysInMonth && dateCells.length < 35; dayOfMonth++) {
     const date = new Date(year, currentMonth, dayOfMonth);
-    const filteredActivities: Activity[] = activities.filter(activity =>
-      activity.year === date.getFullYear() &&
-      activity.month === date.getMonth() &&
-      activity.day === date.getDate()
-    );
+    const filteredActivities: Activity[] = activities.filter(activity => {
+      const activityDate = new Date(activity.year, activity.month, activity.day);
+
+      return (
+        activityDate.toDateString() === date.toDateString()
+      );
+    });
 
     dateCells.push(
       <DateCell
@@ -100,11 +105,13 @@ export default function Calendar() {
   const emptyCellsAtEnd = 6 - endDayOfWeek;
   for (let i = 1; i <= emptyCellsAtEnd && dateCells.length < 35; i++) {
     const date = new Date(year, currentMonth + 1, i);
-    const filteredActivities: Activity[] = activities.filter(activity =>
-      activity.year === date.getFullYear() &&
-      activity.month === date.getMonth() &&
-      activity.day === date.getDate()
-    );
+    const filteredActivities: Activity[] = activities.filter(activity => {
+      const activityDate = new Date(activity.year, activity.month, activity.day);
+
+      return (
+        activityDate.toDateString() === date.toDateString()
+      );
+    });
 
     dateCells.push(
       <DateCell
@@ -121,11 +128,13 @@ export default function Calendar() {
   const emptyCellsAtStart = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1;
   for (let i = 0; i < emptyCellsAtStart && dateCells.length < 35; i++) {
     const date = new Date(year, currentMonth, i);
-    const filteredActivities: Activity[] = activities.filter(activity =>
-      activity.year === date.getFullYear() &&
-      activity.month === date.getMonth() + 1 &&
-      activity.day === date.getDate()
-    );
+    const filteredActivities: Activity[] = activities.filter(activity => {
+      const activityDate = new Date(activity.year, activity.month, activity.day);
+
+      return (
+        activityDate.toDateString() === date.toDateString()
+      );
+    });
 
     dateCells.unshift(
       <DateCell
@@ -140,8 +149,7 @@ export default function Calendar() {
 
   return (
     <View style={styles.calendar}>
-      <Text style={styles.heading}>{currentDate.toLocaleString('default', { month: 'long' })} {currentDate.getFullYear()}</Text>
-      <SubHeading />
+      <Heading />
       <Weekdays />
       <View style={styles.dateCellsContainer}>{dateCells}</View>
     </View>
@@ -153,7 +161,7 @@ const styles = StyleSheet.create({
     flex: 0.5,
     borderWidth: 2,
     width: '97%',
-    backgroundColor: 'pink',
+    backgroundColor: '#FEFEFE',
     justifyContent: 'space-evenly',
     alignItems: 'center'
   },

@@ -31,7 +31,6 @@ export default function Home () {
 
   return (
     <View style={styles.container}>
-      <Text> I'm a home screen :D</Text>
       <Calendar/>
     </View>
   )
@@ -40,7 +39,7 @@ export default function Home () {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#E4E5E3",
     alignItems: 'center',
     justifyContent: 'center'
   }

@@ -4,6 +4,8 @@ import { toggleModal } from '../../actions';
 import { Activity } from '../../types';
 import Modal from 'react-native-modal';
 import DateCellModal from './DateCellModal';
+import { RootState } from '../../App';
+import { useSelector } from 'react-redux';
 
 // implement DateCellModal Below
 // implement AddActivityNameModal Below???
@@ -17,6 +19,7 @@ interface DateCellProps {
 
 
 export default function DateCell(props: DateCellProps) {
+  const currentDate = useSelector<RootState, Date>(state => state.currentDate.currentDate);
   const { day, month, isOutsideMonth, activities } = props; // might need to incorporate year/ todays date
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -25,10 +28,9 @@ export default function DateCell(props: DateCellProps) {
     setIsModalVisible(!isModalVisible);
   };
 
-  // Get current date
-  const today = new Date();
-  // Get number of days in the current month
+  const today = currentDate
   const year = today.getFullYear();
+
   const monthName = new Date(year, month).toLocaleString('en-us', { month: 'long' });
 
   return (
@@ -49,7 +51,7 @@ export default function DateCell(props: DateCellProps) {
       </View>
 
       <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
-        <DateCellModal day={day} month={month} activities={activities} toggleModal={toggleModal} />
+        <DateCellModal day={day} month={month} activities={activities} year={year} monthName={monthName} toggleModal={toggleModal} />
       </Modal>
     </TouchableOpacity>
   )

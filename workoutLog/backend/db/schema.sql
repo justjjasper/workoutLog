@@ -36,12 +36,12 @@ VALUES
 -- activityName table
 INSERT INTO activityName (activityName, day, month, year, username_id)
 VALUES
-('Squats', 17, 4, 2023, 1),
-('Bench Press', 17, 4, 2023, 1),
-('Deadlift', 7, 5, 2023, 1),
-('Cardio', 6, 5, 2023, 2),
-('Yoga', 5, 4, 2023, 2),
-('Swimming', 4, 5, 2023, 2);
+('Legs', 17, 4, 2023, 1),
+('Cardio', 17, 4, 2023, 1),
+('Cardio', 5, 4, 2023, 1),
+('Chest', 7, 5, 2023, 2),
+('Back', 18, 4, 2023, 2),
+('Cardio3', 18, 4, 2023, 2);
 
 -- activityInfo table
 INSERT INTO activityInfo (activityInfo, activityName_id)
@@ -49,15 +49,15 @@ VALUES
 ('3 sets of 10 reps @ 135lbs', 1),
 ('3 sets of 8 reps @ 155lbs', 1),
 ('3 sets of 6 reps @ 225lbs', 1),
-('3 sets of 12 reps', 2),
-('3 sets of 10 reps @ 135lbs', 2),
-('3 sets of 8 reps @ 155lbs', 2),
-('1 hour on treadmill', 3),
-('30 minutes on elliptical', 3),
-('1 hour on stationary bike', 3),
-('Vinyasa Flow', 4),
-('Hatha Yoga', 4),
-('Restorative Yoga', 4),
+('1 hour on treadmill', 2),
+('30 minutes on elliptical', 2),
+('1 hour on stationary bike', 2),
+('Vinyasa Flow', 3),
+('Hatha Yoga', 3),
+('Restorative Yoga', 3),
+('3 sets of 12 reps', 4),
+('3 sets of 10 reps @ 135lbs', 4),
+('3 sets of 8 reps @ 155lbs', 4),
 ('10 laps freestyle', 5),
 ('5 laps backstroke', 5),
 ('3 laps breaststroke', 5),

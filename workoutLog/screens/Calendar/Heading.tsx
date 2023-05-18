@@ -1,9 +1,11 @@
 import { View, Button, StyleSheet, Text } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setPrevMonth, setNextMonth } from '../../actions';
+import { RootState } from '../../App';
 
-export default function SubHeading() {
+export default function Heading() {
   const dispatch = useDispatch();
+  const currentDate = useSelector<RootState, Date>(state => state.currentDate.currentDate);
 
   return (
     <View style={styles.container}>
@@ -12,6 +14,7 @@ export default function SubHeading() {
         color='black'
         onPress = {() => dispatch(setPrevMonth())}
         />
+      <Text style={styles.font}>{currentDate.toLocaleString('default', { month: 'long' })} {currentDate.getFullYear()} </Text>
       <Button
         title='&gt;'
         color='black'
@@ -30,6 +33,7 @@ const styles = StyleSheet.create({
     width: '90%'
   },
   font: {
-    fontSize: 20
+    fontSize: 24,
+    alignSelf: 'center'
   }
 })
