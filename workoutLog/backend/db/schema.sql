@@ -38,6 +38,9 @@ INSERT INTO activityName (activityName, day, month, year, username_id)
 VALUES
 ('Legs', 17, 4, 2023, 1),
 ('Cardio', 17, 4, 2023, 1),
+('Cardio', 17, 4, 2023, 1),
+('Cardio', 17, 4, 2023, 1),
+('Cardio', 17, 4, 2023, 1),
 ('Cardio', 5, 4, 2023, 1),
 ('Chest', 7, 5, 2023, 2),
 ('Back', 18, 4, 2023, 2),

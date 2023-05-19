@@ -1,9 +1,12 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../App';
 import { Activity } from '../../types';
 
-// Heading (Date on left, close icon on right)
+// Heading (Title close icon on right)
+// Day of Week/Month and Day {`${monthName.slice(0, 3)} ${day}`}
 // Calendar
 // ButtonsBelow
 
@@ -20,36 +23,47 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
   const date = new Date(year, month, Number(day));
   const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' }).split(',')[0];
 
-  console.log(dayOfWeek)
+  console.log(dayOfWeek);
+  const shouldUseScrollView = activities.length > 4;
+
   return (
     <View style={styles.modalContainer}>
 
       <View style={styles.headingContainer}>
-        <View>
-          <Text style={styles.modalHeading}>{dayOfWeek}</Text>
-          <Text style={styles.modalHeading}>{`${monthName.slice(0, 3)} ${day}`}</Text>
-        </View>
-
-
-
-        <View style={styles.headingButton}>
-        <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
+        <Text style={styles.modalHeading}>Activity List</Text>
+        <TouchableOpacity onPress={toggleModal}>
           <Text style={styles.closeButtonText}>x</Text>
         </TouchableOpacity>
+      </View>
+
+      {shouldUseScrollView ? (
+        <SafeAreaView style={styles.activityNameContainer}>
+          <ScrollView>
+            {activities.map((activity: Activity) => (
+              <TouchableOpacity key={activity.activityid} style={styles.activityNameButton}>
+                <Text style={styles.activityName}>{activity.activityname}</Text>
+                <Text style={styles.activityName}>&gt;</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </SafeAreaView>
+      ) : (
+        <View style={styles.activityNameContainer}>
+          {activities.map((activity: Activity) => (
+            <TouchableOpacity key={activity.activityid} style={styles.activityNameButton}>
+              <Text style={styles.activityName}>{activity.activityname}</Text>
+              <Text style={styles.activityName}>&gt;</Text>
+            </TouchableOpacity>
+          ))}
         </View>
-      </View>
+      )}
 
-      <View style={styles.activityNameContainer}>
-        {activities.map((activity: Activity) => (
-          <Text key={activity.activityid} style={styles.activityName}>
-            {activity.activityname}
-          </Text>
-        ))}
-      </View>
-
-      <View>
-        <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
-          <Text style={styles.closeButtonText}>Close</Text>
+      <View style={styles.footerContainer}>
+        <TouchableOpacity style={styles.footerButton}>
+          <Text style={styles.footerText}>Create</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerButton}>
+          <Text style={styles.footerText}>Delete</Text>
         </TouchableOpacity>
       </View>
 
@@ -57,49 +71,73 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
   );
 };
 
+
 const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: '#E4E5E3',
-    padding: 20,
+    paddingHorizontal: 20,
     borderRadius: 8,
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
-    height: '50%'
-  },
-  modalHeading: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    height: '55%'
   },
   headingContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    borderBottomWidth: 1.5,
+    paddingBottom: 10
   },
-  headingButton:{
-    backgroundColor: 'black',
-    width: '50%',
-    justifyContent: 'flex-end'
-  },
-  activityNameContainer: {
-    width: '87%',
-    height: '50%',
-    borderWidth: 2,
-    backgroundColor: 'white'
-  },
-  activityName: {
-    fontSize: 14,
-    marginBottom: 5,
-  },
-  closeButton: {
-    marginTop: 20,
-    padding: 10,
-    borderRadius: 8,
-  },
-  closeButtonText: {
-    color: 'white',
+  modalHeading: {
+    fontSize: 25.5,
     fontWeight: 'bold'
   },
+  closeButtonText: {
+    color: '#565758',
+    fontWeight: 'bold',
+    fontSize: 27
+  },
+  activityNameContainer: {
+    width: '100%',
+    height: 270,
+    borderWidth: 2,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    alignItems: 'center'
+  },
+  activityNameButton: {
+    height: 40,
+    width: 250,
+    backgroundColor: '#AFDBE1',
+    borderRadius: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginVertical: 10
+  },
+  activityName: {
+    fontSize: 23,
+    color: 'black'
+  },
+  closeButton: {
+    borderRadius: 8,
+  },
   footerContainer: {
-
+    flexDirection:'row',
+    justifyContent: 'space-evenly',
+    width: '100%'
+  },
+  footerButton: {
+    height: 30,
+    width: 60,
+    backgroundColor: '#77C7E8',
+    borderRadius: 20,
+    justifyContent: 'center'
+  },
+  footerText: {
+    fontSize: 17,
+    textAlign: 'center'
   }
 });
 

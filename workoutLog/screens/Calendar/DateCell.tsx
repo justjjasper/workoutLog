@@ -42,13 +42,19 @@ export default function DateCell(props: DateCellProps) {
       onPress={toggleModal}
       >
       <Text style={styles.text}>{day === 1 ? `${monthName.slice(0, 3)} ${day}` : day}</Text>
-      <View style={styles.activityNamesContainer}>
+      {activities.length > 4 ? (
+        <Text style={styles.activityNamesContainer}>{activities.length} activities{'\n'}listed...</Text>
+
+      ) : (
+        <View style={styles.activityNamesContainer}>
         {activities.map((activity: Activity) => {
           return (
             <Text key={activity.activityid} style={styles.activityName}> {activity.activityname}</Text>
           )
         })}
       </View>
+      )}
+
 
       <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
         <DateCellModal day={day} month={month} activities={activities} year={year} monthName={monthName} toggleModal={toggleModal} />
@@ -64,22 +70,25 @@ const styles = StyleSheet.create({
     padding: 1,
     width: 51,
     height: 51,
-    flexWrap: 'wrap',
-    textAlign: 'right'
+    flexWrap: 'wrap'
   },
   text: {
     textAlign: 'right',
-    width: '100%'
+    width: '100%',
+    position: 'absolute'
   },
   outsideMonth: {
     opacity: 0.5
   },
   activityNamesContainer: {
-    flexDirection: 'column'
+    // position: 'absolute',
+    // justifyContent: 'center',
+    // height: '100%'
+    paddingTop: 10,
+    fontSize: 8
   },
   activityName: {
-    fontSize: 8,
-    width: '100%'
+    fontSize: 8
   }
 })
 

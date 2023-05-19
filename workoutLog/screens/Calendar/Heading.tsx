@@ -20,8 +20,6 @@ export default function Heading() {
         color='black'
         onPress = {() => dispatch(setNextMonth())}
         />
-      {/* <Text style={styles.font}>&lt;</Text>
-      <Text style={styles.font}>&gt;</Text> */}
     </View>
   )
 }
