@@ -421,171 +421,247 @@ export default function Calendar() {
   const nextMonthStartDate = new Date(year, currentMonth + 1, 1);
   for (let i = 1; i <= emptyCellsAtEnd && dateCells
 
-*/
+// */
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { View, Text, StyleSheet, ActivityIndicatorBase } from 'react-native';
+// import DateCell from './DateCell';
+// import SubHeading from './Heading';
+// import Weekdays from './Weekdays';
+// import { RootState } from '../../App';
+// import { useSelector } from 'react-redux';
+// import { LOCALTUNNEL } from '../../config';
+
+// interface Activity {
+//   activityid: number;
+//   activityinfo: string[];
+//   activityname: string;
+//   day: number;
+//   month: number;
+//   year: number;
+// };
+
+// export default function Calendar() {
+//   const username = useSelector<RootState, string | null>(state => state.username.username)
+//   const currentDate = useSelector<RootState, Date>(state => state.currentDate.currentDate);
+//   const currentMonth = useSelector<RootState, number>(state => state.currentDate.currentMonth);
+
+//   const [activities, setActivities] = useState<Activity[]>([]);
+
+//   console.log('what is the currentMonth', currentMonth)
+//   useEffect(() => {
+//     const getActivities = async () => {
+//       const results = await axios.get(`${LOCALTUNNEL}/activities?usernameParam=${username}`)
+
+//       try {
+//         setActivities(results.data);
+//       } catch(err) {
+//         console.log('there was an error in front end', err)
+//       }
+//     }
+
+//     getActivities();
+//   }, [])
+
+//   const year = currentDate.getFullYear();
+//   const numDaysInMonth = new Date(year, currentMonth + 1, 0).getDate();
+
+//   const startDate = new Date(year, currentMonth, 1);
+//   const endDate = new Date(year, currentMonth, numDaysInMonth);
+
+//   const startDayOfWeek = startDate.getDay();
+//   const endDayOfWeek = endDate.getDay();
+
+//   const lastMonthEndDate = new Date(year, currentMonth, 0);
+//   const numDaysInLastMonth = lastMonthEndDate.getDate();
+//   const lastMonthEndDayOfWeek = lastMonthEndDate.getDay();
+
+//   const dateCells = [];
+
+//   // Add the days of the previous month
+//   for (let i = startDayOfWeek - 1; i >= 0 && dateCells.length < 35; i--) {
+//     const date = new Date(year, currentMonth - 1, numDaysInLastMonth - i);
+//     const filteredActivities = activities.filter(activity =>
+//       activity.year === date.getFullYear() &&
+//       activity.month === date.getMonth() &&
+//       activity.day === date.getDate()
+//     );
+
+//     dateCells.push(
+//       <DateCell
+//         key={`prev-month-${i}`}
+//         day={numDaysInLastMonth - i}
+//         month={currentMonth - 1}
+//         isOutsideMonth={true}
+//         activities={filteredActivities}
+//       />
+//     );
+//   }
+
+//   // Add the days of the current month
+//   for (let dayOfMonth = 1; dayOfMonth <= numDaysInMonth && dateCells.length < 35; dayOfMonth++) {
+//     const date = new Date(year, currentMonth, dayOfMonth);
+//     const filteredActivities = activities.filter(activity =>
+//       activity.year === date.getFullYear() &&
+//       activity.month === date.getMonth() &&
+//       activity.day === date.getDate()
+//     );
+
+//     dateCells.push(
+//       <DateCell
+//         key={dayOfMonth}
+//         day={dayOfMonth}
+//         month={currentMonth}
+//         isOutsideMonth={false}
+//         activities={filteredActivities}
+//       />
+//     );
+//   }
+
+//   // Determine the first few days of the next month
+//   const emptyCellsAtEnd = 6 - endDayOfWeek;
+//   for (let i = 1; i <= emptyCellsAtEnd && dateCells.length < 35; i++) {
+//     const date = new Date(year, currentMonth + 1, i);
+//     const filteredActivities = activities.filter(activity =>
+//       activity.year === date.getFullYear() &&
+//       activity.month === date.getMonth() &&
+//       activity.day === date.getDate()
+//     );
+
+//     dateCells.push(
+//       <DateCell
+//         key={`next-month-${i}`}
+//         day={i}
+//         month={currentMonth + 1}
+//         isOutsideMonth={true}
+//         activities={filteredActivities}
+//       />
+//     );
+//   }
+
+//   // Add the empty cells at the beginning and end of the dateCells array
+//   const emptyCellsAtStart = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1;
+//   for (let i = 0; i < emptyCellsAtStart && dateCells.length < 35; i++) {
+//     const date = new Date(year, currentMonth, i);
+//     const filteredActivities = activities.filter(activity =>
+//       activity.year === date.getFullYear() &&
+//       activity.month === date.getMonth() + 1 &&
+//       activity.day === date.getDate()
+//     );
+
+//     dateCells.unshift(
+//       <DateCell
+//         key={`prev-month-${i}`}
+//         day={numDaysInLastMonth - emptyCellsAtStart + i + 1}
+//         month={currentMonth - 1}
+//         isOutsideMonth={true}
+//         activities={filteredActivities}
+//       />
+//     );
+//   }
+
+//   return (
+//     <View style={styles.calendar}>
+//       <Text style={styles.heading}>{currentDate.toLocaleString('default', { month: 'long' })} {currentDate.getFullYear()}</Text>
+//       <SubHeading />
+//       <Weekdays />
+//       <View style={styles.dateCellsContainer}>{dateCells}</View>
+//     </View>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   calendar: {
+//     flex: 0.5,
+//     borderWidth: 2,
+//     width: '97%',
+//     backgroundColor: 'pink',
+//     justifyContent: 'space-evenly',
+//     alignItems: 'center'
+//   },
+//   dateCellsContainer: {
+//     flexWrap: 'wrap',
+//     flexDirection: 'row',
+//     width: '100%',
+//     justifyContent: 'center'
+//   },
+//   heading: {
+//     fontSize: 22
+//   }
+// })
+
+
+//////////////////////////// 5/19/23 Home component
+import { Text, View, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { View, Text, StyleSheet, ActivityIndicatorBase } from 'react-native';
-import DateCell from './DateCell';
-import SubHeading from './Heading';
-import Weekdays from './Weekdays';
-import { RootState } from '../../App';
-import { useSelector } from 'react-redux';
-import { LOCALTUNNEL } from '../../config';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActivities } from '../actions';
+import { LOCALTUNNEL } from '../config';
+import { RootState } from '../App';
+import { Activity } from '../types';
+import Calendar from './Calendar/Calendar';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ActivityInfoScreen from './Calendar/ActivityInfoScreen';
 
-interface Activity {
-  activityid: number;
-  activityinfo: string[];
-  activityname: string;
-  day: number;
-  month: number;
-  year: number;
-};
+const Stack = createNativeStackNavigator();
 
-export default function Calendar() {
-  const username = useSelector<RootState, string | null>(state => state.username.username)
-  const currentDate = useSelector<RootState, Date>(state => state.currentDate.currentDate);
-  const currentMonth = useSelector<RootState, number>(state => state.currentDate.currentMonth);
+export default function Home () {
+  // Implement mapped Stacks of activityInfo below Calendar
+    // grap all of the activities, just map it out DUH
+  const dispatch = useDispatch();
+  const username = useSelector<RootState, string | null>(state => state.username.username);
+  const activities = useSelector<RootState, Activity[]>(state => state.activities.activities)
 
-  const [activities, setActivities] = useState<Activity[]>([]);
-
-  console.log('what is the currentMonth', currentMonth)
   useEffect(() => {
     const getActivities = async () => {
-      const results = await axios.get(`${LOCALTUNNEL}/activities?usernameParam=${username}`)
 
       try {
-        setActivities(results.data);
+        const results = await axios.get(`${LOCALTUNNEL}/activities?usernameParam=${username}`)
+
+        dispatch(setActivities(results.data));
       } catch(err) {
         console.log('there was an error in front end', err)
       }
     }
 
     getActivities();
-  }, [])
-
-  const year = currentDate.getFullYear();
-  const numDaysInMonth = new Date(year, currentMonth + 1, 0).getDate();
-
-  const startDate = new Date(year, currentMonth, 1);
-  const endDate = new Date(year, currentMonth, numDaysInMonth);
-
-  const startDayOfWeek = startDate.getDay();
-  const endDayOfWeek = endDate.getDay();
-
-  const lastMonthEndDate = new Date(year, currentMonth, 0);
-  const numDaysInLastMonth = lastMonthEndDate.getDate();
-  const lastMonthEndDayOfWeek = lastMonthEndDate.getDay();
-
-  const dateCells = [];
-
-  // Add the days of the previous month
-  for (let i = startDayOfWeek - 1; i >= 0 && dateCells.length < 35; i--) {
-    const date = new Date(year, currentMonth - 1, numDaysInLastMonth - i);
-    const filteredActivities = activities.filter(activity =>
-      activity.year === date.getFullYear() &&
-      activity.month === date.getMonth() &&
-      activity.day === date.getDate()
-    );
-
-    dateCells.push(
-      <DateCell
-        key={`prev-month-${i}`}
-        day={numDaysInLastMonth - i}
-        month={currentMonth - 1}
-        isOutsideMonth={true}
-        activities={filteredActivities}
-      />
-    );
-  }
-
-  // Add the days of the current month
-  for (let dayOfMonth = 1; dayOfMonth <= numDaysInMonth && dateCells.length < 35; dayOfMonth++) {
-    const date = new Date(year, currentMonth, dayOfMonth);
-    const filteredActivities = activities.filter(activity =>
-      activity.year === date.getFullYear() &&
-      activity.month === date.getMonth() &&
-      activity.day === date.getDate()
-    );
-
-    dateCells.push(
-      <DateCell
-        key={dayOfMonth}
-        day={dayOfMonth}
-        month={currentMonth}
-        isOutsideMonth={false}
-        activities={filteredActivities}
-      />
-    );
-  }
-
-  // Determine the first few days of the next month
-  const emptyCellsAtEnd = 6 - endDayOfWeek;
-  for (let i = 1; i <= emptyCellsAtEnd && dateCells.length < 35; i++) {
-    const date = new Date(year, currentMonth + 1, i);
-    const filteredActivities = activities.filter(activity =>
-      activity.year === date.getFullYear() &&
-      activity.month === date.getMonth() &&
-      activity.day === date.getDate()
-    );
-
-    dateCells.push(
-      <DateCell
-        key={`next-month-${i}`}
-        day={i}
-        month={currentMonth + 1}
-        isOutsideMonth={true}
-        activities={filteredActivities}
-      />
-    );
-  }
-
-  // Add the empty cells at the beginning and end of the dateCells array
-  const emptyCellsAtStart = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1;
-  for (let i = 0; i < emptyCellsAtStart && dateCells.length < 35; i++) {
-    const date = new Date(year, currentMonth, i);
-    const filteredActivities = activities.filter(activity =>
-      activity.year === date.getFullYear() &&
-      activity.month === date.getMonth() + 1 &&
-      activity.day === date.getDate()
-    );
-
-    dateCells.unshift(
-      <DateCell
-        key={`prev-month-${i}`}
-        day={numDaysInLastMonth - emptyCellsAtStart + i + 1}
-        month={currentMonth - 1}
-        isOutsideMonth={true}
-        activities={filteredActivities}
-      />
-    );
-  }
-
+  }, []);
+  console.log('acivities at home', activities)
   return (
-    <View style={styles.calendar}>
-      <Text style={styles.heading}>{currentDate.toLocaleString('default', { month: 'long' })} {currentDate.getFullYear()}</Text>
-      <SubHeading />
-      <Weekdays />
-      <View style={styles.dateCellsContainer}>{dateCells}</View>
+    <View style={styles.container}>
+      <Calendar />
+       {activities.length !== 0 &&
+      <View style={styles.stacks}>
+      <Stack.Navigator>
+        {activities?.map((activity: Activity) => (
+          <Stack.Screen
+          key={activity.activityid}
+          name= {`ActivityScreen_${activity.activityid}`}
+          initialParams={{ activity: activity }}
+          component= {ActivityInfoScreen}
+            />
+        ))}
+      </Stack.Navigator>
+    </View>
+      }
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  calendar: {
-    flex: 0.5,
-    borderWidth: 2,
-    width: '97%',
-    backgroundColor: 'pink',
-    justifyContent: 'space-evenly',
-    alignItems: 'center'
-  },
-  dateCellsContainer: {
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    width: '100%',
+  container: {
+    flex: 1,
+    backgroundColor: "#E4E5E3",
+    alignItems: 'center',
     justifyContent: 'center'
   },
-  heading: {
-    fontSize: 22
+  stacks: {
+    position: 'absolute'
   }
+
 })
+
+
+
+

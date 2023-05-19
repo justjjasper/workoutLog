@@ -34,9 +34,10 @@ export const toggleModal = () => {
 };
 
 interface SetActivitiesAction {
-  type: typeof ACTIONS.SET_ACTIVITIES;
+  type: typeof ACTIONS.SET_ACTIVITIES
   payload: Activity[];
 }
+
 export const setActivities = (activities: Activity[]): SetActivitiesAction => ({
   type: ACTIONS.SET_ACTIVITIES,
   payload: activities

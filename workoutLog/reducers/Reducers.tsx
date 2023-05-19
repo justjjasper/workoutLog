@@ -78,7 +78,7 @@ export const modalReducer = (state: boolean = false, action: AnyAction) => {
 };
 
 interface ActiivtiesState {
-  activities: Activity[];
+  activities: Activity[]
 };
 
 const initialActivitiesState = {
@@ -88,7 +88,10 @@ const initialActivitiesState = {
 export const activitiesReducer = (state: ActiivtiesState = initialActivitiesState, action: AnyAction) => {
   switch(action.type) {
     case ACTIONS.SET_ACTIVITIES:
-      return action.payload
+      return {
+        ...state,
+        activities: action.payload
+      }
     default:
       return state
   }

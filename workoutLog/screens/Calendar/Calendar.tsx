@@ -148,10 +148,12 @@ export default function Calendar() {
   }
 
   return (
-    <View style={styles.calendar}>
-      <Heading />
-      <Weekdays />
-      <View style={styles.dateCellsContainer}>{dateCells}</View>
+    <View style={styles.container}>
+      <View style={styles.calendar}>
+        <Heading />
+        <Weekdays />
+        <View style={styles.dateCellsContainer}>{dateCells}</View>
+      </View>
     </View>
   );
 };
@@ -173,5 +175,11 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 22
-  }
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#E4E5E3',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
 })

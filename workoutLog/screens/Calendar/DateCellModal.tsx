@@ -1,9 +1,11 @@
 
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../App';
 import { Activity } from '../../types';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 // Heading (Title close icon on right)
 // Day of Week/Month and Day {`${monthName.slice(0, 3)} ${day}`}
@@ -20,6 +22,7 @@ interface DateCellModalProps {
 }
 
 const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthName, activities, toggleModal }) => {
+  const navigation = useNavigation();
   const date = new Date(year, month, Number(day));
   const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' }).split(',')[0];
 
@@ -45,7 +48,11 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
         <SafeAreaView style={styles.activityNameContainer}>
           <ScrollView>
             {activities.map((activity: Activity) => (
-              <TouchableOpacity key={activity.activityid} style={styles.activityNameButton}>
+              <TouchableOpacity
+                key={activity.activityid}
+                style={styles.activityNameButton}
+                onPress={() => navigation.navigate(`ActivityScreen_${activity.activityid}`, {activity: activity})}
+                >
                 <Text style={styles.activityName}>{activity.activityname}</Text>
                 <Text style={styles.activityName}>&gt;</Text>
               </TouchableOpacity>
@@ -84,7 +91,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    height: '65%'
+    height: '65%',
+    shadowColor: "gray",
+    shadowRadius: 4.65,
+    shadowOffset: {
+    height: 4,
+    width: 0,
+    },
+    shadowOpacity: 10,
   },
   headingContainer: {
     flexDirection: 'row',
