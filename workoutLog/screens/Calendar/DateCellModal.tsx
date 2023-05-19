@@ -97,17 +97,17 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   dates: {
-    fontSize: 23,
+    fontSize: 24,
     fontWeight: '500'
   },
   modalHeading: {
-    fontSize: 25.5,
+    fontSize: 32,
     fontWeight: 'bold'
   },
   closeButtonText: {
     color: '#565758',
     fontWeight: 'bold',
-    fontSize: 27
+    fontSize: 32
   },
   activityNameContainer: {
     width: '100%',
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   activityName: {
-    fontSize: 23,
+    fontSize: 20,
     color: 'black'
   },
   closeButton: {
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   footerText: {
-    fontSize: 17,
+    fontSize: 16,
     textAlign: 'center'
   }
 });

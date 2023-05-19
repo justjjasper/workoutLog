@@ -81,14 +81,11 @@ const styles = StyleSheet.create({
     opacity: 0.5
   },
   activityNamesContainer: {
-    // position: 'absolute',
-    // justifyContent: 'center',
-    // height: '100%'
     paddingTop: 10,
-    fontSize: 8
+    fontSize: 9.5
   },
   activityName: {
-    fontSize: 8
+    fontSize: 9.5
   }
 })
 
