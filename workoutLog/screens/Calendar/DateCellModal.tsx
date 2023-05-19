@@ -36,6 +36,11 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
         </TouchableOpacity>
       </View>
 
+      <View style={styles.dateContainer}>
+      <Text style={styles.dates}>{dayOfWeek}</Text>
+      <Text style={styles.dates}>{monthName.slice(0,3)} {day}</Text>
+      </View>
+
       {shouldUseScrollView ? (
         <SafeAreaView style={styles.activityNameContainer}>
           <ScrollView>
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    height: '55%'
+    height: '65%'
   },
   headingContainer: {
     flexDirection: 'row',
@@ -87,6 +92,13 @@ const styles = StyleSheet.create({
     width: '100%',
     borderBottomWidth: 1.5,
     paddingBottom: 10
+  },
+  dateContainer: {
+    alignItems: 'center'
+  },
+  dates: {
+    fontSize: 23,
+    fontWeight: '500'
   },
   modalHeading: {
     fontSize: 25.5,
