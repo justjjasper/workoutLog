@@ -1,11 +1,14 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { RootState } from '../App';
 import Home from './Home';
 import Profile from './Profile/Profile';
 
 const Bottom = createBottomTabNavigator();
 
 export default function BottomTabNav() {
+  const homeHeaderStatus = useSelector<RootState, boolean>(state => state.homeHeaderStatus);
+
   return (
     <Bottom.Navigator
       screenOptions={{
@@ -14,7 +17,7 @@ export default function BottomTabNav() {
         headerTitleStyle: {color: 'white'}
       }}
       >
-      <Bottom.Screen name='Home' component={Home}/>
+      <Bottom.Screen name='Home' component={Home} options={{ headerShown: false }}/>
       <Bottom.Screen name='Me' component={Profile}/>
     </Bottom.Navigator>
   )

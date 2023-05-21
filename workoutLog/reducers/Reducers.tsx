@@ -8,7 +8,8 @@ export const ACTIONS = {
   SET_NEXT_MONTH: 'Changes to next month',
   LOGIN_USER: 'Sets login username',
   TOGGLE_MODAL: 'Toggles modal state',
-  SET_ACTIVITIES: 'Set Activities Data'
+  SET_ACTIVITIES: 'Set Activities Data',
+  TOGGLE_HOME_HEADER: 'Toggles home header state'
 };
 
 interface CurrentDateState {
@@ -92,6 +93,15 @@ export const activitiesReducer = (state: ActiivtiesState = initialActivitiesStat
         ...state,
         activities: action.payload
       }
+    default:
+      return state
+  }
+}
+
+export const homeHeaderStatusReducer = (state: boolean = true, action: AnyAction) => {
+  switch(action.type) {
+    case ACTIONS.TOGGLE_HOME_HEADER:
+      return !state
     default:
       return state
   }

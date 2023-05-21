@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActivities } from '../actions';
@@ -24,7 +24,7 @@ export default function Home () {
 
       try {
         const results = await axios.get(`${LOCALTUNNEL}/activities?usernameParam=${username}`)
-
+        console.log('hi')
         dispatch(setActivities(results.data));
       } catch(err) {
         console.log('there was an error in front end', err)
@@ -33,16 +33,21 @@ export default function Home () {
 
     getActivities();
   }, []);
-  console.log('acivities at home', activities)
+
   return (
     <View style={styles.container}>
 
       {activities.length !== 0 &&
-      <Stack.Navigator>
+      <Stack.Navigator
+      screenOptions={{
+        headerStyle: {backgroundColor: '#77C7E9'},
+        headerTitleStyle: {color: 'white'},
+        headerTintColor: 'white',
+      }}
+      >
         <Stack.Screen
           name= 'Calendar'
           component= {Calendar}
-          options={{headerShown: false}}
         />
         {activities?.map((activity: Activity) => (
           <Stack.Screen
@@ -50,7 +55,8 @@ export default function Home () {
           name= {`ActivityScreen_${activity.activityid}`}
           initialParams={{ activity: activity }}
           component= {ActivityInfoScreen}
-            />
+          options= {{title: activity.activityname}}
+          />
         ))}
       </Stack.Navigator>
       }

@@ -42,3 +42,9 @@ export const setActivities = (activities: Activity[]): SetActivitiesAction => ({
   type: ACTIONS.SET_ACTIVITIES,
   payload: activities
 })
+
+export const toggleHomeHeader = () => {
+  return {
+    type: ACTIONS.TOGGLE_HOME_HEADER
+  }
+}
