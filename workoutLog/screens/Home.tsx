@@ -22,7 +22,6 @@ export default function Home () {
 
       try {
         const results = await axios.get(`${LOCALTUNNEL}/activities?usernameParam=${username}`)
-        console.log('hi')
         dispatch(setActivities(results.data));
       } catch(err) {
         console.log('there was an error in front end', err)

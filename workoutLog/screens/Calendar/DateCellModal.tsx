@@ -67,7 +67,14 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
       ) : (
         <View style={styles.activityNameContainer}>
           {activities.map((activity: Activity) => (
-            <TouchableOpacity key={activity.activityid} style={styles.activityNameButton}>
+            <TouchableOpacity
+              key={activity.activityid}
+              style={styles.activityNameButton}
+              onPress={() => {
+                navigation.navigate(`ActivityScreen_${activity.activityid}`, { activity: activity });
+                toggleModal()
+              }}
+              >
               <Text style={styles.activityName}>{activity.activityname}</Text>
               <Text style={styles.activityName}>&gt;</Text>
             </TouchableOpacity>
