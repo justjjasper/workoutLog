@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,12 +9,10 @@ import { Activity } from '../types';
 import Calendar from './Calendar/Calendar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ActivityInfoScreen from './Calendar/ActivityInfoScreen';
-//FIX HOME AND CALENDAR STACK NAVIGATION FLOW
+
 const Stack = createNativeStackNavigator();
 
 export default function Home () {
-  // Implement mapped Stacks of activityInfo below Calendar
-    // grap all of the activities, just map it out DUH
   const dispatch = useDispatch();
   const username = useSelector<RootState, string | null>(state => state.username.username);
   const activities = useSelector<RootState, Activity[]>(state => state.activities.activities)
@@ -53,7 +51,7 @@ export default function Home () {
           <Stack.Screen
           key={activity.activityid}
           name= {`ActivityScreen_${activity.activityid}`}
-          initialParams={{ activity: activity }}
+          initialParams={{ activity }}
           component= {ActivityInfoScreen}
           options= {{title: activity.activityname}}
           />

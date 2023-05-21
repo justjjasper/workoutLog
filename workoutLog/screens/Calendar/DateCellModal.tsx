@@ -1,18 +1,18 @@
-
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../App';
-import { Activity } from '../../types';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { homeHeaderStatus, toggleHomeHeader } from '../../actions';
-
+import { Activity, RootStackParamList } from '../../types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 // Heading (Title close icon on right)
 // Day of Week/Month and Day {`${monthName.slice(0, 3)} ${day}`}
 // Calendar
 // ButtonsBelow
+/*
+Implement typing within useNavigation in order to type-safe the type of data being passed to
+StackScreen child components (referring to mapped data)
 
+Use Exported RootStackParamList from types.tsx in conjunction with NativeStackNavigation
+*/
 interface DateCellModalProps {
   day: string | number | null;
   month: number;
@@ -23,7 +23,7 @@ interface DateCellModalProps {
 }
 
 const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthName, activities, toggleModal }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const date = new Date(year, month, Number(day));
   const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' }).split(',')[0];
@@ -54,7 +54,7 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
                 key={activity.activityid}
                 style={styles.activityNameButton}
                 onPress={() => {
-                  navigation.navigate(`ActivityScreen_${activity.activityid}`, {activity: activity});
+                  navigation.navigate(`ActivityScreen_${activity.activityid}`, { activity: activity });
                   toggleModal()
                 }}
                 >

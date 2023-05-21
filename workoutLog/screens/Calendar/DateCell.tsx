@@ -1,14 +1,10 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, Alert, AlertButton, TouchableOpacity } from 'react-native';
-import { toggleModal } from '../../actions';
 import { Activity } from '../../types';
 import Modal from 'react-native-modal';
 import DateCellModal from './DateCellModal';
 import { RootState } from '../../App';
 import { useSelector } from 'react-redux';
-
-// implement DateCellModal Below
-// implement AddActivityNameModal Below???
 
 interface DateCellProps {
   day: string | number | null,
@@ -16,7 +12,6 @@ interface DateCellProps {
   isOutsideMonth: boolean,
   activities: Activity[]
 };
-
 
 export default function DateCell(props: DateCellProps) {
   const currentDate = useSelector<RootState, Date>(state => state.currentDate.currentDate);
@@ -87,17 +82,4 @@ const styles = StyleSheet.create({
   activityName: {
     fontSize: 9.5
   }
-})
-
-
-
- // const handlePress = (): void => {
-  //   const buttons: AlertButton[] = [
-  //     {
-  //       text: 'Cancel It',
-  //       onPress: (): void => console.log('what is the num of days in may',day)
-  //     }
-  //   ]
-
-  //   Alert.alert('it got pressed', undefined, buttons)
-  // }
+});

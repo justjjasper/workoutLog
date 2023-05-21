@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { RootState } from '../../App';
 import { useSelector } from 'react-redux';
 import { LOCALTUNNEL } from '../../config';
@@ -29,10 +29,7 @@ export default function Calendar() {
       const results = await axios.get(`${LOCALTUNNEL}/activities?usernameParam=${username}`)
 
       try {
-        setActivities(results.data.map((activity: Activity) => {
-          const { activityinfo, ...rest } = activity;
-          return rest;
-        }));
+        setActivities(results.data);
       } catch(err) {
         console.log('there was an error in front end', err)
       }
@@ -41,7 +38,6 @@ export default function Calendar() {
     getActivities();
   }, []);
 
-  console.log('these are activitids', activities.length)
   const year = currentDate.getFullYear();
   const numDaysInMonth = new Date(year, currentMonth + 1, 0).getDate();
 
