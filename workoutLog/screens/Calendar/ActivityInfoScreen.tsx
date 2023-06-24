@@ -88,9 +88,12 @@ const styles = StyleSheet.create({
   textInput: {
     height: '100%',
     borderWidth: 5,
+    fontSize: 18,
+    padding: 10
   },
    noteContainer: {
     padding: 10,
-    height: '100%'
+    height: '100%',
+    fontSize: 18
   }
 })
