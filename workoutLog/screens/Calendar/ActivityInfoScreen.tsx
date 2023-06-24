@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Button } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Button, TextInputKeyPressEventData, NativeSyntheticEvent } from 'react-native';
 import { RootStackParamList } from '../../types';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 
@@ -36,6 +36,12 @@ export default function ActivityInfoScreen() {
     // updates content
   };
 
+  const handleKeyPress = (event: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+    if (event.nativeEvent.key === 'Enter') {
+      setNoteContent(noteContent + '\n')
+    }
+  }
+
   const renderHeaderRight = () => {
     if (editing) {
       return (
@@ -49,7 +55,7 @@ export default function ActivityInfoScreen() {
 
     return null;
   };
-
+  ///////////////
   console.log(activity.activityinfo)
   useEffect(() => {
     navigation.setOptions({
@@ -84,5 +90,6 @@ const styles = StyleSheet.create({
   },
    noteContainer: {
     padding: 10,
+    height: '100%'
   }
 })
