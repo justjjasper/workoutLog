@@ -9,7 +9,7 @@ export interface Activity {
 
 /*
 Implements type for Navigation Routes
-Calendar is undefined because it shows that Calendar Component does not receive children
+Calendar is undefined because it shows that Calendar Component does not receive props
 
 ActivityScreen is indexed type, where key indicates that number in ActivityScreen is dynamic due to template literals
 activity is the data(prop) being passed into the ActivityScreen components

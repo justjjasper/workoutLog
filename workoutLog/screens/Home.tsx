@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,6 +53,7 @@ export default function Home () {
           initialParams={{ activity }}
           component= {ActivityInfoScreen}
           options= {{title: activity.activityname}}
+
           />
         ))}
       </Stack.Navigator>

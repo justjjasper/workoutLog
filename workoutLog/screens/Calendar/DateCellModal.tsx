@@ -8,8 +8,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 // Calendar
 // ButtonsBelow
 /*
-Implement typing within useNavigation in order to type-safe the type of data being passed to
-StackScreen child components (referring to mapped data)
+Implement typing within useNavigation in order to type-safe the type of data being passed to other
+StackScreen components (referring to mapped data)
 
 Use Exported RootStackParamList from types.tsx in conjunction with NativeStackNavigation
 */
