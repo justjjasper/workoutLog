@@ -7,15 +7,7 @@ import { LOCALTUNNEL } from '../../config';
 import DateCell from './DateCell';
 import Heading from './Heading';
 import Weekdays from './Weekdays';
-
-interface Activity {
-  activityid: number;
-  activityname: string;
-  activityinfo: string[];
-  day: number;
-  month: number;
-  year: number;
-};
+import { Activity } from '../../types';
 
 export default function Calendar() {
   const username = useSelector<RootState, string | null>(state => state.username.username);

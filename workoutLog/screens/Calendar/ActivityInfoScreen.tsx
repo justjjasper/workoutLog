@@ -21,7 +21,7 @@ export default function ActivityInfoScreen() {
   const navigation = useNavigation();
 
   const [editing, setEditing] = useState(false);
-  const [noteContent, setNoteContent] = useState('Sample note content \n long \n long sakdjkdaskdjak \n ok');
+  const [noteContent, setNoteContent] = useState(activity.activityinfo);
 
   const handleNotePress = () => {
     setEditing(true);
@@ -50,8 +50,8 @@ export default function ActivityInfoScreen() {
     return null;
   };
 
+  console.log(activity.activityinfo)
   useEffect(() => {
-    // implement axios to get data and apply it to contentState
     navigation.setOptions({
       headerRight: renderHeaderRight
     })
@@ -63,14 +63,14 @@ export default function ActivityInfoScreen() {
         {editing ? (
           <TextInput
             multiline
-            value={noteContent}
+            value={noteContent.replace(/\\n/g, '\n')}
             onChangeText={handleNoteChange}
             onBlur={handleNoteBlur}
             autoFocus
             style={styles.textInput}
           />
         ) : (
-          <Text>{noteContent}</Text>
+          <Text style={styles.noteContainer}>{noteContent.replace(/\\n/g, '\n')}</Text>
         )}
       </View>
     </TouchableOpacity>
@@ -81,5 +81,8 @@ const styles = StyleSheet.create({
   textInput: {
     height: '100%',
     borderWidth: 5,
+  },
+   noteContainer: {
+    padding: 10,
   }
 })

@@ -36,34 +36,23 @@ VALUES
 -- activityName table
 INSERT INTO activityName (activityName, day, month, year, username_id)
 VALUES
-('Legs', 17, 4, 2023, 1),
-('Cardio', 17, 4, 2023, 1),
-('Cardio', 17, 4, 2023, 1),
-('Cardio', 17, 4, 2023, 1),
-('Cardio', 17, 4, 2023, 1),
-('Cardio', 5, 4, 2023, 1),
-('Chest', 7, 5, 2023, 2),
-('Back', 18, 4, 2023, 2),
-('Cardio3', 18, 4, 2023, 2);
+('Core', 12, 5, 2023, 1),
+('Legs', 12, 5, 2023, 1),
+('Core', 13, 5, 2023, 1),
+('Shoulders', 13, 5, 2023, 1),
+('Running', 13, 5, 2023, 1),
+('Core', 14, 5, 2023, 1),
+('Back', 14, 5, 2023, 1);
+
 
 -- activityInfo table
 INSERT INTO activityInfo (activityInfo, activityName_id)
 VALUES
-('3 sets of 10 reps @ 135lbs', 1),
-('3 sets of 8 reps @ 155lbs', 1),
-('3 sets of 6 reps @ 225lbs', 1),
-('1 hour on treadmill', 2),
-('30 minutes on elliptical', 2),
-('1 hour on stationary bike', 2),
-('Vinyasa Flow', 3),
-('Hatha Yoga', 3),
-('Restorative Yoga', 3),
-('3 sets of 12 reps', 4),
-('3 sets of 10 reps @ 135lbs', 4),
-('3 sets of 8 reps @ 155lbs', 4),
-('10 laps freestyle', 5),
-('5 laps backstroke', 5),
-('3 laps breaststroke', 5),
-('10 laps freestyle', 6),
-('5 laps backstroke', 6),
-('3 laps breaststroke', 6);
+('Hanging Obliques 4x5', 1),
+('Db Hex Squat 4x8 @45lb\nDb Rdl 4x8 @45lb w/ Glute Med Kicks 4x12\nHamstring Curl Mch 4x12 @60lb\nLeg Ex 4x10 @65lb', 2),
+('Hanging Obliques 4x6', 3),
+('Db Ohp 5x10 @45lb\nDb Lat Raise 4x10 @15lb w/ Shoulder Shrugs 4x15 @45lb\nFace pull 4x12 @ 44lb w/ Db Lat Raise 4x12 @10lb', 4),
+('6 miles, 44:44mins PR', 5),
+('Scap push ups 4x12', 6),
+('Pull ups 4x9\nV-grip cable pulls 4x8 @99lb\nDb alt + both 4x10 @17.5lb', 7);
+
