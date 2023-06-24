@@ -74,6 +74,7 @@ export default function ActivityInfoScreen() {
             onBlur={handleNoteBlur}
             autoFocus
             style={styles.textInput}
+            onKeyPress={handleKeyPress}
           />
         ) : (
           <Text style={styles.noteContainer}>{noteContent.replace(/\\n/g, '\n')}</Text>
