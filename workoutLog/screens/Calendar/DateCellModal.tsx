@@ -1,8 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Activity, RootStackParamList } from '../../types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import AddActivityNameScreen from './AddActivityNameModal';
+import Modal from 'react-native-modal';
+import AddActivityNameModal from './AddActivityNameModal';
+
 // Heading (Title close icon on right)
 // Day of Week/Month and Day {`${monthName.slice(0, 3)} ${day}`}
 // Calendar
@@ -25,12 +29,26 @@ interface DateCellModalProps {
 const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthName, activities, toggleModal }) => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const toggleAddActivityModal = (): void => {
+    setIsModalVisible(!isModalVisible)
+    console.log('what is state of create modal', isModalVisible)
+  };
+
   const date = new Date(year, month, Number(day));
   const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' }).split(',')[0];
 
   console.log(dayOfWeek);
   const shouldUseScrollView = activities.length > 4;
 
+  const activityNameRef = useRef<TextInput | null>(null);
+
+  const handleCreatePress = () => {
+    toggleAddActivityModal();
+    setTimeout(() => {
+      activityNameRef.current?.focus();
+    }, 350);
+  };
   return (
     <View style={styles.modalContainer}>
 
@@ -83,7 +101,7 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
       )}
 
       <View style={styles.footerContainer}>
-        <TouchableOpacity style={styles.footerButton}>
+        <TouchableOpacity style={styles.footerButton} onPress={handleCreatePress}>
           <Text style={styles.footerText}>Create</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.footerButton}>
@@ -91,6 +109,9 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
         </TouchableOpacity>
       </View>
 
+      <Modal isVisible={isModalVisible} onBackdropPress={toggleAddActivityModal}>
+        <AddActivityNameModal activityNameRef={activityNameRef} toggleAddActivityModal={toggleAddActivityModal} />
+      </Modal>
     </View>
   );
 };
