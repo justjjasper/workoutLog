@@ -7,4 +7,4 @@ export const rootReducer = combineReducers({
   toggleModal: modalReducer,
   activities: activitiesReducer,
   homeHeaderStatus: homeHeaderStatusReducer
-})
+});

@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { View, StyleSheet, Text, TextInput, Button, Platform, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { LOCALTUNNEL } from '../../config';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../App';
+import { Activity } from '../../types';
+import { postActivityName } from '../../actions';
 
 interface AddActivityNameModalProps {
   activityNameRef: React.RefObject<TextInput>;
@@ -13,11 +15,13 @@ interface AddActivityNameModalProps {
     month: number,
     year: number
   }
-}
+};
 
 export default function AddActivityNameModal({ activityNameRef, toggleAddActivityModal, dateInfo }: AddActivityNameModalProps) {
   const username = useSelector<RootState, string | null>(state => state.username.username);
   const [activityName, setActivityName] = useState('Activity Name');
+  const activities = useSelector<RootState, Activity[]>(state => state.activities.activities);
+  const dispatch = useDispatch();
 
   const handleFocus = () => {
     if (activityNameRef.current) {
@@ -41,10 +45,11 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
       const response = await axios.post(url, payload)
 
       console.log('Posting activityName from client was success, here is response data', response.data);
-
-      toggleAddActivityModal()
+      const newActivity = {...response.data, activityinfo: null}
+      dispatch(postActivityName(newActivity))
+      toggleAddActivityModal();
     } catch(err) {
-      console.error('Error posting activityName', err)
+      console.error('Error posting activityName fron Client side', err)
     }
   };
 

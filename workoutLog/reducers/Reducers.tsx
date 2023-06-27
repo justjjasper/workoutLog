@@ -9,7 +9,8 @@ export const ACTIONS = {
   LOGIN_USER: 'Sets login username',
   TOGGLE_MODAL: 'Toggles modal state',
   SET_ACTIVITIES: 'Set Activities Data',
-  TOGGLE_HOME_HEADER: 'Toggles home header state'
+  TOGGLE_HOME_HEADER: 'Toggles home header state',
+  POST_ACTIVITY: 'Creates a new Activity Name'
 };
 
 interface CurrentDateState {
@@ -65,8 +66,8 @@ export const loginReducer = (state: LoginInitialState = loginInitialState, actio
         ...state,
         username: action.payload
       }
-      default:
-        return state;
+    default:
+      return state;
   }
 };
 
@@ -93,6 +94,11 @@ export const activitiesReducer = (state: ActiivtiesState = initialActivitiesStat
       return {
         ...state,
         activities: action.payload
+      }
+    case ACTIONS.POST_ACTIVITY:
+      return {
+        ...state,
+        activities: [...state.activities, action.payload]
       }
     default:
       return state

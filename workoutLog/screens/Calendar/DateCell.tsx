@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, Alert, AlertButton, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Activity } from '../../types';
 import Modal from 'react-native-modal';
 import DateCellModal from './DateCellModal';

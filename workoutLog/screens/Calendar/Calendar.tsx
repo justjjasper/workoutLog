@@ -2,26 +2,26 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { View, StyleSheet } from 'react-native';
 import { RootState } from '../../App';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { LOCALTUNNEL } from '../../config';
 import DateCell from './DateCell';
 import Heading from './Heading';
 import Weekdays from './Weekdays';
 import { Activity } from '../../types';
+import { setActivities } from '../../actions';
 
 export default function Calendar() {
   const username = useSelector<RootState, string | null>(state => state.username.username);
   const currentDate = useSelector<RootState, Date>(state => state.currentDate.currentDate);
   const currentMonth = useSelector<RootState, number>(state => state.currentDate.currentMonth);
-
-  const [activities, setActivities] = useState<Activity[]>([]);
+  const activities = useSelector<RootState, Activity[]>(state => state.activities.activities);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getActivities = async () => {
       const results = await axios.get(`${LOCALTUNNEL}/activities?usernameParam=${username}`)
-      console.log('what are activities', activities)
       try {
-        setActivities(results.data);
+        dispatch(setActivities(results.data))
       } catch(err) {
         console.log('there was an error in front end', err)
       }

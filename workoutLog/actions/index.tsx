@@ -35,13 +35,18 @@ export const toggleModal = () => {
 
 interface SetActivitiesAction {
   type: typeof ACTIONS.SET_ACTIVITIES
-  payload: Activity[];
-}
+  payload: Activity[]
+};
 
 export const setActivities = (activities: Activity[]): SetActivitiesAction => ({
   type: ACTIONS.SET_ACTIVITIES,
   payload: activities
-})
+});
+
+export const postActivityName = (activities: Activity) => ({
+  type: ACTIONS.POST_ACTIVITY,
+  payload: activities
+});
 
 export const toggleHomeHeader = () => {
   return {

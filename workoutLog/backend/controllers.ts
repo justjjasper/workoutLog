@@ -35,7 +35,6 @@ const getActivities = async (req: Request, res: Response) => {
 };
 
 const postActivityName = async (req: Request, res: Response) => {
-  console.log('what is the req from backend', req.body)
   try {
     const { username, dateInfo, activityName } = req.body;
     const { day, month, year } = dateInfo;
@@ -43,11 +42,14 @@ const postActivityName = async (req: Request, res: Response) => {
     const queryString = `
       INSERT INTO activityName (activityName, day, month, year, username_id)
       VALUES ($1, $2, $3, $4, (SELECT id FROM usernames WHERE username = $5))
+
+      RETURNING id, activityName, day, month, year
     `;
     const insertActivityNameParams = [activityName, day, month, year, username];
-    await client.query(queryString, insertActivityNameParams);
+    const results = await client.query(queryString, insertActivityNameParams);
 
-    res.sendStatus(200);
+    const insertedActivity = results.rows[0]; // Assuming only one row is returned
+    res.status(200).send(insertedActivity);
   } catch (err) {
     console.error('Error adding activityName from Backend', err);
     res.sendStatus(500)
