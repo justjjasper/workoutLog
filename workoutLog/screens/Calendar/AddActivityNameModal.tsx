@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TextInput, Button, Platform } from 'react-native';
+import { View, StyleSheet, Text, TextInput, Button, Platform, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 
 interface AddActivityNameModalProps {
   activityNameRef: React.RefObject<TextInput>;
-  toggleAddActivityModal: Function
+  toggleAddActivityModal: () => void;
 }
 
 export default function AddActivityNameModal({ activityNameRef, toggleAddActivityModal }: AddActivityNameModalProps) {
@@ -18,6 +18,7 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
   };
 
   const handleSubmit = () => {
+    // POST request logic
     toggleAddActivityModal()
   }
 
@@ -30,28 +31,37 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
   const returnKeyType = Platform.OS === 'ios' ? 'done' : 'none';
 
   return (
-    <View style={styles.modalContainer}>
-      <Text style={styles.header}>Enter Activity Name</Text>
-      <TextInput
-        ref={activityNameRef}
-        onChangeText={setActivityName}
-        value={activityName}
-        placeholder='Activity Name'
-        placeholderTextColor='#D9D9D9'
-        style={styles.textInput}
-        onFocus={handleFocus}
-        textAlign={'center'}
-        returnKeyType={returnKeyType} // Set return key type to 'done'
-        onSubmitEditing={handleSubmit}
-      />
-      <Button
-        title='Create'
-      />
-    </View>
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <View style={styles.modalContainer}>
+      <TouchableOpacity onPress={handleSubmit} style={styles.closeButton}>
+        <Text style={styles.closeButtonText}>x</Text>
+      </TouchableOpacity>
+        <Text style={styles.header}>Enter Activity Name</Text>
+        <TextInput
+          ref={activityNameRef}
+          onChangeText={setActivityName}
+          value={activityName}
+          placeholder='Activity Name'
+          placeholderTextColor='#D9D9D9'
+          style={styles.textInput}
+          onFocus={handleFocus}
+          textAlign={'center'}
+          returnKeyType={returnKeyType} // Set return key type to 'done'
+          onSubmitEditing={handleSubmit}
+        />
+        <TouchableOpacity style={styles.createButton} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>Create</Text>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   )
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
   modalContainer: {
     backgroundColor: 'white',
     height: '85%',
@@ -59,15 +69,41 @@ const styles = StyleSheet.create({
     right: 5,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    justifyContent: 'center'
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
   textInput: {
     height: 30,
     borderBottomWidth: 1,
     width: '75%',
-    fontSize: 28
+    fontSize: 32
   },
   header: {
     fontSize: 18
-  }
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,
+    paddingRight: 7
+  },
+  closeButtonText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#565758'
+  },
+  createButton: {
+    marginTop: -42,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '30%',
+    height: 42,
+    backgroundColor: '#77C7E8',
+    borderRadius: 20
+  },
+  buttonText: {
+    color: 'black',
+    fontSize: 18
+  },
 })
