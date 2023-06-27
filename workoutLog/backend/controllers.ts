@@ -1,6 +1,7 @@
+import { Request, Response } from 'express';
 var client = require('./db');
 
-const getActivities = async (req: any, res: any) => {
+const getActivities = async (req: Request, res: Response) => {
   const username = req.query.usernameParam;
 
   const queryString = `SELECT an.activityName,
@@ -10,7 +11,7 @@ const getActivities = async (req: any, res: any) => {
                         an.year,
                         an.id AS activityId
                       FROM activityName AS an
-                      JOIN activityInfo AS ai ON an.id = ai.activityName_id
+                      LEFT JOIN activityInfo AS ai ON an.id = ai.activityName_id
                       JOIN usernames AS u ON an.username_id = u.id
                       WHERE u.username = $1`;
 
@@ -33,6 +34,27 @@ const getActivities = async (req: any, res: any) => {
   }
 };
 
+const postActivityName = async (req: Request, res: Response) => {
+  console.log('what is the req from backend', req.body)
+  try {
+    const { username, dateInfo, activityName } = req.body;
+    const { day, month, year } = dateInfo;
+
+    const queryString = `
+      INSERT INTO activityName (activityName, day, month, year, username_id)
+      VALUES ($1, $2, $3, $4, (SELECT id FROM usernames WHERE username = $5))
+    `;
+    const insertActivityNameParams = [activityName, day, month, year, username];
+    await client.query(queryString, insertActivityNameParams);
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error adding activityName from Backend', err);
+    res.sendStatus(500)
+  }
+};
+
 module.exports = {
-  getActivities: getActivities
+  getActivities: getActivities,
+  postActivityName: postActivityName
 };

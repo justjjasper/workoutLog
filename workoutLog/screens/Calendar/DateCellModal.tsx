@@ -29,16 +29,16 @@ interface DateCellModalProps {
 const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthName, activities, toggleModal }) => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
+  const dateInfo = { day, month, year };
+
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const toggleAddActivityModal = (): void => {
     setIsModalVisible(!isModalVisible)
-    console.log('what is state of create modal', isModalVisible)
   };
 
   const date = new Date(year, month, Number(day));
   const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' }).split(',')[0];
 
-  console.log(dayOfWeek);
   const shouldUseScrollView = activities.length > 4;
 
   const activityNameRef = useRef<TextInput | null>(null);
@@ -110,7 +110,11 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
       </View>
 
       <Modal isVisible={isModalVisible} onBackdropPress={toggleAddActivityModal}>
-        <AddActivityNameModal activityNameRef={activityNameRef} toggleAddActivityModal={toggleAddActivityModal} />
+        <AddActivityNameModal
+          activityNameRef={activityNameRef}
+          toggleAddActivityModal={toggleAddActivityModal}
+          dateInfo={dateInfo}
+        />
       </Modal>
     </View>
   );

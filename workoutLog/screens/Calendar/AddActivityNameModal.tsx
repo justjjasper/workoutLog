@@ -1,12 +1,22 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { View, StyleSheet, Text, TextInput, Button, Platform, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { LOCALTUNNEL } from '../../config';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../App';
 
 interface AddActivityNameModalProps {
   activityNameRef: React.RefObject<TextInput>;
   toggleAddActivityModal: () => void;
+  dateInfo: {
+    day: string | number | null,
+    month: number,
+    year: number
+  }
 }
 
-export default function AddActivityNameModal({ activityNameRef, toggleAddActivityModal }: AddActivityNameModalProps) {
+export default function AddActivityNameModal({ activityNameRef, toggleAddActivityModal, dateInfo }: AddActivityNameModalProps) {
+  const username = useSelector<RootState, string | null>(state => state.username.username);
   const [activityName, setActivityName] = useState('Activity Name');
 
   const handleFocus = () => {
@@ -16,11 +26,27 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
       });
     }
   };
+  useEffect(() => {
+    console.log('what si the localtunnel', LOCALTUNNEL)
+  })
+  const handleSubmit = async () => {
+    const url = `${LOCALTUNNEL}/postActivityName`;
+    const payload = {
+      activityName,
+      username,
+      dateInfo
+    };
 
-  const handleSubmit = () => {
-    // POST request logic
-    toggleAddActivityModal()
-  }
+    try {
+      const response = await axios.post(url, payload)
+
+      console.log('Posting activityName from client was success, here is response data', response.data);
+
+      toggleAddActivityModal()
+    } catch(err) {
+      console.error('Error posting activityName', err)
+    }
+  };
 
   useEffect(() => {
     if (activityNameRef.current) {
@@ -33,7 +59,7 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={styles.modalContainer}>
-      <TouchableOpacity onPress={handleSubmit} style={styles.closeButton}>
+      <TouchableOpacity onPress={toggleAddActivityModal} style={styles.closeButton}>
         <Text style={styles.closeButtonText}>x</Text>
       </TouchableOpacity>
         <Text style={styles.header}>Enter Activity Name</Text>

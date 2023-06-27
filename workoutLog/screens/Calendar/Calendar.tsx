@@ -19,7 +19,7 @@ export default function Calendar() {
   useEffect(() => {
     const getActivities = async () => {
       const results = await axios.get(`${LOCALTUNNEL}/activities?usernameParam=${username}`)
-
+      console.log('what are activities', activities)
       try {
         setActivities(results.data);
       } catch(err) {

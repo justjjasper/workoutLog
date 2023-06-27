@@ -53,6 +53,7 @@ interface LoginInitialState {
   username: string | null
 };
 
+// Eventually have to implement an empty username during prototype app launch
 const loginInitialState: LoginInitialState = {
   username: 'johndoe'
 };
