@@ -21,7 +21,7 @@ export default function ActivityInfoScreen() {
   const navigation = useNavigation();
 
   const [editing, setEditing] = useState(false);
-  const [noteContent, setNoteContent] = useState(activity.activityinfo);
+  const [noteContent, setNoteContent] = useState(activity.activityinfo || '');
 
   const handleNotePress = () => {
     setEditing(true);

@@ -45,8 +45,8 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
       const response = await axios.post(url, payload)
 
       console.log('Posting activityName from client was success, here is response data', response.data);
-      const newActivity = {...response.data, activityinfo: null}
-      dispatch(postActivityName(newActivity))
+      const newActivity = {...response.data, activityinfo: null};
+      dispatch(postActivityName(newActivity));
       toggleAddActivityModal();
     } catch(err) {
       console.error('Error posting activityName fron Client side', err)
