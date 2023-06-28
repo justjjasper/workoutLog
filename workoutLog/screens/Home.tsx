@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator();
 export default function Home () {
   const dispatch = useDispatch();
   const username = useSelector<RootState, string | null>(state => state.username.username);
-  const activities = useSelector<RootState, Activity[]>(state => state.activities.activities)
+  const activities = useSelector<RootState, Activity[]>(state => state.activities.activities);
 
   useEffect(() => {
     const getActivities = async () => {
@@ -46,16 +46,21 @@ export default function Home () {
           name= 'Calendar'
           component= {Calendar}
         />
-        {activities?.map((activity: Activity) => (
+        {activities?.map((activity: Activity) => {
+          // console.log('what are the mapped activities',  activity)
+          return (
           <Stack.Screen
-          key={activity.activityid}
-          name= {`ActivityScreen_${activity.activityid}`}
+          key={activity.activityId}
+          name= {`ActivityScreen_${activity.activityId}`}
           initialParams={{ activity }}
           component= {ActivityInfoScreen}
-          options= {{title: activity.activityname}}
+          options= {{title: activity.activityName}}
 
           />
-        ))}
+          )
+        }
+
+        )}
       </Stack.Navigator>
       }
     </View>

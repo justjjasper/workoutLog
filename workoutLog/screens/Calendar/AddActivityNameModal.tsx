@@ -30,9 +30,7 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
       });
     }
   };
-  useEffect(() => {
-    console.log('what si the localtunnel', LOCALTUNNEL)
-  })
+
   const handleSubmit = async () => {
     const url = `${LOCALTUNNEL}/postActivityName`;
     const payload = {
@@ -44,12 +42,21 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
     try {
       const response = await axios.post(url, payload)
 
-      console.log('Posting activityName from client was success, here is response data', response.data);
-      const newActivity = {...response.data, activityinfo: null};
+      const { id, activityname, day, month, year } = response.data;
+      const newActivity = {
+        activityName: activityname,
+        activityInfo: null,
+        day,
+        month,
+        year,
+        activityId: id
+      };
+
       dispatch(postActivityName(newActivity));
+
       toggleAddActivityModal();
     } catch(err) {
-      console.error('Error posting activityName fron Client side', err)
+      console.error('Error posting activityName fron Client side', err);
     }
   };
 

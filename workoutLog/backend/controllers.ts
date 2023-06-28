@@ -19,12 +19,12 @@ const getActivities = async (req: Request, res: Response) => {
 
   try {
     const activities = results.rows.map((row: any) => ({
-      activityname: row.activityname,
-      activityinfo: row.activityinfo,
+      activityName: row.activityname,
+      activityInfo: row.activityinfo,
       day: row.day,
       month: row.month,
       year: row.year,
-      activityid: row.activityid
+      activityId: row.activityid
     }));
 
     res.status(200).send(activities);

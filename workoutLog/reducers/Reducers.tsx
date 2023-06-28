@@ -103,7 +103,7 @@ export const activitiesReducer = (state: ActiivtiesState = initialActivitiesStat
     default:
       return state
   }
-}
+};
 
 export const homeHeaderStatusReducer = (state: boolean = true, action: AnyAction) => {
   switch(action.type) {
@@ -112,4 +112,5 @@ export const homeHeaderStatusReducer = (state: boolean = true, action: AnyAction
     default:
       return state
   }
-}
+};
+

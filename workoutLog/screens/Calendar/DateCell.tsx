@@ -44,7 +44,7 @@ export default function DateCell(props: DateCellProps) {
         <View style={styles.activityNamesContainer}>
         {activities.map((activity: Activity) => {
           return (
-            <Text key={activity.activityid} style={styles.activityName}> {activity.activityname}</Text>
+            <Text key={activity.activityId} style={styles.activityName}> {activity.activityName}</Text>
           )
         })}
       </View>

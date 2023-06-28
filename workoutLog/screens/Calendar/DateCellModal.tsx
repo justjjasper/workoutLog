@@ -69,14 +69,14 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
           <ScrollView>
             {activities.map((activity: Activity) => (
               <TouchableOpacity
-                key={activity.activityid}
+                key={activity.activityId}
                 style={styles.activityNameButton}
                 onPress={() => {
-                  navigation.navigate(`ActivityScreen_${activity.activityid}`, { activity: activity });
+                  navigation.navigate(`ActivityScreen_${activity.activityId}`, { activity: activity });
                   toggleModal()
                 }}
                 >
-                <Text style={styles.activityName}>{activity.activityname}</Text>
+                <Text style={styles.activityName}>{activity.activityName}</Text>
                 <Text style={styles.activityName}>&gt;</Text>
               </TouchableOpacity>
             ))}
@@ -86,14 +86,14 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
         <View style={styles.activityNameContainer}>
           {activities.map((activity: Activity) => (
             <TouchableOpacity
-              key={activity.activityid}
+              key={activity.activityId}
               style={styles.activityNameButton}
               onPress={() => {
-                navigation.navigate(`ActivityScreen_${activity.activityid}`, { activity: activity });
+                navigation.navigate(`ActivityScreen_${activity.activityId}`, { activity: activity });
                 toggleModal()
               }}
               >
-              <Text style={styles.activityName}>{activity.activityname}</Text>
+              <Text style={styles.activityName}>{activity.activityName}</Text>
               <Text style={styles.activityName}>&gt;</Text>
             </TouchableOpacity>
           ))}

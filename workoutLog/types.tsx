@@ -1,10 +1,10 @@
 export interface Activity {
-  activityname: string;
-  activityinfo: string;
+  activityName: string;
+  activityInfo: string | null;
   day: number;
   month: number;
   year: number;
-  activityid: number;
+  activityId: number;
 };
 
 /*

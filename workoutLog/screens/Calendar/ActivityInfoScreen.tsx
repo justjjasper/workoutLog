@@ -21,8 +21,15 @@ export default function ActivityInfoScreen() {
   const navigation = useNavigation();
 
   const [editing, setEditing] = useState(false);
-  const [noteContent, setNoteContent] = useState(activity.activityinfo || '');
+  const [noteContent, setNoteContent] = useState(activity.activityInfo || '');
 
+  const saveNote = () => {
+    if(activity.activityInfo === null) {
+      // POST Request
+    } else {
+      // PATCH Request
+    }
+  }
   const handleNotePress = () => {
     setEditing(true);
   };
@@ -33,14 +40,14 @@ export default function ActivityInfoScreen() {
 
   const handleNoteBlur = () => {
     setEditing(false);
-    // updates content
+    // updates content: saveNote
   };
 
   const handleKeyPress = (event: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
     if (event.nativeEvent.key === 'Enter') {
       setNoteContent(noteContent + '\n')
     }
-  }
+  };
 
   const renderHeaderRight = () => {
     if (editing) {
@@ -56,7 +63,7 @@ export default function ActivityInfoScreen() {
     return null;
   };
   ///////////////
-  console.log(activity.activityinfo)
+  console.log(activity.activityInfo)
   useEffect(() => {
     navigation.setOptions({
       headerRight: renderHeaderRight
