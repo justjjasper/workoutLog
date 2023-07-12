@@ -52,11 +52,43 @@ const postActivityName = async (req: Request, res: Response) => {
     res.status(200).send(insertedActivity);
   } catch (err) {
     console.error('Error adding activityName from Backend', err);
-    res.sendStatus(500)
-  }
+    res.sendStatus(500);
+  };
+};
+
+const postNote = async (req: Request, res: Response) => {
+
+  try {
+    const { noteContent, id } = req.body;
+
+    if (!noteContent || !id) {
+      return res.status(400).send('Missing noteContent or id');
+    };
+
+    const queryString = `
+      INSERT INTO activityInfo (activityInfo, activityName_id)
+      VALUES ($1, $2)
+    `;
+    const insertActivityInfoParams = [noteContent, id];
+    await client.query(queryString, insertActivityInfoParams);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error saving new Note from backend', err);
+    res.sendStatus(500);
+  };
+};
+
+const updateNote = async (req: Request, res: Response) => {
+  // try {
+  //   const { noteContent, activityName } = req.body
+
+  // }
+  return null;
 };
 
 module.exports = {
-  getActivities: getActivities,
-  postActivityName: postActivityName
+  getActivities,
+  postActivityName,
+  postNote,
+  updateNote
 };

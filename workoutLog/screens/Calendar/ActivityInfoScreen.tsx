@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Button, TextInputKeyPressEventData, NativeSyntheticEvent } from 'react-native';
 import { RootStackParamList } from '../../types';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
-
+import { LOCALTUNNEL } from '../../config';
+import axios from 'axios';
 /*
 implements Type to useRoute that uses exported RootStackParamList(entire type stack of possible Route Navigation)
  `ActivityScreen_${number}` is implemented within RouteProp to show a dynamic screen name implemented via template literal
@@ -17,36 +18,60 @@ type ActivityInfoScreenRouteProp = RouteProp<
 
 export default function ActivityInfoScreen() {
   const route = useRoute<ActivityInfoScreenRouteProp>();
-  const { activity } = route.params;
   const navigation = useNavigation();
+  const { activity } = route.params;
 
   const [editing, setEditing] = useState(false);
   const [noteContent, setNoteContent] = useState(activity.activityInfo || '');
 
-  const saveNote = () => {
-    if(activity.activityInfo === null) {
-      // POST Request
-    } else {
-      // PATCH Request
-    }
-  }
   const handleNotePress = () => {
     setEditing(true);
   };
 
   const handleNoteChange = (newNoteContent: string) => {
     setNoteContent(newNoteContent);
-  };
-
-  const handleNoteBlur = () => {
-    setEditing(false);
-    // updates content: saveNote
+    console.log('what is value of noteContent atm', noteContent)
   };
 
   const handleKeyPress = (event: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
     if (event.nativeEvent.key === 'Enter') {
       setNoteContent(noteContent + '\n')
     }
+  };
+
+  const saveNote = async (content: string) => {
+    const url = `${LOCALTUNNEL}/postNote`;
+    const payload = {
+      noteContent: content,
+      activityName: activity.activityName,
+      id: activity.activityId
+    };
+   if (noteContent.length === 0) {
+     try {
+       console.log('this is the noteContent', noteContent);
+       await axios.post(url, payload);
+     } catch (err) {
+       console.error('Error in posting new Note from client side', err);
+     }
+   } else {
+     // PATCH Request, just need to send noteContent, and activityName
+     try {
+       await axios.patch(url, payload);
+     } catch(err) {
+       console.error('Error in patching Note from client side', err);
+     }
+   }
+
+    console.log('current value of noteContent after pressing content parameter', content)
+ };
+
+  const handleNoteBlur = () => {
+    setEditing(false);
+    setNoteContent(prevNoteContent => {
+      const updatedNoteContent = prevNoteContent.trim(); // Optionally, trim the content
+      saveNote(updatedNoteContent); // Call saveNote with the updated content
+      return updatedNoteContent; // Return the updated content to update the state. This is similar to the implicit return of regular set useState functions ie. setCity(Carson)
+    });
   };
 
   const renderHeaderRight = () => {
@@ -62,18 +87,18 @@ export default function ActivityInfoScreen() {
 
     return null;
   };
-  ///////////////
-  console.log(activity.activityInfo)
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: renderHeaderRight
-    })
+    });
   }, [editing]);
 
   return (
     <TouchableOpacity onPress={handleNotePress}>
       <View>
         {editing ? (
+          <View>
           <TextInput
             multiline
             value={noteContent.replace(/\\n/g, '\n')}
@@ -83,6 +108,11 @@ export default function ActivityInfoScreen() {
             style={styles.textInput}
             onKeyPress={handleKeyPress}
           />
+          <View style={styles.buttonInput}>
+           <Button
+           title="Submit" onPress={handleNoteBlur} />
+           </View>
+           </View>
         ) : (
           <Text style={styles.noteContainer}>{noteContent.replace(/\\n/g, '\n')}</Text>
         )}
@@ -102,5 +132,10 @@ const styles = StyleSheet.create({
     padding: 10,
     height: '100%',
     fontSize: 18
-  }
+  },
+  buttonInput: {
+    height: 40,
+    borderWidth: 1,
+    paddingHorizontal: 10,
+  },
 })

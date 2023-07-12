@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Tex
 import { useNavigation } from '@react-navigation/native';
 import { Activity, RootStackParamList } from '../../types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import AddActivityNameScreen from './AddActivityNameModal';
 import Modal from 'react-native-modal';
 import AddActivityNameModal from './AddActivityNameModal';
 
@@ -27,6 +26,7 @@ interface DateCellModalProps {
 }
 
 const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthName, activities, toggleModal }) => {
+  console.log('what are the activities in the dateCellModal', activities)
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const dateInfo = { day, month, year };

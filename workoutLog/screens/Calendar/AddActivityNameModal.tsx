@@ -20,7 +20,6 @@ interface AddActivityNameModalProps {
 export default function AddActivityNameModal({ activityNameRef, toggleAddActivityModal, dateInfo }: AddActivityNameModalProps) {
   const username = useSelector<RootState, string | null>(state => state.username.username);
   const [activityName, setActivityName] = useState('Activity Name');
-  const activities = useSelector<RootState, Activity[]>(state => state.activities.activities);
   const dispatch = useDispatch();
 
   const handleFocus = () => {
