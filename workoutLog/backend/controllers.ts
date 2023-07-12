@@ -68,10 +68,15 @@ const postNote = async (req: Request, res: Response) => {
     const queryString = `
       INSERT INTO activityInfo (activityInfo, activityName_id)
       VALUES ($1, $2)
+
+      RETURNING id, activityInfo, activityName_id;
     `;
+
     const insertActivityInfoParams = [noteContent, id];
-    await client.query(queryString, insertActivityInfoParams);
-    res.sendStatus(200);
+    const results = await client.query(queryString, insertActivityInfoParams);
+
+    const insertedActivity = results.rows[0];
+    res.status(200).send(insertedActivity);
   } catch (err) {
     console.error('Error saving new Note from backend', err);
     res.sendStatus(500);

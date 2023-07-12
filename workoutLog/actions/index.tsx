@@ -52,4 +52,4 @@ export const toggleHomeHeader = () => {
   return {
     type: ACTIONS.TOGGLE_HOME_HEADER
   }
-}
+};

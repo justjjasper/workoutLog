@@ -10,7 +10,7 @@ export const ACTIONS = {
   TOGGLE_MODAL: 'Toggles modal state',
   SET_ACTIVITIES: 'Set Activities Data',
   TOGGLE_HOME_HEADER: 'Toggles home header state',
-  POST_ACTIVITY: 'Creates a new Activity Name'
+  POST_ACTIVITY: 'Creates a new Activity Name or Activity Info',
 };
 
 interface CurrentDateState {
@@ -96,9 +96,37 @@ export const activitiesReducer = (state: ActiivtiesState = initialActivitiesStat
         activities: action.payload
       }
     case ACTIONS.POST_ACTIVITY:
-      return {
-        ...state,
-        activities: [...state.activities, action.payload]
+      const { activityId, activityName, activityInfo, day, month, year } = action.payload;
+
+      if (!activityInfo) {
+        // Add a new activityName
+        const newActivity: Activity = {
+          activityName,
+          activityInfo: null,
+          day,
+          month,
+          year,
+          activityId,
+        };
+
+        return {
+          ...state,
+          activities: [...state.activities, newActivity],
+        };
+      } else {
+        // Update activityInfo for an existing activity
+        return {
+          ...state,
+          activities: state.activities.map((activity: Activity) => {
+            if (activity.activityId === activityId) {
+              return {
+                ...activity,
+                activityInfo,
+              };
+            }
+            return activity;
+          }),
+        };
       }
     default:
       return state

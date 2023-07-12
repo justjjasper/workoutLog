@@ -3,7 +3,9 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Button, TextInputK
 import { RootStackParamList } from '../../types';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { LOCALTUNNEL } from '../../config';
+import { useDispatch } from 'react-redux'
 import axios from 'axios';
+import { postActivityName } from '../../actions';
 /*
 implements Type to useRoute that uses exported RootStackParamList(entire type stack of possible Route Navigation)
  `ActivityScreen_${number}` is implemented within RouteProp to show a dynamic screen name implemented via template literal
@@ -18,6 +20,7 @@ type ActivityInfoScreenRouteProp = RouteProp<
 
 export default function ActivityInfoScreen() {
   const route = useRoute<ActivityInfoScreenRouteProp>();
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const { activity } = route.params;
 
@@ -30,13 +33,13 @@ export default function ActivityInfoScreen() {
 
   const handleNoteChange = (newNoteContent: string) => {
     setNoteContent(newNoteContent);
-    console.log('what is value of noteContent atm', noteContent)
+    console.log('what is value of noteContent atm', noteContent);
   };
 
   const handleKeyPress = (event: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
     if (event.nativeEvent.key === 'Enter') {
       setNoteContent(noteContent + '\n')
-    }
+    };
   };
 
   const saveNote = async (content: string) => {
@@ -46,23 +49,29 @@ export default function ActivityInfoScreen() {
       activityName: activity.activityName,
       id: activity.activityId
     };
+
    if (noteContent.length === 0) {
      try {
-       console.log('this is the noteContent', noteContent);
-       await axios.post(url, payload);
+      const response = await axios.post(url, payload);
+      const { activityinfo } = response.data;
+
+      const newActivity = {
+        ...activity,
+        activityInfo: activityinfo
+      };
+
+      dispatch(postActivityName(newActivity));
      } catch (err) {
        console.error('Error in posting new Note from client side', err);
      }
    } else {
      // PATCH Request, just need to send noteContent, and activityName
-     try {
-       await axios.patch(url, payload);
-     } catch(err) {
-       console.error('Error in patching Note from client side', err);
-     }
+    //  try {
+    //    await axios.patch(url, payload);
+    //  } catch(err) {
+    //    console.error('Error in patching Note from client side', err);
+    //  }
    }
-
-    console.log('current value of noteContent after pressing content parameter', content)
  };
 
   const handleNoteBlur = () => {
@@ -83,8 +92,7 @@ export default function ActivityInfoScreen() {
           color='white'
           />
       )
-    }
-
+    };
     return null;
   };
 
