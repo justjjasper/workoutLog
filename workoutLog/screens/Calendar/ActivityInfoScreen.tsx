@@ -33,7 +33,6 @@ export default function ActivityInfoScreen() {
 
   const handleNoteChange = (newNoteContent: string) => {
     setNoteContent(newNoteContent);
-    console.log('what is value of noteContent atm', noteContent);
   };
 
   const handleKeyPress = (event: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
@@ -43,16 +42,20 @@ export default function ActivityInfoScreen() {
   };
 
   const saveNote = async (content: string) => {
-    const url = `${LOCALTUNNEL}/postNote`;
+    const url = LOCALTUNNEL;
     const payload = {
       noteContent: content,
-      activityName: activity.activityName,
       id: activity.activityId
     };
 
-   if (noteContent.length === 0) {
-     try {
-      const response = await axios.post(url, payload);
+    try {
+      let response;
+      if (noteContent.length === 0) {
+        response = await axios.post(`${url}/postNote`, payload);
+      } else {
+        response = await axios.patch(`${url}/updateNote`, payload);
+      }
+
       const { activityinfo } = response.data;
 
       const newActivity = {
@@ -61,18 +64,10 @@ export default function ActivityInfoScreen() {
       };
 
       dispatch(postActivityName(newActivity));
-     } catch (err) {
-       console.error('Error in posting new Note from client side', err);
-     }
-   } else {
-     // PATCH Request, just need to send noteContent, and activityName
-    //  try {
-    //    await axios.patch(url, payload);
-    //  } catch(err) {
-    //    console.error('Error in patching Note from client side', err);
-    //  }
-   }
- };
+    } catch (err) {
+      console.error('Error in posting or patching Note from client side', err);
+    }
+  };
 
   const handleNoteBlur = () => {
     setEditing(false);

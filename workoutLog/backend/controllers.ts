@@ -69,7 +69,7 @@ const postNote = async (req: Request, res: Response) => {
       INSERT INTO activityInfo (activityInfo, activityName_id)
       VALUES ($1, $2)
 
-      RETURNING id, activityInfo, activityName_id;
+      RETURNING activityInfo;
     `;
 
     const insertActivityInfoParams = [noteContent, id];
@@ -84,11 +84,26 @@ const postNote = async (req: Request, res: Response) => {
 };
 
 const updateNote = async (req: Request, res: Response) => {
-  // try {
-  //   const { noteContent, activityName } = req.body
+  try {
+    const { noteContent, id } = req.body
 
-  // }
-  return null;
+    const queryString = `
+      UPDATE activityInfo
+        SET activityInfo = $1
+        WHERE activityName_id = $2
+
+      RETURNING activityInfo;
+    `;
+
+    const insertedActivityInfoParams = [noteContent, id];
+    const results = await client.query(queryString, insertedActivityInfoParams);
+
+    const insertedActivity = results.rows[0];
+    res.status(200).send(insertedActivity);
+    console.log('success updating database from backend. this is response', insertedActivity);
+  } catch(err) {
+    console.error('Failed updating activityInfo from backend', err)
+  }
 };
 
 module.exports = {

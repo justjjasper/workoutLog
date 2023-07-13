@@ -98,7 +98,10 @@ export const activitiesReducer = (state: ActiivtiesState = initialActivitiesStat
     case ACTIONS.POST_ACTIVITY:
       const { activityId, activityName, activityInfo, day, month, year } = action.payload;
 
-      if (!activityInfo) {
+      // Find the activity with the same activityId
+      const existingActivity = state.activities.find(activity => activity.activityId === activityId);
+
+      if (!existingActivity) {
         // Add a new activityName
         const newActivity: Activity = {
           activityName,
@@ -113,8 +116,22 @@ export const activitiesReducer = (state: ActiivtiesState = initialActivitiesStat
           ...state,
           activities: [...state.activities, newActivity],
         };
+      } else if (!existingActivity.activityInfo && activityInfo) {
+        // Update activityInfo for an existing activity, when activityInfo is null
+        return {
+          ...state,
+          activities: state.activities.map((activity: Activity) => {
+            if (activity.activityId === activityId) {
+              return {
+                ...activity,
+                activityInfo,
+              };
+            }
+            return activity;
+          }),
+        };
       } else {
-        // Update activityInfo for an existing activity
+        // Update activityInfo for an existing activity, when activityInfo is not null
         return {
           ...state,
           activities: state.activities.map((activity: Activity) => {
