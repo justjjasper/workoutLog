@@ -5,6 +5,7 @@ import { Activity, RootStackParamList } from '../../types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Modal from 'react-native-modal';
 import AddActivityNameModal from './AddActivityNameModal';
+import DeleteModalList from './DeleteModalList';
 
 // Heading (Title close icon on right)
 // Day of Week/Month and Day {`${monthName.slice(0, 3)} ${day}`}
@@ -25,12 +26,18 @@ interface DateCellModalProps {
   toggleModal: () => void;
 }
 
+// implement a selected checkbox function
+  // this function will be inserted into the if else function of the onPress Touchable opacity
+// implement if/else function within onPress of touchableOpacity
 const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthName, activities, toggleModal }) => {
   console.log('what are the activities in the dateCellModal', activities)
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const [isDelete, setIsDelete] = useState<boolean>(false);
+  const [selectedItems, setSelectedItems] = useState<{ [key: string]: boolean }>({});
 
   const dateInfo = { day, month, year };
 
+  // implement a selected checkbox function
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const toggleAddActivityModal = (): void => {
     setIsModalVisible(!isModalVisible)
@@ -49,6 +56,7 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
       activityNameRef.current?.focus();
     }, 350);
   };
+
   return (
     <View style={styles.modalContainer}>
 
@@ -72,10 +80,20 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
                 key={activity.activityId}
                 style={styles.activityNameButton}
                 onPress={() => {
-                  navigation.navigate(`ActivityScreen_${activity.activityId}`, { activity: activity });
-                  toggleModal()
+                  if(isDelete) {
+                    setSelectedItems((prevSelectedItems) => ({
+                      ...prevSelectedItems,
+                      [activity.activityId]: !prevSelectedItems[activity.activityId],
+                    }));
+                  } else {
+                    navigation.navigate(`ActivityScreen_${activity.activityId}`, { activity: activity });
+                    toggleModal()
+                  }
                 }}
                 >
+                {isDelete && (
+                  <View style={[styles.emptyCheckbox, selectedItems[activity.activityId] && styles.selectedCheckbox]} />
+                )}
                 <Text style={styles.activityName}>{activity.activityName}</Text>
                 <Text style={styles.activityName}>&gt;</Text>
               </TouchableOpacity>
@@ -89,10 +107,20 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
               key={activity.activityId}
               style={styles.activityNameButton}
               onPress={() => {
-                navigation.navigate(`ActivityScreen_${activity.activityId}`, { activity: activity });
-                toggleModal()
+                if(isDelete) {
+                  setSelectedItems((prevSelectedItems) => ({
+                    ...prevSelectedItems,
+                    [activity.activityId]: !prevSelectedItems[activity.activityId],
+                  }));
+                } else {
+                  navigation.navigate(`ActivityScreen_${activity.activityId}`, { activity: activity });
+                  toggleModal()
+                }
               }}
               >
+              {isDelete && (
+                 <View style={[styles.emptyCheckbox, selectedItems[activity.activityId] && styles.selectedCheckbox]} />
+               )}
               <Text style={styles.activityName}>{activity.activityName}</Text>
               <Text style={styles.activityName}>&gt;</Text>
             </TouchableOpacity>
@@ -100,14 +128,30 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
         </View>
       )}
 
-      <View style={styles.footerContainer}>
+      {isDelete ? (
+        <View style={styles.footerContainer}>
+        <TouchableOpacity style={styles.footerButton} onPress={handleCreatePress}>
+          <Text style={styles.footerText}>Cancel</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.footerButton}
+          onPress={() => {setIsDelete(!isDelete)}}>
+          <Text style={styles.footerText}>Confirm</Text>
+        </TouchableOpacity>
+      </View>
+
+      ) : (
+        <View style={styles.footerContainer}>
         <TouchableOpacity style={styles.footerButton} onPress={handleCreatePress}>
           <Text style={styles.footerText}>Create</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.footerButton}>
+        <TouchableOpacity
+          style={styles.footerButton}
+          onPress={() => {setIsDelete(!isDelete)}}>
           <Text style={styles.footerText}>Delete</Text>
         </TouchableOpacity>
       </View>
+      )}
 
       <Modal isVisible={isModalVisible} onBackdropPress={toggleAddActivityModal}>
         <AddActivityNameModal
@@ -201,6 +245,16 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 16,
     textAlign: 'center'
+  },
+  emptyCheckbox: {
+    height: 10,
+    width: 10,
+    backgroundColor: 'white'
+  },
+  selectedCheckbox: {
+    backgroundColor: 'blue',
+    height: 10,
+    width: 10,
   }
 });
 
