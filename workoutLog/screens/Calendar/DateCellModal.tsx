@@ -30,7 +30,6 @@ interface DateCellModalProps {
   // this function will be inserted into the if else function of the onPress Touchable opacity
 // implement if/else function within onPress of touchableOpacity
 const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthName, activities, toggleModal }) => {
-  console.log('what are the activities in the dateCellModal', activities)
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [selectedItems, setSelectedItems] = useState<{ [key: string]: boolean }>({});
@@ -57,6 +56,29 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
     }, 350);
   };
 
+  const handleDeleteActivities = () => {
+  // filter selected Checkboxes and then convert the array of strings into integers
+  const selectedActivityIds = Object.keys(selectedItems).filter(
+    (activityId) => selectedItems[activityId]
+    ).map((str) => parseInt(str,10));
+
+  console.log('selectedItems:', selectedActivityIds);
+
+  setIsDelete(!isDelete);
+  };
+
+  const handleActivityPress = (activity: Activity) => {
+    if(isDelete) {
+      setSelectedItems((prevSelectedItems) => ({
+        ...prevSelectedItems,
+        [activity.activityId]: !prevSelectedItems[activity.activityId],
+      }));
+    } else {
+      navigation.navigate(`ActivityScreen_${activity.activityId}`, { activity: activity });
+      toggleModal()
+    }
+  };
+
   return (
     <View style={styles.modalContainer}>
 
@@ -72,6 +94,7 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
       <Text style={styles.dates}>{monthName.slice(0,3)} {day}</Text>
       </View>
 
+      {/* Mapped Activities */}
       {shouldUseScrollView ? (
         <SafeAreaView style={styles.activityNameContainer}>
           <ScrollView>
@@ -79,17 +102,7 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
               <TouchableOpacity
                 key={activity.activityId}
                 style={styles.activityNameButton}
-                onPress={() => {
-                  if(isDelete) {
-                    setSelectedItems((prevSelectedItems) => ({
-                      ...prevSelectedItems,
-                      [activity.activityId]: !prevSelectedItems[activity.activityId],
-                    }));
-                  } else {
-                    navigation.navigate(`ActivityScreen_${activity.activityId}`, { activity: activity });
-                    toggleModal()
-                  }
-                }}
+                onPress={() => handleActivityPress(activity)}
                 >
                 {isDelete && (
                   <View style={[styles.emptyCheckbox, selectedItems[activity.activityId] && styles.selectedCheckbox]} />
@@ -106,17 +119,7 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
             <TouchableOpacity
               key={activity.activityId}
               style={styles.activityNameButton}
-              onPress={() => {
-                if(isDelete) {
-                  setSelectedItems((prevSelectedItems) => ({
-                    ...prevSelectedItems,
-                    [activity.activityId]: !prevSelectedItems[activity.activityId],
-                  }));
-                } else {
-                  navigation.navigate(`ActivityScreen_${activity.activityId}`, { activity: activity });
-                  toggleModal()
-                }
-              }}
+              onPress={() => handleActivityPress(activity)}
               >
               {isDelete && (
                  <View style={[styles.emptyCheckbox, selectedItems[activity.activityId] && styles.selectedCheckbox]} />
@@ -128,14 +131,15 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
         </View>
       )}
 
+      {/* Footer Buttons*/}
       {isDelete ? (
         <View style={styles.footerContainer}>
-        <TouchableOpacity style={styles.footerButton} onPress={handleCreatePress}>
+        <TouchableOpacity style={styles.footerButton} onPress={()=> setIsDelete(!isDelete)}>
           <Text style={styles.footerText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.footerButton}
-          onPress={() => {setIsDelete(!isDelete)}}>
+          style={[styles.footerButton, {backgroundColor: '#D15465'}]}
+          onPress={handleDeleteActivities}>
           <Text style={styles.footerText}>Confirm</Text>
         </TouchableOpacity>
       </View>
@@ -147,7 +151,7 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.footerButton}
-          onPress={() => {setIsDelete(!isDelete)}}>
+          onPress={() => setIsDelete(!isDelete)}>
           <Text style={styles.footerText}>Delete</Text>
         </TouchableOpacity>
       </View>

@@ -11,6 +11,7 @@ export const ACTIONS = {
   SET_ACTIVITIES: 'Set Activities Data',
   TOGGLE_HOME_HEADER: 'Toggles home header state',
   POST_ACTIVITY: 'Creates a new Activity Name or Activity Info',
+  DELETE_ACTIVITY: 'Deletes activities'
 };
 
 interface CurrentDateState {

@@ -53,3 +53,10 @@ export const toggleHomeHeader = () => {
     type: ACTIONS.TOGGLE_HOME_HEADER
   }
 };
+
+export const deleteActivities = (activityIds: number[]) => {
+  return {
+    type: ACTIONS.DELETE_ACTIVITY,
+    payload: activityIds
+  }
+}
