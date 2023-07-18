@@ -5,7 +5,8 @@ import { Activity, RootStackParamList } from '../../types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Modal from 'react-native-modal';
 import AddActivityNameModal from './AddActivityNameModal';
-import DeleteModalList from './DeleteModalList';
+import { LOCALTUNNEL } from '../../config';
+import axios from 'axios';
 
 // Heading (Title close icon on right)
 // Day of Week/Month and Day {`${monthName.slice(0, 3)} ${day}`}
@@ -56,15 +57,25 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
     }, 350);
   };
 
-  const handleDeleteActivities = () => {
-  // filter selected Checkboxes and then convert the array of strings into integers
-  const selectedActivityIds = Object.keys(selectedItems).filter(
-    (activityId) => selectedItems[activityId]
-    ).map((str) => parseInt(str,10));
+  const handleDeleteActivities = async () => {
+    const url = `${LOCALTUNNEL}/deleteActivity`;
 
-  console.log('selectedItems:', selectedActivityIds);
+    try {
+       // filter selected Checkboxes and then convert the array of strings into integers
+      const selectedActivityIds = Object.keys(selectedItems).filter(
+      (activityId) => selectedItems[activityId]
+      ).map((str) => parseInt(str,10));
 
-  setIsDelete(!isDelete);
+      console.log('selectedItems:', selectedActivityIds);
+
+      await axios.delete(url, { data: selectedActivityIds });
+
+    } catch(err) {
+      console.error('Error in deletin activities from client side', err)
+    };
+
+    setIsDelete(!isDelete);
+    setSelectedItems({});
   };
 
   const handleActivityPress = (activity: Activity) => {

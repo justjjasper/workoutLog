@@ -106,9 +106,39 @@ const updateNote = async (req: Request, res: Response) => {
   }
 };
 
+const deleteActivity = async (req: Request, res: Response) => {
+  try {
+    const activityIds: number[] = req.body;
+
+    // Delete activityInfo records
+    const deleteActivityInfoQuery = `
+      DELETE FROM activityInfo
+      WHERE activityName_id = ANY($1::integer[])
+    `;
+    await client.query(deleteActivityInfoQuery, [activityIds]);
+
+    // Delete activityName records
+    const deleteActivityNameQuery = `
+      DELETE FROM activityName
+      WHERE id = ANY($1::integer[])
+    `;
+    await client.query(deleteActivityNameQuery, [activityIds]);
+    console.log('success in deleting from backend')
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error deleting activities from backend', err);
+    res.sendStatus(500);
+  }
+};
+
+
+
+
+
 module.exports = {
   getActivities,
   postActivityName,
   postNote,
-  updateNote
+  updateNote,
+  deleteActivity
 };

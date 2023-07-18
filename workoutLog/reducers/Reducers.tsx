@@ -146,6 +146,8 @@ export const activitiesReducer = (state: ActiivtiesState = initialActivitiesStat
           }),
         };
       }
+    case ACTIONS.DELETE_ACTIVITY:
+      
     default:
       return state
   }

@@ -13,6 +13,8 @@ app.post('/postNote', controllers.postNote);
 
 app.patch('/updateNote', controllers.updateNote);
 
+app.delete('/deleteActivity', controllers.deleteActivity);
+
 app.listen(port, () => {
   console.log(`Now listening to portER ROBINSON ${port}`)
 });
