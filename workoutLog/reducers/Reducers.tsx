@@ -147,7 +147,10 @@ export const activitiesReducer = (state: ActiivtiesState = initialActivitiesStat
         };
       }
     case ACTIONS.DELETE_ACTIVITY:
-      
+      return {
+        ...state,
+        activities: state.activities.filter((activity: Activity) => !action.payload.includes(activity.activityId))
+      }
     default:
       return state
   }
