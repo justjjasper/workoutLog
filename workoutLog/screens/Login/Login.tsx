@@ -1,13 +1,25 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Touchable } from 'react-native';
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types';
+
+type HomeStackParamList = {
+  ["Sign Up Page"]: undefined
+};
 
 export default function Login () {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [show, setShow] = useState<boolean>(true);
 
   return (
     <View style={styles.container}>
       <View style={styles.signUpContainer}>
-        <Text style={styles.signUpText}>Sign Up</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Sign Up Page')}
+        >
+          <Text style={styles.signUpText}>Sign Up</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.form}>

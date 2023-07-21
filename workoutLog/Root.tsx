@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import BottomTabNav from './screens/BottomTabNav';
+import Signup from './screens/Login/Signup';
 import { RootState } from './App';
 import Login from './screens/Login/Login';
 
@@ -33,6 +34,10 @@ export default function Root() {
             }}
           />
         )}
+        <Stack.Screen
+          name= 'Sign Up Page'
+          children= {() => <Signup/>}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

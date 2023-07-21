@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Activity, RootStackParamList } from '../../types';
+import { Activity, HomeStackParamList } from '../../types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Modal from 'react-native-modal';
 import AddActivityNameModal from './AddActivityNameModal';
@@ -10,10 +10,6 @@ import { useDispatch } from 'react-redux';
 import { deleteActivities } from '../../actions';
 import axios from 'axios';
 
-// Heading (Title close icon on right)
-// Day of Week/Month and Day {`${monthName.slice(0, 3)} ${day}`}
-// Calendar
-// ButtonsBelow
 /*
 Implement typing within useNavigation in order to type-safe the type of data being passed to other
 StackScreen components (referring to mapped data)
@@ -33,7 +29,7 @@ interface DateCellModalProps {
   // this function will be inserted into the if else function of the onPress Touchable opacity
 // implement if/else function within onPress of touchableOpacity
 const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthName, activities, toggleModal }) => {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList>>();
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [selectedItems, setSelectedItems] = useState<{ [key: string]: boolean }>({});
   const dispatch = useDispatch();
