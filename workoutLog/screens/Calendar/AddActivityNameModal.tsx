@@ -4,7 +4,6 @@ import { View, StyleSheet, Text, TextInput, Button, Platform, KeyboardAvoidingVi
 import { LOCALTUNNEL } from '../../config';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../App';
-import { Activity } from '../../types';
 import { postActivityName } from '../../actions';
 
 interface AddActivityNameModalProps {

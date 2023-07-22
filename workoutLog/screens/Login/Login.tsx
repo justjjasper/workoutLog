@@ -4,10 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
 
-type HomeStackParamList = {
-  ["Sign Up Page"]: undefined
-};
-
 export default function Login () {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [show, setShow] = useState<boolean>(true);
@@ -21,6 +17,8 @@ export default function Login () {
           <Text style={styles.signUpText}>Sign Up</Text>
         </TouchableOpacity>
       </View>
+
+      <Text style={styles.titleText}>Log In to FitLog+</Text>
 
       <View style={styles.form}>
       <View style={styles.emailContainer}>
@@ -93,6 +91,13 @@ const styles = StyleSheet.create({
     color: '#565758',
     fontSize: 18,
     paddingBottom: 25
+  },
+  titleText: {
+    fontSize: 32,
+    color: 'white',
+    bottom: 70,
+    // alignSelf: 'flex-start',
+    paddingLeft: 20
   },
   textInput: {
     borderBottomWidth: 1,

@@ -5,14 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import BottomTabNav from './screens/BottomTabNav';
 import Signup from './screens/Login/Signup';
-import { RootState } from './App';
 import Login from './screens/Login/Login';
 
 const Stack = createNativeStackNavigator();
 
 export default function Root() {
   // const username = useSelector<RootState, string | null>(state => state.username.username);
-  const emailAddress = true;
+  const emailAddress = false;
 
   return (
     <NavigationContainer>
