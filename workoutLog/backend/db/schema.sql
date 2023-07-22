@@ -1,40 +1,40 @@
--- DROP DATABASE IF EXISTS workoutLog;
-CREATE DATABASE workoutLog;
+-- DROP DATABASE IF EXISTS workout_log;
+CREATE DATABASE workout_log;
 
-CREATE TABLE IF NOT EXISTS usernames (
+CREATE TABLE IF NOT EXISTS email_address (
   id SERIAL PRIMARY KEY NOT NULL,
-  username VARCHAR(255) UNIQUE NOT NULL,
+  email_address VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS activityName (
+CREATE TABLE IF NOT EXISTS activity_name (
   id SERIAL PRIMARY KEY NOT NULL,
-  activityName VARCHAR(255) NOT NULL,
+  activity_name VARCHAR(255) NOT NULL,
   day INTEGER NOT NULL,
   month INTEGER NOT NULL,
   year  INTEGER NOT NULL,
-  username_id INTEGER NOT NULL,
-  FOREIGN KEY (username_id) REFERENCES usernames(id)
+  email_address_id INTEGER NOT NULL,
+  FOREIGN KEY (email_address_id) REFERENCES email_address(id)
 );
 
-CREATE TABLE IF NOT EXISTS activityInfo (
+CREATE TABLE IF NOT EXISTS activity_info (
   id SERIAL PRIMARY KEY NOT NULL,
-  activityInfo VARCHAR(1000),
-  activityName_id INTEGER NOT NULL,
-  FOREIGN KEY (activityName_id) REFERENCES activityName(id)
+  activity_info VARCHAR(1000),
+  activity_name_id INTEGER NOT NULL,
+  FOREIGN KEY (activity_name_id) REFERENCES activity_name(id)
 );
 
-CREATE INDEX activityName_username_id_idx ON activityName (username_id);
-CREATE INDEX activityInfo_activityName_id_idx ON activityInfo (activityName_id);
+CREATE INDEX activity_name_email_address_id_idx ON activity_name (email_address_id);
+CREATE INDEX activity_info_activity_name_id_idx ON activity_info (activity_name_id);
 
--- usernames table
-INSERT INTO usernames (username, password)
+-- email_address table
+INSERT INTO email_address (email_address, password)
 VALUES
-('johndoe', 'password123'),
-('janedoe', 'password456');
+('johndoe@example.com', 'password123'),
+('janedoe@example.com', 'password456');
 
--- activityName table
-INSERT INTO activityName (activityName, day, month, year, username_id)
+-- activity_name table
+INSERT INTO activity_name (activity_name, day, month, year, email_address_id)
 VALUES
 ('Core', 12, 5, 2023, 1),
 ('Legs', 12, 5, 2023, 1),
@@ -44,9 +44,8 @@ VALUES
 ('Core', 14, 5, 2023, 1),
 ('Back', 14, 5, 2023, 1);
 
-
--- activityInfo table
-INSERT INTO activityInfo (activityInfo, activityName_id)
+-- activity_info table
+INSERT INTO activity_info (activity_info, activity_name_id)
 VALUES
 ('Hanging Obliques 4x5', 1),
 ('Db Hex Squat 4x8 @45lb\nDb Rdl 4x8 @45lb w/ Glute Med Kicks 4x12\nHamstring Curl Mch 4x12 @60lb\nLeg Ex 4x10 @65lb', 2),
@@ -55,4 +54,3 @@ VALUES
 ('6 miles, 44:44mins PR', 5),
 ('Scap push ups 4x12', 6),
 ('Pull ups 4x9\nV-grip cable pulls 4x8 @99lb\nDb alt + both 4x10 @17.5lb', 7);
-

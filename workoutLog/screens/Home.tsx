@@ -14,14 +14,14 @@ const Stack = createNativeStackNavigator();
 
 export default function Home () {
   const dispatch = useDispatch();
-  const username = useSelector<RootState, string | null>(state => state.username.username);
+  const emailAddress = useSelector<RootState, string | null>(state => state.emailAddress.emailAddress);
   const activities = useSelector<RootState, Activity[]>(state => state.activities.activities);
 
   useEffect(() => {
     const getActivities = async () => {
 
       try {
-        const results = await axios.get(`${LOCALTUNNEL}/activities?usernameParam=${username}`)
+        const results = await axios.get(`${LOCALTUNNEL}/activities?emailAddressParam=${emailAddress}`)
         dispatch(setActivities(results.data));
       } catch(err) {
         console.log('there was an error in front end', err)

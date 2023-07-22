@@ -6,7 +6,7 @@ export const ACTIONS = {
   SET_CURRENT_DATE: 'Set the current date',
   SET_PREVIOUS_MONTH: 'Changes to previous month',
   SET_NEXT_MONTH: 'Changes to next month',
-  LOGIN_USER: 'Sets login username',
+  LOGIN_EMAILADDRESS: 'Sets login email address',
   TOGGLE_MODAL: 'Toggles modal state',
   SET_ACTIVITIES: 'Set Activities Data',
   TOGGLE_HOME_HEADER: 'Toggles home header state',
@@ -52,20 +52,20 @@ export const currentDateReducer = (state: CurrentDateState = dateInitialState, a
 };
 
 interface LoginInitialState {
-  username: string | null
+  emailAddress: string | null
 };
 
 // Eventually have to implement an empty username during prototype app launch
 const loginInitialState: LoginInitialState = {
-  username: 'johndoe'
+  emailAddress: 'johndoe@example.com'
 };
 
 export const loginReducer = (state: LoginInitialState = loginInitialState, action: AnyAction) => {
   switch (action.type) {
-    case ACTIONS.LOGIN_USER:
+    case ACTIONS.LOGIN_EMAILADDRESS:
       return {
         ...state,
-        username: action.payload
+        emailAddress: action.payload
       }
     default:
       return state;

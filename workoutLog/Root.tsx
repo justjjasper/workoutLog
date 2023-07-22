@@ -12,12 +12,12 @@ const Stack = createNativeStackNavigator();
 
 export default function Root() {
   // const username = useSelector<RootState, string | null>(state => state.username.username);
-  const username = false;
+  const emailAddress = true;
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {username ? (
+        {emailAddress ? (
           <Stack.Screen
             name="Bottom Nav"
             children={() => <BottomTabNav />}

@@ -65,8 +65,6 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
       (activityId) => selectedItems[activityId])
       .map((str) => parseInt(str,10));
 
-      console.log('selectedItems:', selectedActivityIds);
-
       await axios.delete(url, { data: selectedActivityIds });
       dispatch(deleteActivities(selectedActivityIds));
 

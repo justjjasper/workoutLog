@@ -3,7 +3,7 @@ import { currentDateReducer, loginReducer, modalReducer, activitiesReducer, home
 
 export const rootReducer = combineReducers({
   currentDate: currentDateReducer,
-  username: loginReducer,
+  emailAddress: loginReducer,
   toggleModal: modalReducer,
   activities: activitiesReducer,
   homeHeaderStatus: homeHeaderStatusReducer

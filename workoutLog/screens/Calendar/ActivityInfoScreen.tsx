@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Button, TextInputKeyPressEventData, NativeSyntheticEvent } from 'react-native';
-import { RootStackParamList } from '../../types';
+import { HomeStackParamList } from '../../types';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { LOCALTUNNEL } from '../../config';
 import { useDispatch } from 'react-redux'
@@ -14,7 +14,7 @@ implements Type to useRoute that uses exported RootStackParamList(entire type st
 Finally, implement typing within the useRoute
 */
 type ActivityInfoScreenRouteProp = RouteProp<
-  RootStackParamList,
+  HomeStackParamList,
   `ActivityScreen_${number}`
 >;
 
@@ -56,11 +56,11 @@ export default function ActivityInfoScreen() {
         response = await axios.patch(`${url}/updateNote`, payload);
       }
 
-      const { activityinfo } = response.data;
+      const { activity_info } = response.data;
 
       const newActivity = {
         ...activity,
-        activityInfo: activityinfo
+        activityInfo: activity_info
       };
 
       dispatch(postActivityName(newActivity));

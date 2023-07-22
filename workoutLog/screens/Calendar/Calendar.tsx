@@ -11,7 +11,7 @@ import { Activity } from '../../types';
 import { setActivities } from '../../actions';
 
 export default function Calendar() {
-  const username = useSelector<RootState, string | null>(state => state.username.username);
+  const emailAddress = useSelector<RootState, string | null>(state => state.emailAddress.emailAddress);
   const currentDate = useSelector<RootState, Date>(state => state.currentDate.currentDate);
   const currentMonth = useSelector<RootState, number>(state => state.currentDate.currentMonth);
   const activities = useSelector<RootState, Activity[]>(state => state.activities.activities);
@@ -19,7 +19,7 @@ export default function Calendar() {
 
   useEffect(() => {
     const getActivities = async () => {
-      const results = await axios.get(`${LOCALTUNNEL}/activities?usernameParam=${username}`)
+      const results = await axios.get(`${LOCALTUNNEL}/activities?emailAddressParam=${emailAddress}`)
       try {
         dispatch(setActivities(results.data))
       } catch(err) {

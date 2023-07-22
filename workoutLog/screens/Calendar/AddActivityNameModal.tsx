@@ -18,7 +18,7 @@ interface AddActivityNameModalProps {
 };
 
 export default function AddActivityNameModal({ activityNameRef, toggleAddActivityModal, dateInfo }: AddActivityNameModalProps) {
-  const username = useSelector<RootState, string | null>(state => state.username.username);
+  const emailAddress = useSelector<RootState, string | null>(state => state.emailAddress.emailAddress);
   const [activityName, setActivityName] = useState('Activity Name');
   const dispatch = useDispatch();
 
@@ -34,16 +34,15 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
     const url = `${LOCALTUNNEL}/postActivityName`;
     const payload = {
       activityName,
-      username,
+      emailAddress,
       dateInfo
     };
-
     try {
       const response = await axios.post(url, payload)
 
-      const { id, activityname, day, month, year } = response.data;
+      const { id, activity_name, day, month, year } = response.data;
       const newActivity = {
-        activityName: activityname,
+        activityName: activity_name,
         activityInfo: null,
         day,
         month,

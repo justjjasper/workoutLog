@@ -20,10 +20,10 @@ export const setNextMonth = () => {
   }
 };
 
-export const loginUsername = (username: string) => {
+export const loginEmailAddress = (emailAddress: string) => {
   return {
-    type: ACTIONS.LOGIN_USER,
-    payload: username
+    type: ACTIONS.LOGIN_EMAILADDRESS,
+    payload: emailAddress
   }
 };
 
