@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator();
 
 export default function Root() {
   // const username = useSelector<RootState, string | null>(state => state.username.username);
-  const emailAddress = false;
+  const emailAddress = true;
 
   return (
     <NavigationContainer>
@@ -36,6 +36,12 @@ export default function Root() {
         <Stack.Screen
           name= 'Sign Up Page'
           children= {() => <Signup/>}
+          options={{
+            headerStyle: {
+              backgroundColor: '#77C7E8',
+            },
+            headerTintColor: 'white'
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Activity, HomeStackParamList } from '../../types';
@@ -37,9 +37,9 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
   const dateInfo = { day, month, year };
 
   // implement a selected checkbox function
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const toggleAddActivityModal = (): void => {
-    setIsModalVisible(!isModalVisible)
+  const [isAddModalVisible, setIsAddModalVisible] = useState<boolean>(false);
+  const toggleAddActivityModal = () => {
+    setIsAddModalVisible(!isAddModalVisible)
   };
 
   const date = new Date(year, month, Number(day));
@@ -84,7 +84,7 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
       }));
     } else {
       navigation.navigate(`ActivityScreen_${activity.activityId}`, { activity: activity });
-      toggleModal()
+      toggleModal();
     }
   };
 
@@ -166,11 +166,12 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
       </View>
       )}
 
-      <Modal isVisible={isModalVisible} onBackdropPress={toggleAddActivityModal}>
+      <Modal isVisible={isAddModalVisible} onBackdropPress={toggleAddActivityModal}>
         <AddActivityNameModal
           activityNameRef={activityNameRef}
           toggleAddActivityModal={toggleAddActivityModal}
           dateInfo={dateInfo}
+          toggleModal={toggleModal}
         />
       </Modal>
     </View>

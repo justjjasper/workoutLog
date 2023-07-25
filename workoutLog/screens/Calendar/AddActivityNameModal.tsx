@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { View, StyleSheet, Text, TextInput, Button, Platform, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TextInput, Platform, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { LOCALTUNNEL } from '../../config';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { HomeStackParamList } from '../../types';
 import { RootState } from '../../App';
 import { postActivityName } from '../../actions';
 
@@ -13,13 +16,15 @@ interface AddActivityNameModalProps {
     day: string | number | null,
     month: number,
     year: number
-  }
+  },
+  toggleModal: () => void
 };
 
-export default function AddActivityNameModal({ activityNameRef, toggleAddActivityModal, dateInfo }: AddActivityNameModalProps) {
+export default function AddActivityNameModal({ activityNameRef, toggleAddActivityModal, dateInfo, toggleModal }: AddActivityNameModalProps) {
   const emailAddress = useSelector<RootState, string | null>(state => state.emailAddress.emailAddress);
   const [activityName, setActivityName] = useState('Activity Name');
   const dispatch = useDispatch();
+  const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList>>();
 
   const handleFocus = () => {
     if (activityNameRef.current) {
@@ -51,7 +56,9 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
 
       dispatch(postActivityName(newActivity));
 
+      navigation.navigate(`ActivityScreen_${id}`, { activity: newActivity })
       toggleAddActivityModal();
+      toggleModal();
     } catch(err) {
       console.error('Error posting activityName fron Client side', err);
     }
@@ -60,7 +67,7 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
   useEffect(() => {
     if (activityNameRef.current) {
       activityNameRef.current.focus();
-    }
+    };
   }, []);
 
   const returnKeyType = Platform.OS === 'ios' ? 'done' : 'none';

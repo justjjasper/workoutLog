@@ -10,37 +10,30 @@ export default function Login () {
 
   return (
     <View style={styles.container}>
-      <View style={styles.signUpContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Sign Up Page')}
-        >
-          <Text style={styles.signUpText}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
 
       <Text style={styles.titleText}>Log In to FitLog+</Text>
 
       <View style={styles.form}>
-      <View style={styles.emailContainer}>
-        <Text style={styles.text}>Email Address</Text>
-        <TextInput
-          style={styles.textInput}
-        />
-      </View>
+        <View style={styles.emailContainer}>
+          <Text style={styles.text}>Email Address</Text>
+          <TextInput
+            style={styles.textInput}
+          />
+        </View>
 
-      <View style={styles.passwordContainer}>
-        <Text style={styles.text}>Password</Text>
-        <TextInput
-          style={styles.textInput}
-          secureTextEntry= {show}
-        />
-        <TouchableOpacity
-          style={styles.showTextContainer}
-          onPress={() => setShow(!show)}
-        >
-          <Text style={styles.showText}>Show</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.passwordContainer}>
+          <Text style={styles.text}>Password</Text>
+          <TextInput
+            style={styles.textInput}
+            secureTextEntry= {show}
+          />
+          <TouchableOpacity
+            style={styles.showTextContainer}
+            onPress={() => setShow(!show)}
+          >
+            <Text style={styles.showText}>Show</Text>
+          </TouchableOpacity>
+         </View>
 
       <View style={styles.loginContainer}>
         <TouchableOpacity
@@ -57,6 +50,15 @@ export default function Login () {
       </View>
       </View>
 
+      <View style={styles.signUpContainer}>
+        <Text style={{fontSize: 18}}>Don't have an account?</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Sign Up Page')}
+        >
+          <Text style={styles.signUpText}> Sign Up</Text>
+        </TouchableOpacity>
+      </View>
+
     </View>
   )
 };
@@ -69,15 +71,13 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   signUpText: {
-    fontSize: 24,
-    textDecorationLine: 'underline',
-    color: '#77C7E8'
+    color: '#77C7E8',
+    fontSize: 18
   },
   signUpContainer: {
-    alignSelf: 'flex-end',
     alignItems: 'center',
-    bottom: 175,
-    paddingRight: 15
+    flexDirection: 'row',
+    marginTop: 30
   },
   form : {
     height: '45%',
@@ -94,9 +94,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 32,
-    color: 'white',
-    bottom: 70,
-    // alignSelf: 'flex-start',
+    bottom: 60,
     paddingLeft: 20
   },
   textInput: {

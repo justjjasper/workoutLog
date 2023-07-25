@@ -61,9 +61,10 @@ const postNote = async (req: Request, res: Response) => {
   try {
     const { noteContent, id } = req.body;
 
-    if (!noteContent || !id) {
-      return res.status(400).send('Missing activity_info or id');
-    };
+    // if (!noteContent || !id) {
+    //   return res.status(400).send('Missing activity_info or id');
+    // };
+    // is this edge case needed? Patch already handles this logic error
 
     const queryString = `
       INSERT INTO activity_info (activity_info, activity_name_id)
