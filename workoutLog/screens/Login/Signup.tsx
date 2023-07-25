@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { useState } from 'react';
 
 // Title
@@ -40,9 +40,11 @@ export default function Signup () {
           <Text style={styles.text}>Password</Text>
           <TextInput
             style={styles.textInput}
+            secureTextEntry= {showPW1}
           />
           <TouchableOpacity
             style={styles.showTextContainer}
+            onPress={() => setShowPw1(!showPW1)}
           >
             <Text style={styles.showText}>Show</Text>
           </TouchableOpacity>
@@ -52,19 +54,23 @@ export default function Signup () {
           <Text style={styles.text}>Confirm Password</Text>
           <TextInput
             style={styles.textInput}
+            secureTextEntry= {showPW2}
           />
           <TouchableOpacity
             style={styles.showTextContainer}
+            onPress={() => setShowPw2(!showPW2)}
           >
             <Text style={styles.showText}>Show</Text>
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity
-
-        >
-          <Text style={{fontSize: 20}}>Sign Up</Text>
-        </TouchableOpacity>
+        <View style={styles.signUpContainer}>
+          <TouchableOpacity
+            style={styles.signUpButton}
+            >
+            <Text style={styles.signUpText}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
 
       </View>
 
@@ -86,16 +92,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly'
   },
   titleContainer: {
-
+    alignItems: 'center',
+    top: 20
   },
   formContainer: {
     width: '90%',
-    height: '55%',
+    height: '45%',
     borderWidth: 1,
     justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderRadius: 8
+    borderRadius: 8,
+    bottom: 50
   },
   text: {
     color: '#565758',
@@ -106,12 +114,13 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderBottomWidth: 1,
-    fontSize: 18
+    fontSize: 18,
+    paddingTop: 10
   },
   showTextContainer: {
     position: 'absolute',
     alignSelf: 'flex-end',
-    top: 15
+    top: 25
   },
   showText:{
     alignSelf: 'flex-end',
@@ -119,8 +128,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#565758',
   },
+  signUpContainer: {
+    width: '80%'
+  },
+  signUpButton: {
+    height: 50,
+    width: '80%',
+    backgroundColor: '#AFDBE1',
+    borderRadius: 25,
+    alignSelf: 'center',
+    justifyContent: 'center'
+  },
+  signUpText: {
+    fontSize: 20,
+    color: 'white',
+    alignSelf: 'center'
+  },
   footerContainer:{
     flexDirection: 'row',
-    bottom: 30
+    bottom: 100
   }
 })
