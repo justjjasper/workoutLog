@@ -1,5 +1,8 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types';
 
 // Title
 
@@ -11,6 +14,7 @@ import { useState } from 'react';
 // Create Account
 
 export default function Signup () {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [showPW1, setShowPw1] = useState<boolean>(true);
   const [showPW2, setShowPw2] = useState<boolean>(true);
 
@@ -76,7 +80,9 @@ export default function Signup () {
 
       <View style={styles.footerContainer}>
         <Text style={{fontSize: 18}}>Already have an account?</Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress= {() => navigation.navigate('Login')}
+        >
           <Text style={{color: '#77C7E8', fontSize: 18}}> Sign In</Text>
         </TouchableOpacity>
       </View>

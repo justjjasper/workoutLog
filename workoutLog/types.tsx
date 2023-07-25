@@ -21,5 +21,6 @@ export type HomeStackParamList = {
 };
 
 export type RootStackParamList = {
+  ['Login']: undefined;
   ['Sign Up Page']: undefined
 }
