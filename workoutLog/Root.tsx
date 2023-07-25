@@ -8,6 +8,17 @@ import Signup from './screens/Login/Signup';
 import Login from './screens/Login/Login';
 
 const Stack = createNativeStackNavigator();
+// fullname
+// email address
+  // CONSTRAINT
+      //make sure email address is valid
+      //make sure email address isnt taken
+// password
+// confirm password is the same
+
+// create axios post
+
+//
 
 export default function Root() {
   // const username = useSelector<RootState, string | null>(state => state.username.username);

@@ -1,8 +1,11 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
+import { LOCALTUNNEL } from '../../config';
+import axois from 'axios';
+import e from 'express';
 
 // Title
 
@@ -18,6 +21,44 @@ export default function Signup () {
   const [showPW1, setShowPw1] = useState<boolean>(true);
   const [showPW2, setShowPw2] = useState<boolean>(true);
 
+
+  const [name, setName] = useState<string>('');
+  const [emailAddress, setEmailAddress] = useState<string>('');
+  const [password1, setPassword1] = useState<string>('');
+  const [password2, setPassword2] = useState<string>('');
+
+  const handleSignUp = async () => {
+    const emailRegex = /\S+@\S+\.\S+/;
+
+    if (!name || !emailAddress || !password1 || !password2) {
+      Alert.alert('Uh-oh! It looks like you missed a few fields.')
+    } else if (!emailRegex.test(emailAddress)) {
+      Alert.alert('Invalid email address!');
+    } else if (password1 !== password2) {
+      Alert.alert('Passwords do not match!');
+    } else {
+      // Proceed with sign-up logic
+      // axios.post(...); // You can send data to the backend here
+      const payload = {
+        name,
+        emailAddress,
+        password1
+      };
+      try {
+        await axois.post(`${LOCALTUNNEL}/signUp`, payload);
+        Alert.alert('Successfully created an account. Check your email to confirm and activate your account!')
+        navigation.navigate('Login');
+      } catch (err) {
+        if ((err as any).response.data) {
+          Alert.alert('An account with the email provided already exists.')
+        };
+
+        console.error('Error in signing up from client side', err);
+      }
+    };
+
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -30,6 +71,8 @@ export default function Signup () {
           <Text style={styles.text}>Full Name</Text>
           <TextInput
             style={styles.textInput}
+            onChangeText = {setName}
+            value={name}
             />
         </View>
 
@@ -37,6 +80,8 @@ export default function Signup () {
           <Text style={styles.text}>Email Address</Text>
           <TextInput
             style={styles.textInput}
+            onChangeText={setEmailAddress}
+            value={emailAddress}
             />
         </View>
 
@@ -45,6 +90,8 @@ export default function Signup () {
           <TextInput
             style={styles.textInput}
             secureTextEntry= {showPW1}
+            onChangeText={setPassword1}
+            value= {password1}
           />
           <TouchableOpacity
             style={styles.showTextContainer}
@@ -59,6 +106,8 @@ export default function Signup () {
           <TextInput
             style={styles.textInput}
             secureTextEntry= {showPW2}
+            onChangeText= {setPassword2}
+            value= {password2}
           />
           <TouchableOpacity
             style={styles.showTextContainer}
@@ -71,6 +120,7 @@ export default function Signup () {
         <View style={styles.signUpContainer}>
           <TouchableOpacity
             style={styles.signUpButton}
+            onPress={handleSignUp}
             >
             <Text style={styles.signUpText}>Sign Up</Text>
           </TouchableOpacity>

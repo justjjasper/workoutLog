@@ -131,10 +131,47 @@ const deleteActivity = async (req: Request, res: Response) => {
   }
 };
 
+const signUp = async (req: Request, res: Response) => {
+  console.log('what is the req.body:', req.body);
+
+  try {
+    const { name, emailAddress, password1 } = req.body;
+
+    // Check if the email address or full name already exist in the database
+    const checkExistingQuery = `
+      SELECT email_address FROM users
+      WHERE email_address = $1
+    `;
+    const existingUser = await client.query(checkExistingQuery, [emailAddress]);
+
+    if (existingUser.rows.length > 0) {
+      // User with the same email address or full name already exists
+
+      console.log('Error from client side with signing up, User with the same email address already exists.');
+      return res.status(500).send(existingUser.rows);
+    };
+
+    const queryString = `
+      INSERT INTO users (email_address, password, full_name)
+      VALUES ($1, $2, $3);
+    `;
+
+    const insertUsersParam = [emailAddress, password1, name];
+
+    await client.query(queryString, insertUsersParam);
+    console.log('Successfully inserted users Info/Sign up from backend');
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error in signing up from server side', err);
+    res.status(500).send(err);
+  }
+};
+
 module.exports = {
   getActivities,
   postActivityName,
   postNote,
   updateNote,
-  deleteActivity
+  deleteActivity,
+  signUp
 };
