@@ -12,7 +12,7 @@ const getActivities = async (req: Request, res: Response) => {
   an.id AS activity_id
   FROM activity_name AS an
   LEFT JOIN activity_info AS ai ON an.id = ai.activity_name_id
-  JOIN email_address AS u ON an.email_address_id = u.id
+  JOIN users AS u ON an.user_id = u.id
   WHERE u.email_address = $1`;
 
   const results = await client.query(queryString, [emailAddress]);
@@ -40,8 +40,8 @@ const postActivityName = async (req: Request, res: Response) => {
     const { day, month, year } = dateInfo;
 
     const queryString = `
-      INSERT INTO activity_name (activity_name, day, month, year, email_address_id)
-      VALUES ($1, $2, $3, $4, (SELECT id FROM email_address WHERE email_address = $5))
+      INSERT INTO activity_name (activity_name, day, month, year, user_id)
+      VALUES ($1, $2, $3, $4, (SELECT id FROM users WHERE email_address = $5))
       RETURNING id, activity_name, day, month, year
     `;
     const insertActivityNameParams = [activityName, day, month, year, emailAddress];

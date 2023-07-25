@@ -1,20 +1,31 @@
--- DROP DATABASE IF EXISTS workout_log;
-CREATE DATABASE workout_log;
+-- DROP DATABASE IF EXISTS workoutLog;
+CREATE DATABASE workoutLog;
 
-CREATE TABLE IF NOT EXISTS email_address (
+CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY NOT NULL,
   email_address VARCHAR(255) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL
+  password VARCHAR(255) NOT NULL,
+  full_name VARCHAR(255) NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS auth (
+  id SERIAL PRIMARY KEY NOT NULL,
+  salt VARCHAR(255) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  user_id INTEGER NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE INDEX auth_user_id_idx ON auth (user_id);
 
 CREATE TABLE IF NOT EXISTS activity_name (
   id SERIAL PRIMARY KEY NOT NULL,
   activity_name VARCHAR(255) NOT NULL,
   day INTEGER NOT NULL,
   month INTEGER NOT NULL,
-  year  INTEGER NOT NULL,
-  email_address_id INTEGER NOT NULL,
-  FOREIGN KEY (email_address_id) REFERENCES email_address(id)
+  year INTEGER NOT NULL,
+  user_id INTEGER NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS activity_info (
@@ -24,17 +35,17 @@ CREATE TABLE IF NOT EXISTS activity_info (
   FOREIGN KEY (activity_name_id) REFERENCES activity_name(id)
 );
 
-CREATE INDEX activity_name_email_address_id_idx ON activity_name (email_address_id);
+CREATE INDEX activity_name_user_id_idx ON activity_name (user_id);
 CREATE INDEX activity_info_activity_name_id_idx ON activity_info (activity_name_id);
 
--- email_address table
-INSERT INTO email_address (email_address, password)
+-- users table
+INSERT INTO users (email_address, password, full_name)
 VALUES
-('johndoe@example.com', 'password123'),
-('janedoe@example.com', 'password456');
+('johndoe@example.com', 'password123', 'John Doe'),
+('janedoe@example.com', 'password456', 'Jane Doe');
 
 -- activity_name table
-INSERT INTO activity_name (activity_name, day, month, year, email_address_id)
+INSERT INTO activity_name (activity_name, day, month, year, user_id)
 VALUES
 ('Core', 12, 5, 2023, 1),
 ('Legs', 12, 5, 2023, 1),

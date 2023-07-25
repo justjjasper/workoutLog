@@ -55,7 +55,6 @@ export default function Home () {
           initialParams={{ activity }}
           component= {ActivityInfoScreen}
           options= {{title: activity.activityName}}
-
           />
           )
         }
