@@ -15,7 +15,7 @@ app.patch('/updateNote', controllers.updateNote);
 
 app.delete('/deleteActivity', controllers.deleteActivity);
 
-app.post('/signUp', controllers.signUp)
+app.post('/signUp', controllers.signUp);
 
 app.listen(port, () => {
   console.log(`Now listening to portER ROBINSON ${port}`)

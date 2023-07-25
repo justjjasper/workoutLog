@@ -57,7 +57,7 @@ interface LoginInitialState {
 
 // Eventually have to implement an empty username during prototype app launch
 const loginInitialState: LoginInitialState = {
-  emailAddress: 'johndoe@example.com'
+  emailAddress: ''
 };
 
 export const loginReducer = (state: LoginInitialState = loginInitialState, action: AnyAction) => {

@@ -4,7 +4,6 @@ CREATE DATABASE workoutLog;
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY NOT NULL,
   email_address VARCHAR(255) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL,
   full_name VARCHAR(255) NOT NULL,
   activated BOOLEAN DEFAULT false,
   CONSTRAINT unique_email_address UNIQUE (email_address)
@@ -41,10 +40,10 @@ CREATE INDEX activity_name_user_id_idx ON activity_name (user_id);
 CREATE INDEX activity_info_activity_name_id_idx ON activity_info (activity_name_id);
 
 -- users table
-INSERT INTO users (email_address, password, full_name)
+INSERT INTO users (email_address, full_name)
 VALUES
-('johndoe@example.com', 'password123', 'John Doe'),
-('janedoe@example.com', 'password456', 'Jane Doe');
+('johndoe@example.com', 'John Doe'),
+('janedoe@example.com', 'Jane Doe');
 
 -- activity_name table
 INSERT INTO activity_name (activity_name, day, month, year, user_id)

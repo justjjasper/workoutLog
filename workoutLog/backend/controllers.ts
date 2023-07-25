@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
 var client = require('./db');
+var bcrypt = require('./passwordUtils');
+const { generateSalt, hashPassword } = bcrypt;
+
 
 const getActivities = async (req: Request, res: Response) => {
   const emailAddress = req.query.emailAddressParam;
@@ -146,19 +149,28 @@ const signUp = async (req: Request, res: Response) => {
 
     if (existingUser.rows.length > 0) {
       // User with the same email address or full name already exists
-
       console.log('Error from client side with signing up, User with the same email address already exists.');
       return res.status(500).send(existingUser.rows);
     };
 
-    const queryString = `
-      INSERT INTO users (email_address, password, full_name)
-      VALUES ($1, $2, $3);
+    const queryUserString = `
+      INSERT INTO users (email_address, full_name)
+      VALUES ($1, $2);
     `;
+    const insertUsersParam = [emailAddress, name];
+    await client.query(queryUserString, insertUsersParam);
 
-    const insertUsersParam = [emailAddress, password1, name];
+    // Generate salt and hash the password
+    const salt = await generateSalt(10);
+    const hashedPassword = await hashPassword(password1, salt);
 
-    await client.query(queryString, insertUsersParam);
+    const queryAuthString = `
+      INSERT INTO auth (salt, password_hash, user_id)
+      VALUES ($1, $2, (SELECT id from users WHERE email_address = $3));
+    `;
+    const insertAuthParam = [salt, hashedPassword, emailAddress];
+    await client.query(queryAuthString, insertAuthParam);
+
     console.log('Successfully inserted users Info/Sign up from backend');
     res.sendStatus(200);
   } catch (err) {
