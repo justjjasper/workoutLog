@@ -5,16 +5,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
 import { LOCALTUNNEL } from '../../config';
 import axois from 'axios';
-import e from 'express';
-
-// Title
-
-// Full Name
-// email
-// passsword
-// confirm password
-
-// Create Account
 
 export default function Signup () {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();

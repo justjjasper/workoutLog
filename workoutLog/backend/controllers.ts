@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 var client = require('./db');
 var bcrypt = require('./passwordUtils');
-const { generateSalt, hashPassword } = bcrypt;
+const { generateSalt, hashPassword, compare } = bcrypt;
 
 
 const getActivities = async (req: Request, res: Response) => {
@@ -32,7 +32,7 @@ const getActivities = async (req: Request, res: Response) => {
 
     res.status(200).send(activities);
   } catch (err) {
-    console.log('Error in grabbing activities from backend');
+    console.error('Error in grabbing activities from backend', err);
     res.sendStatus(400);
   }
 };
@@ -103,7 +103,6 @@ const updateNote = async (req: Request, res: Response) => {
 
     const insertedActivity = results.rows[0];
     res.status(200).send(insertedActivity);
-    console.log('success updating database from backend. this is response', insertedActivity);
   } catch(err) {
     console.error('Failed updating activity_info from backend', err)
   }
@@ -126,7 +125,6 @@ const deleteActivity = async (req: Request, res: Response) => {
       WHERE id = ANY($1::integer[])
     `;
     await client.query(deleteActivityNameQuery, [activityIds]);
-    console.log('success in deleting from backend')
     res.sendStatus(200);
   } catch (err) {
     console.error('Error deleting activities from backend', err);
@@ -135,8 +133,6 @@ const deleteActivity = async (req: Request, res: Response) => {
 };
 
 const signUp = async (req: Request, res: Response) => {
-  console.log('what is the req.body:', req.body);
-
   try {
     const { name, emailAddress, password1 } = req.body;
 
@@ -179,11 +175,53 @@ const signUp = async (req: Request, res: Response) => {
   }
 };
 
+// check if email address or password is valid
+const login = async (req: Request, res: Response) => {
+  try {
+    const { emailAddress, password } = req.body;
+
+    // Check if the email address does not exist in database
+    const checkExistingQuery = `
+      SELECT email_address FROM users
+      WHERE email_address = $1
+    `;
+    const existingUser = await client.query(checkExistingQuery, [emailAddress]);
+
+    if (existingUser.rows.length === 0) {
+      // User email address does not exist
+      console.log('Error from client side with logging in, User email address not found.', existingUser.rows);
+      return res.status(404).send('No Emaill Address Found');
+    };
+
+    const hashPasswordQuery = `
+      SELECT password_hash FROM auth
+      WHERE user_id = (
+        SELECT id FROM users
+        WHERE email_address = $1
+      );
+    `;
+    const insertHashPasswordParam = [emailAddress];
+
+    const hashPassword = await client.query(hashPasswordQuery, insertHashPasswordParam);
+
+    if (!(await compare(password, hashPassword.rows[0].password_hash))) {
+      console.log('Incorrect password when logging in from serverside');
+      return res.status(401).send('Incorrect Password')
+    }
+
+    res.sendStatus(200)
+  } catch(err) {
+    console.error('Error in logging in from client side', err);
+    res.status(500).send(err);
+  }
+};
+
 module.exports = {
   getActivities,
   postActivityName,
   postNote,
   updateNote,
   deleteActivity,
-  signUp
+  signUp,
+  login
 };

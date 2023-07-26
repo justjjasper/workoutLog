@@ -17,6 +17,8 @@ app.delete('/deleteActivity', controllers.deleteActivity);
 
 app.post('/signUp', controllers.signUp);
 
+app.post('/login', controllers.login);
+
 app.listen(port, () => {
   console.log(`Now listening to portER ROBINSON ${port}`)
 });

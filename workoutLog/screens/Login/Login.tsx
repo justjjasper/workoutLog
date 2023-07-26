@@ -1,12 +1,48 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Touchable } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Touchable, Alert } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
+import { LOCALTUNNEL } from '../../config';
+import axios from 'axios';
 
 export default function Login () {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [show, setShow] = useState<boolean>(true);
+
+  const [emailAddress, setEmailAddress] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+
+  const handleLogin = async () => {
+    const emailRegex = /\S+@\S+\.\S+/;
+
+    if (!emailRegex.test(emailAddress)) {
+      Alert.alert('Please use a valid emaill address!');
+    } else{
+
+      const payload = {
+        emailAddress,
+        password
+      };
+
+      try {
+        await axios.post(`${LOCALTUNNEL}/login`, payload)
+        console.log('Successfully logged in')
+      } catch(err) {
+
+        if ((err as any).response.status === 404) {
+          return Alert.alert('Email address not found. Please check your email or sign up for a new account.')
+        }
+
+        if ((err as any).response.status === 401) {
+          return Alert.alert('Incorrect Password')
+        }
+        console.error('Error in logging in from client side', err);
+      }
+
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -18,6 +54,8 @@ export default function Login () {
           <Text style={styles.text}>Email Address</Text>
           <TextInput
             style={styles.textInput}
+            onChangeText= {setEmailAddress}
+            value= {emailAddress}
           />
         </View>
 
@@ -26,6 +64,8 @@ export default function Login () {
           <TextInput
             style={styles.textInput}
             secureTextEntry= {show}
+            onChangeText= {setPassword}
+            value= {password}
           />
           <TouchableOpacity
             style={styles.showTextContainer}
@@ -38,6 +78,7 @@ export default function Login () {
       <View style={styles.loginContainer}>
         <TouchableOpacity
           style={styles.loginButton}
+          onPress={handleLogin}
         >
           <Text style={styles.loginText}>Log In</Text>
         </TouchableOpacity>
