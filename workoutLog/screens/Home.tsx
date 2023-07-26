@@ -34,7 +34,7 @@ export default function Home () {
   return (
     <View style={styles.container}>
 
-      {activities.length !== 0 &&
+
       <Stack.Navigator
       screenOptions={{
         headerStyle: {backgroundColor: '#77C7E9'},
@@ -61,7 +61,7 @@ export default function Home () {
 
         )}
       </Stack.Navigator>
-      }
+
     </View>
   );
 }

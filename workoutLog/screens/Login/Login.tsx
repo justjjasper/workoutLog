@@ -4,12 +4,16 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
 import { LOCALTUNNEL } from '../../config';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { loginEmailAddress } from '../../actions';
+
 
 export default function Login () {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const [show, setShow] = useState<boolean>(true);
+  const dispatch = useDispatch();
 
+  const [show, setShow] = useState<boolean>(true);
   const [emailAddress, setEmailAddress] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -27,8 +31,9 @@ export default function Login () {
       };
 
       try {
-        await axios.post(`${LOCALTUNNEL}/login`, payload)
-        console.log('Successfully logged in')
+        await axios.post(`${LOCALTUNNEL}/login`, payload);
+
+        dispatch(loginEmailAddress(emailAddress))
       } catch(err) {
 
         if ((err as any).response.status === 404) {

@@ -52,7 +52,7 @@ export const currentDateReducer = (state: CurrentDateState = dateInitialState, a
 };
 
 interface LoginInitialState {
-  emailAddress: string | null
+  emailAddress: string
 };
 
 // Eventually have to implement an empty username during prototype app launch

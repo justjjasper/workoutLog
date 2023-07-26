@@ -3,42 +3,31 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { RootState } from './App';
 import BottomTabNav from './screens/BottomTabNav';
 import Signup from './screens/Login/Signup';
 import Login from './screens/Login/Login';
 
 const Stack = createNativeStackNavigator();
-// fullname
-// email address
-  // CONSTRAINT
-      //make sure email address is valid
-      //make sure email address isnt taken
-// password
-// confirm password is the same
-
-// create axios post
-
-//
 
 export default function Root() {
-  // const username = useSelector<RootState, string | null>(state => state.username.username);
-  const emailAddress = false;
+  const emailAddress = useSelector<RootState, string>(state => state.emailAddress.emailAddress);
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {emailAddress ? (
+        {emailAddress.length === 0 ? (
           <Stack.Screen
-            name="Bottom Nav"
-            children={() => <BottomTabNav />}
+            name="Login"
+            children={() => <Login />}
             options={{
               headerShown: false,
             }}
           />
         ) : (
           <Stack.Screen
-            name="Login"
-            children={() => <Login />}
+            name="Bottom Nav"
+            children={() => <BottomTabNav />}
             options={{
               headerShown: false,
             }}
