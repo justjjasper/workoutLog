@@ -172,7 +172,18 @@ const signUp = async (req: Request, res: Response) => {
     await client.query(queryAuthString, insertAuthParam);
 
     const confirmationLink = `${LOCALTUNNEL}/confirm?token=${confirmationToken}`;
-    await sendConfirmationEmail(emailAddress, confirmationLink)
+    // await sendConfirmationEmail(emailAddress, confirmationLink)
+
+    const queryProfileString = `
+      INSERT INTO profile (user_id)
+      VALUES (
+        (SELECT id FROM users
+          WHERE email_address = $1
+        )
+      );
+    `;
+    const insertProfileParam = [emailAddress];
+    await client.query(queryProfileString, insertProfileParam)
 
     console.log('Successfully inserted users Info/Sign up from backend');
     res.sendStatus(200);
