@@ -1,5 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
 import { rootReducer } from './reducers';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
