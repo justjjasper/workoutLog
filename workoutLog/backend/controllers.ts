@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
+import { LOCALTUNNEL } from '../config';
 var client = require('./db');
-var bcrypt = require('./passwordUtils');
-const { generateSalt, hashPassword, compare } = bcrypt;
-
+var bcrypt = require('../middleware/passwordUtils');
+var confirmationUtils = require('../middleware/confirmationUtils');
+var nodemailer = require('../middleware/nodemailerConfig');
 
 const getActivities = async (req: Request, res: Response) => {
   const emailAddress = req.query.emailAddressParam;
@@ -135,7 +136,9 @@ const deleteActivity = async (req: Request, res: Response) => {
 const signUp = async (req: Request, res: Response) => {
   try {
     const { name, emailAddress, password1 } = req.body;
-
+    const { generateSalt, hashPassword } = bcrypt;
+    const { generateConfirmationToken } = confirmationUtils;
+    const { sendConfirmationEmail } = nodemailer
     // Check if the email address or full name already exist in the database
     const checkExistingQuery = `
       SELECT email_address FROM users
@@ -161,11 +164,15 @@ const signUp = async (req: Request, res: Response) => {
     const hashedPassword = await hashPassword(password1, salt);
 
     const queryAuthString = `
-      INSERT INTO auth (salt, password_hash, user_id)
-      VALUES ($1, $2, (SELECT id from users WHERE email_address = $3));
+      INSERT INTO auth (salt, password_hash, user_id, confirmation_token)
+      VALUES ($1, $2, (SELECT id from users WHERE email_address = $3), $4);
     `;
-    const insertAuthParam = [salt, hashedPassword, emailAddress];
+    const confirmationToken = generateConfirmationToken()
+    const insertAuthParam = [salt, hashedPassword, emailAddress, confirmationToken];
     await client.query(queryAuthString, insertAuthParam);
+
+    const confirmationLink = `${LOCALTUNNEL}/confirm?token=${confirmationToken}`;
+    await sendConfirmationEmail(emailAddress, confirmationLink)
 
     console.log('Successfully inserted users Info/Sign up from backend');
     res.sendStatus(200);
@@ -179,6 +186,7 @@ const signUp = async (req: Request, res: Response) => {
 const login = async (req: Request, res: Response) => {
   try {
     const { emailAddress, password } = req.body;
+    const { compare } = bcrypt;
 
     // Check if the email address does not exist in database
     const checkExistingQuery = `
@@ -186,7 +194,6 @@ const login = async (req: Request, res: Response) => {
       WHERE email_address = $1
     `;
     const existingUser = await client.query(checkExistingQuery, [emailAddress]);
-
     if (existingUser.rows.length === 0) {
       // User email address does not exist
       console.log('Error from client side with logging in, User email address not found.', existingUser.rows);
@@ -201,7 +208,6 @@ const login = async (req: Request, res: Response) => {
       );
     `;
     const insertHashPasswordParam = [emailAddress];
-
     const hashPassword = await client.query(hashPasswordQuery, insertHashPasswordParam);
 
     if (!(await compare(password, hashPassword.rows[0].password_hash))) {
@@ -216,6 +222,13 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
+const confirmAccount = async (req: Request, res: Response) => {
+  const token = req.query.token;
+
+  console.log('what are the tokens:', token)
+  res.sendStatus(200);
+};
+
 module.exports = {
   getActivities,
   postActivityName,
@@ -223,5 +236,6 @@ module.exports = {
   updateNote,
   deleteActivity,
   signUp,
-  login
+  login,
+  confirmAccount
 };

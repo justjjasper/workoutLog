@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS auth (
   salt VARCHAR(255) NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   user_id INTEGER NOT NULL,
+  confirmation_token VARCHAR(255) NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 

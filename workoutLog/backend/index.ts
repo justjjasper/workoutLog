@@ -19,6 +19,8 @@ app.post('/signUp', controllers.signUp);
 
 app.post('/login', controllers.login);
 
+app.get('/confirm', controllers.confirmAccount);
+
 app.listen(port, () => {
   console.log(`Now listening to portER ROBINSON ${port}`)
 });
