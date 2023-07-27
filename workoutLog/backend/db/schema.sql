@@ -40,6 +40,17 @@ CREATE TABLE IF NOT EXISTS activity_info (
 CREATE INDEX activity_name_user_id_idx ON activity_name (user_id);
 CREATE INDEX activity_info_activity_name_id_idx ON activity_info (activity_name_id);
 
+CREATE TABLE IF NOT EXISTS profile (
+  id SERIAL PRIMARY KEY NOT NULL,
+  photo_uri VARCHAR(255), -- Change the data type as per the URI type you want to use
+  weight DECIMAL,
+  height DECIMAL,
+  user_id INTEGER NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE INDEX profile_user_id_idx ON profile (user_id);
+
 -- users table
 INSERT INTO users (email_address, full_name)
 VALUES
