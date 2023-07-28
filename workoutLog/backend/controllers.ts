@@ -182,8 +182,7 @@ const signUp = async (req: Request, res: Response) => {
         )
       );
     `;
-    const insertProfileParam = [emailAddress];
-    await client.query(queryProfileString, insertProfileParam)
+    await client.query(queryProfileString, [emailAddress])
 
     console.log('Successfully inserted users Info/Sign up from backend');
     res.sendStatus(200);
@@ -218,8 +217,8 @@ const login = async (req: Request, res: Response) => {
         WHERE email_address = $1
       );
     `;
-    const insertHashPasswordParam = [emailAddress];
-    const hashPassword = await client.query(hashPasswordQuery, insertHashPasswordParam);
+
+    const hashPassword = await client.query(hashPasswordQuery, [emailAddress]);
 
     if (!(await compare(password, hashPassword.rows[0].password_hash))) {
       console.log('Incorrect password when logging in from serverside');
@@ -240,6 +239,32 @@ const confirmAccount = async (req: Request, res: Response) => {
   res.sendStatus(200);
 };
 
+const getUserInfo = async (req: Request, res: Response) => {
+  const email = req.query.userEmail;
+
+  // full name
+  // photo URI
+  // weight
+  // height
+
+  const queryString = `
+    SELECT u.full_name, p.photo_uri, p.weight, p.height
+    FROM users AS u
+    INNER JOIN profile AS p ON u.id = p.user_id
+    WHERE u.email_address = $1
+  `;
+
+  const results = await client.query(queryString, [email]);
+
+  try {
+    const userInfo = results.rows[0];
+    res.status(200).send(userInfo);
+  }  catch (err) {
+    console.error('Error retrieving user info from the database', err);
+    res.sendStatus(500);
+  };
+};
+
 module.exports = {
   getActivities,
   postActivityName,
@@ -248,5 +273,6 @@ module.exports = {
   deleteActivity,
   signUp,
   login,
-  confirmAccount
+  confirmAccount,
+  getUserInfo
 };

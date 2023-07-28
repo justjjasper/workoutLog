@@ -1,23 +1,25 @@
 import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginEmailAddress } from '../../actions';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { ProfileStackParamList } from '../../types';
-
-interface InfoDataItem {
-  weight?: number;
-  currentWeight?: string;
-  height?: number;
-  currentHeight?: string;
-  workouts?: number;
-  totalWorkouts?: string;
-};
+import { Activity, ProfileStackParamList } from '../../types';
+import { LOCALTUNNEL } from '../../config';
+import axios from 'axios';
+import { RootState } from '../../App';
+import { set } from 'zod';
 
 export default function Profile() {
+  const emailAddress = useSelector<RootState, string>(state => state.emailAddress.emailAddress);
+  const activities = useSelector<RootState, Activity[]>(state => state.activities.activities).length;
   const navigation = useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
   const dispatch = useDispatch();
+
+  const [name, setName] = useState<string>('');
+  const [photoURI, setPhotoURI] = useState<string | null>(null);
+  const [weight, setWeight] = useState<number | null>(null);
+  const [height, setHeight] = useState<number | null>(null);
 
   const renderHeaderRight = () => {
     return (
@@ -35,13 +37,26 @@ export default function Profile() {
     navigation.setOptions({
       headerRight: renderHeaderRight
     })
+    console.log('activities length:', activities)
   });
 
-  const infoData: InfoDataItem[] = [
-    { weight: 69, currentWeight: 'Current\nWeight'},
-    { height: 69, currentHeight: 'Current\nHeight' },
-    { workouts: 69, totalWorkouts: 'Total\nWorkouts'}
-  ] // eventually change to object with {infoData/ infoLabel} AND change infoData Type
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const userInfo = await axios.get(`${LOCALTUNNEL}/getUserInfo?userEmail=${emailAddress}`)
+
+      try {
+        const { full_name, height, weight, photo_uri } = userInfo.data
+        setName(full_name);
+        setHeight(height);
+        setWeight(weight);
+        setPhotoURI(photo_uri);
+      } catch(err) {
+        console.error('Error in retrieving userInfo from client side', err)
+      }
+    };
+
+    getUserInfo();
+  })
 
   return (
     <View style={styles.bigContainer}>
@@ -54,34 +69,27 @@ export default function Profile() {
           >
             <Text>Edit Button</Text>
           </TouchableOpacity>
-          <Text style={{fontSize:24}}>Name</Text>
-          <Text style={styles.fadedText}>Email</Text>
+          <Text style={{fontSize:24}}>{name}</Text>
+          <Text style={styles.fadedText}>{emailAddress}</Text>
         </View>
 
         <View style={styles.infoContainer}>
-          {infoData.map((info, i) =>
-            <View
-              style={[
-                i === 0 ? styles.firstInfoContainer : undefined,
-                i === 1 ? styles.secondInfoContainer : undefined,
-                i === 2 ? styles.thirdInfoContainer : undefined
-              ]}
-              key={i}
-            >
-              {info.weight && <Text style={styles.infoNumbers}>{info.weight}</Text>}
-              {info.currentWeight && (
-                <Text style={styles.fadedText}>{info.currentWeight}</Text>
-              )}
-              {info.height && <Text style={styles.infoNumbers}>{info.height}</Text>}
-              {info.currentHeight && (
-                <Text style={styles.fadedText}>{info.currentHeight}</Text>
-              )}
-              {info.workouts && <Text style={styles.infoNumbers}>{info.workouts}</Text>}
-              {info.totalWorkouts && (
-                <Text style={styles.fadedText}>{info.totalWorkouts}</Text>
-              )}
-            </View>
-          )}
+
+          <View style={styles.firstInfoContainer}>
+            <Text style={styles.infoNumbers}>{weight ? weight : '--'}</Text>
+            <Text style={styles.fadedText}>{`Current\nWeight`}</Text>
+          </View>
+
+          <View style={styles.secondInfoContainer}>
+            <Text style={styles.infoNumbers}>{height ? height : '--'}</Text>
+            <Text style={styles.fadedText}>{`Current\nHeight`}</Text>
+          </View>
+
+          <View style={styles.thirdInfoContainer}>
+            <Text style={styles.infoNumbers}>{activities}</Text>
+            <Text style={styles.fadedText}>Total Workouts</Text>
+          </View>
+
         </View>
       </View>
       <View style={styles.smallContainer}/>
