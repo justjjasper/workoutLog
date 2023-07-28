@@ -24,3 +24,8 @@ export type RootStackParamList = {
   ['Login']: undefined;
   ['Sign Up Page']: undefined
 }
+
+export type ProfileStackParamList = {
+  ['Profile']: undefined;
+  ['Edit Profile']: undefined
+}

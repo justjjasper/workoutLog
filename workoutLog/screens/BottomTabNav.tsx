@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from './Home';
-import Profile from './Profile/Profile';
-
+import ProfileStackNavigator from './Profile/ProfileStackNavigator';
 const Bottom = createBottomTabNavigator();
 
 export default function BottomTabNav() {
@@ -14,7 +13,7 @@ export default function BottomTabNav() {
       }}
       >
       <Bottom.Screen name='Home' component={Home} options={{ headerShown: false }}/>
-      <Bottom.Screen name='Me' component={Profile}/>
+      <Bottom.Screen name='Profile Stack' component={ProfileStackNavigator} options={{ headerShown: false }}/>
     </Bottom.Navigator>
   )
 };

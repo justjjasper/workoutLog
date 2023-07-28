@@ -1,8 +1,10 @@
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { loginEmailAddress } from '../../actions';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ProfileStackParamList } from '../../types';
 
 interface InfoDataItem {
   weight?: number;
@@ -14,7 +16,7 @@ interface InfoDataItem {
 };
 
 export default function Profile() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
   const dispatch = useDispatch();
 
   const renderHeaderRight = () => {
@@ -46,7 +48,12 @@ export default function Profile() {
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={styles.imageContainer}>User Image</Text>
-
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={() =>navigation.navigate('Edit Profile')}
+          >
+            <Text>Edit Button</Text>
+          </TouchableOpacity>
           <Text style={{fontSize:24}}>Name</Text>
           <Text style={styles.fadedText}>Email</Text>
         </View>
@@ -104,14 +111,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     borderRadius: 8,
-    marginBottom: 50,
+    marginBottom: 10,
     width: '75%',
-    height: '30%',
-    justifyContent: 'center'
+    height: '35%',
+    justifyContent: 'flex-start',
+    backgroundColor: '#FEFEFE'
+  },
+  editButton: {
+    position: 'relative',
+    alignSelf: 'flex-end',
+    bottom: 50,
+    paddingRight: 10
   },
   imageContainer: {
     position: 'relative',
-    bottom: 20,
+    bottom: 30,
     height: 70,
     width: 70,
     borderRadius: 25,
@@ -121,21 +135,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '75%',
     justifyContent: 'center',
-    height: '30%'
+    height: '35%',
+    top: 30,
+    backgroundColor: '#FEFEFE',
+    borderRadius: 8
   },
   firstInfoContainer: {
     borderWidth: 1,
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
     alignItems: 'center',
-    width: '33%',
+    width: '33.33%',
     justifyContent: 'center'
   },
   secondInfoContainer: {
     borderTopWidth: 1,
     borderBottomWidth: 1,
     alignItems: 'center',
-    width: '33%',
+    width: '33.33%',
     justifyContent: 'center'
   },
   thirdInfoContainer: {
@@ -143,7 +160,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     borderBottomRightRadius: 8,
     alignItems: 'center',
-    width: '33%',
+    width: '33.33%',
     justifyContent: 'center'
   },
   fadedText: {
