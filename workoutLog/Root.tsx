@@ -1,3 +1,4 @@
+import { YellowBox } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
@@ -7,6 +8,10 @@ import Signup from './screens/Login/Signup';
 import Login from './screens/Login/Login';
 
 const Stack = createNativeStackNavigator();
+
+YellowBox.ignoreWarnings([
+  'Non-serializable values were found in the navigation state',
+]);
 
 export default function Root() {
   const emailAddress = useSelector<RootState, string>(state => state.emailAddress.emailAddress);

@@ -23,9 +23,16 @@ export type HomeStackParamList = {
 export type RootStackParamList = {
   ['Login']: undefined;
   ['Sign Up Page']: undefined
-}
+};
+
+export type EditProfileParams = {
+  setName: (name: string) => void;
+  setPhotoURI: (photoURI: string | null) => void;
+  setWeight: (weight: number | null) => void;
+  setHeight: (height: number | null) => void;
+};
 
 export type ProfileStackParamList = {
-  ['Profile']: undefined;
-  ['Edit Profile']: undefined
+  ['Profile']: undefined,
+  ['Edit Profile']: EditProfileParams
 }

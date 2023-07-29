@@ -8,7 +8,6 @@ import { Activity, ProfileStackParamList } from '../../types';
 import { LOCALTUNNEL } from '../../config';
 import axios from 'axios';
 import { RootState } from '../../App';
-import { set } from 'zod';
 
 export default function Profile() {
   const emailAddress = useSelector<RootState, string>(state => state.emailAddress.emailAddress);
@@ -20,6 +19,15 @@ export default function Profile() {
   const [photoURI, setPhotoURI] = useState<string | null>(null);
   const [weight, setWeight] = useState<number | null>(null);
   const [height, setHeight] = useState<number | null>(null);
+
+  const navigateToEditProfile = () => {
+    navigation.navigate('Edit Profile', {
+      setName,
+      setPhotoURI,
+      setWeight,
+      setHeight,
+    });
+  };
 
   const renderHeaderRight = () => {
     return (
@@ -65,7 +73,7 @@ export default function Profile() {
           <Text style={styles.imageContainer}>User Image</Text>
           <TouchableOpacity
             style={styles.editButton}
-            onPress={() =>navigation.navigate('Edit Profile')}
+            onPress={navigateToEditProfile}
           >
             <Text>Edit Button</Text>
           </TouchableOpacity>

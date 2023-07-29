@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { LOCALTUNNEL } from '../config';
 var client = require('./db');
-var bcrypt = require('../middleware/passwordUtils');
-var confirmationUtils = require('../middleware/confirmationUtils');
-var nodemailer = require('../middleware/nodemailerConfig');
+var bcrypt = require('./middleware/passwordUtils');
+var confirmationUtils = require('./middleware/confirmationUtils');
+var nodemailer = require('./middleware/nodemailerConfig');
 
 const getActivities = async (req: Request, res: Response) => {
   const emailAddress = req.query.emailAddressParam;
