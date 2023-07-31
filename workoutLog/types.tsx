@@ -26,10 +26,14 @@ export type RootStackParamList = {
 };
 
 export type EditProfileParams = {
-  setName: (name: string) => void;
-  setPhotoURI: (photoURI: string | null) => void;
-  setWeight: (weight: number | null) => void;
-  setHeight: (height: number | null) => void;
+  handleSetName: (name: string) => void;
+  handleSetPhotoURI: (photoURI: string) => void;
+  handleSetWeight: (weight: number | null) => void;
+  handleSetHeight: (height: number | null) => void;
+  name: string;
+  photoURI: string;
+  weight: number | null;
+  height: number | null;
 };
 
 export type ProfileStackParamList = {

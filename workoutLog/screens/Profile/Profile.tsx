@@ -16,16 +16,36 @@ export default function Profile() {
   const dispatch = useDispatch();
 
   const [name, setName] = useState<string>('');
-  const [photoURI, setPhotoURI] = useState<string | null>(null);
+  const [photoURI, setPhotoURI] = useState<string>('');
   const [weight, setWeight] = useState<number | null>(null);
   const [height, setHeight] = useState<number | null>(null);
 
+  const handleSetName = (name: string) => {
+    setName(name)
+  };
+
+  const handleSetPhotoURI = (URI: string)  => {
+    setPhotoURI(URI)
+  };
+
+  const handleSetWeight = (weight: number | null) => {
+    setWeight(weight)
+  };
+
+  const handleSetHeight = (height: number | null) => {
+    setHeight(height);
+  };
+
   const navigateToEditProfile = () => {
     navigation.navigate('Edit Profile', {
-      setName,
-      setPhotoURI,
-      setWeight,
-      setHeight,
+      handleSetName: (a) => handleSetName(a),
+      handleSetPhotoURI: (a) => handleSetPhotoURI(a),
+      handleSetWeight: (a) => handleSetWeight(a),
+      handleSetHeight: (a) => handleSetHeight(a),
+      height,
+      weight,
+      name,
+      photoURI
     });
   };
 
@@ -46,7 +66,7 @@ export default function Profile() {
       headerRight: renderHeaderRight
     })
     console.log('activities length:', activities)
-  });
+  }, [activities, navigation]);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -64,7 +84,7 @@ export default function Profile() {
     };
 
     getUserInfo();
-  })
+  }, [emailAddress])
 
   return (
     <View style={styles.bigContainer}>
@@ -81,7 +101,7 @@ export default function Profile() {
           <Text style={styles.fadedText}>{emailAddress}</Text>
         </View>
 
-        <View style={styles.infoContainer}>
+        {/* <View style={styles.infoContainer}>
 
           <View style={styles.firstInfoContainer}>
             <Text style={styles.infoNumbers}>{weight ? weight : '--'}</Text>
@@ -98,7 +118,7 @@ export default function Profile() {
             <Text style={styles.fadedText}>Total Workouts</Text>
           </View>
 
-        </View>
+        </View> */}
       </View>
       <View style={styles.smallContainer}/>
     </View>
