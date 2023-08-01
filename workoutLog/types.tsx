@@ -31,7 +31,7 @@ export type EditProfileParams = {
   handleSetWeight: (weight: number | null) => void;
   handleSetHeight: (height: number | null) => void;
   name: string;
-  photoURI: string;
+  photoURI:  | string;
   weight: number | null;
   height: number | null;
 };

@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Button, TouchableOpacity, Image } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,14 +9,16 @@ import { LOCALTUNNEL } from '../../config';
 import axios from 'axios';
 import { RootState } from '../../App';
 
+// figure out why im not able to require images properly
 export default function Profile() {
   const emailAddress = useSelector<RootState, string>(state => state.emailAddress.emailAddress);
   const activities = useSelector<RootState, Activity[]>(state => state.activities.activities).length;
   const navigation = useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
+  const placeHolderImage = require('../../assets/profileHolder.png');
   const dispatch = useDispatch();
 
   const [name, setName] = useState<string>('');
-  const [photoURI, setPhotoURI] = useState<string>('');
+  const [photoURI, setPhotoURI] = useState<  string>(placeHolderImage);
   const [weight, setWeight] = useState<number | null>(null);
   const [height, setHeight] = useState<number | null>(null);
 
@@ -25,7 +27,10 @@ export default function Profile() {
   };
 
   const handleSetPhotoURI = (URI: string)  => {
-    setPhotoURI(URI)
+    setPhotoURI(prevResponse => {
+      prevResponse = URI;
+      return prevResponse
+    })
   };
 
   const handleSetWeight = (weight: number | null) => {
@@ -77,7 +82,8 @@ export default function Profile() {
         setName(full_name);
         setHeight(height);
         setWeight(weight);
-        setPhotoURI(photo_uri);
+        setPhotoURI(photo_uri || placeHolderImage);
+        console.log('crurent value of photo in profile:', photoURI)
       } catch(err) {
         console.error('Error in retrieving userInfo from client side', err)
       }
@@ -90,7 +96,12 @@ export default function Profile() {
     <View style={styles.bigContainer}>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Text style={styles.imageContainer}>User Image</Text>
+          <View style={styles.imageContainer}>
+          <Image
+                source= { typeof photoURI === 'string' ? { uri: photoURI } : placeHolderImage}
+                style={styles.image}
+              />
+           </View>
           <TouchableOpacity
             style={styles.editButton}
             onPress={navigateToEditProfile}
@@ -206,5 +217,10 @@ const styles = StyleSheet.create({
   },
   infoNumbers: {
     fontSize: 24
-  }
+  },
+  image: {
+    width: 200,
+    height: 200,
+    resizeMode: 'cover'
+  },
 })
