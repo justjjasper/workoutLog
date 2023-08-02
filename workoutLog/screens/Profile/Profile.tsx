@@ -19,8 +19,8 @@ export default function Profile() {
 
   const [name, setName] = useState<string>('');
   const [photoURI, setPhotoURI] = useState<  string>(placeHolderImage);
-  const [weight, setWeight] = useState<number | null>(null);
-  const [height, setHeight] = useState<number | null>(null);
+  const [weight, setWeight] = useState<string | null>(null);
+  const [height, setHeight] = useState<string | null>(null);
 
   const handleSetName = (name: string) => {
     setName(name)
@@ -33,11 +33,11 @@ export default function Profile() {
     })
   };
 
-  const handleSetWeight = (weight: number | null) => {
+  const handleSetWeight = (weight: string | null) => {
     setWeight(weight)
   };
 
-  const handleSetHeight = (height: number | null) => {
+  const handleSetHeight = (height: string | null) => {
     setHeight(height);
   };
 
@@ -96,23 +96,25 @@ export default function Profile() {
     <View style={styles.bigContainer}>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <View style={styles.imageContainer}>
           <Image
                 source= { typeof photoURI === 'string' ? { uri: photoURI } : placeHolderImage}
                 style={styles.image}
               />
-           </View>
+
           <TouchableOpacity
             style={styles.editButton}
             onPress={navigateToEditProfile}
           >
             <Text>Edit Button</Text>
           </TouchableOpacity>
-          <Text style={{fontSize:24}}>{name}</Text>
-          <Text style={styles.fadedText}>{emailAddress}</Text>
+          <View style={styles.infoTextHeaderContainer}>
+
+            <Text style={{fontSize:24}}>{name}</Text>
+            <Text style={styles.fadedText}>{emailAddress}</Text>
+          </View>
         </View>
 
-        {/* <View style={styles.infoContainer}>
+        <View style={styles.infoContainer}>
 
           <View style={styles.firstInfoContainer}>
             <Text style={styles.infoNumbers}>{weight ? weight : '--'}</Text>
@@ -129,7 +131,7 @@ export default function Profile() {
             <Text style={styles.fadedText}>Total Workouts</Text>
           </View>
 
-        </View> */}
+        </View>
       </View>
       <View style={styles.smallContainer}/>
     </View>
@@ -164,19 +166,33 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     backgroundColor: '#FEFEFE'
   },
+  infoTextHeaderContainer: {
+    alignItems: 'center',
+    bottom: 35
+  },
   editButton: {
     position: 'relative',
     alignSelf: 'flex-end',
     bottom: 50,
     paddingRight: 10
   },
+  image: {
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    resizeMode: 'cover',
+    position: 'relative',
+    bottom: 50,
+    borderWidth: 1
+  },
   imageContainer: {
     position: 'relative',
-    bottom: 30,
-    height: 70,
-    width: 70,
-    borderRadius: 25,
-    borderWidth: 1
+    bottom: 50,
+    height: 110,
+    width: 110,
+    borderRadius: 55,
+    borderWidth: 1,
+    backgroundColor: 'blue'
   },
   infoContainer: {
     flexDirection: 'row',
@@ -217,10 +233,5 @@ const styles = StyleSheet.create({
   },
   infoNumbers: {
     fontSize: 24
-  },
-  image: {
-    width: 200,
-    height: 200,
-    resizeMode: 'cover'
-  },
+  }
 })

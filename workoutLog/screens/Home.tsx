@@ -23,6 +23,7 @@ export default function Home () {
       try {
         const results = await axios.get(`${LOCALTUNNEL}/activities?emailAddressParam=${emailAddress}`)
         dispatch(setActivities(results.data));
+        console.log('wht are activities in Home:', activities)
       } catch(err) {
         console.log('there was an error in front end', err)
       }

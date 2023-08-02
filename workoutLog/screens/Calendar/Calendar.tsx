@@ -10,7 +10,7 @@ import Weekdays from './Weekdays';
 import { Activity } from '../../types';
 import { setActivities } from '../../actions';
 
-export default function Calendar() {
+export default function Calendar () {
   const emailAddress = useSelector<RootState, string | null>(state => state.emailAddress.emailAddress);
   const currentDate = useSelector<RootState, Date>(state => state.currentDate.currentDate);
   const currentMonth = useSelector<RootState, number>(state => state.currentDate.currentMonth);
