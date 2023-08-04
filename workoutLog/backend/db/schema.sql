@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS profile (
   id SERIAL PRIMARY KEY NOT NULL,
   photo_uri VARCHAR(255), -- Change the data type as per the URI type you want to use
   weight DECIMAL,
-  height DECIMAL,
+  height DECIMAL[],
   user_id INTEGER NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id)
 );

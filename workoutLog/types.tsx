@@ -29,11 +29,11 @@ export type EditProfileParams = {
   handleSetName: (name: string) => void;
   handleSetPhotoURI: (photoURI: string) => void;
   handleSetWeight: (weight: string | null) => void;
-  handleSetHeight: (height: string | null) => void;
+  handleSetHeight: (feet: string | null, inches: string | null) => void;
   name: string;
   photoURI:  | string;
   weight: string | null;
-  height: string | null;
+  height: { feet: string | null, inches: string | null }
 };
 
 export type ProfileStackParamList = {

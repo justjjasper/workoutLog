@@ -242,11 +242,6 @@ const confirmAccount = async (req: Request, res: Response) => {
 const getUserInfo = async (req: Request, res: Response) => {
   const email = req.query.userEmail;
 
-  // full name
-  // photo URI
-  // weight
-  // height
-
   const queryString = `
     SELECT u.full_name, p.photo_uri, p.weight, p.height
     FROM users AS u

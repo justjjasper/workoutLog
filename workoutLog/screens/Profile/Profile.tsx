@@ -20,7 +20,11 @@ export default function Profile() {
   const [name, setName] = useState<string>('');
   const [photoURI, setPhotoURI] = useState<  string>(placeHolderImage);
   const [weight, setWeight] = useState<string | null>(null);
-  const [height, setHeight] = useState<string | null>(null);
+  const [height, setHeight] = useState<{ feet: string | null; inches: string | null }>({
+    feet: null,
+    inches: null,
+  });
+
 
   const handleSetName = (name: string) => {
     setName(name)
@@ -37,16 +41,17 @@ export default function Profile() {
     setWeight(weight)
   };
 
-  const handleSetHeight = (height: string | null) => {
-    setHeight(height);
+  const handleSetHeight = (feet: string | null, inches: string | null) => {
+    setHeight({ feet, inches });
   };
+
 
   const navigateToEditProfile = () => {
     navigation.navigate('Edit Profile', {
       handleSetName: (a) => handleSetName(a),
       handleSetPhotoURI: (a) => handleSetPhotoURI(a),
       handleSetWeight: (a) => handleSetWeight(a),
-      handleSetHeight: (a) => handleSetHeight(a),
+      handleSetHeight: (a, b) => handleSetHeight(a, b),
       height,
       weight,
       name,
@@ -80,8 +85,14 @@ export default function Profile() {
       try {
         const { full_name, height, weight, photo_uri } = userInfo.data
         setName(full_name);
-        setHeight(height);
         setWeight(weight);
+
+        if (height) {
+          const [feet, inches] = height.split(',');
+          handleSetHeight(feet, inches);
+        } else {
+          handleSetHeight(null, null);
+        }
         setPhotoURI(photo_uri || placeHolderImage);
         console.log('crurent value of photo in profile:', photoURI)
       } catch(err) {
@@ -122,7 +133,7 @@ export default function Profile() {
           </View>
 
           <View style={styles.secondInfoContainer}>
-            <Text style={styles.infoNumbers}>{height ? height : '--'}</Text>
+            <Text style={styles.infoNumbers}>{height.feet && height.inches ? `${height.feet}${height.inches}` : '--'}</Text>
             <Text style={styles.fadedText}>{`Current\nHeight`}</Text>
           </View>
 
