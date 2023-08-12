@@ -28,12 +28,13 @@ export type RootStackParamList = {
 export type EditProfileParams = {
   handleSetName: (name: string) => void;
   handleSetPhotoURI: (photoURI: string) => void;
-  handleSetWeight: (weight: string | null) => void;
-  handleSetHeight: (feet: string | null, inches: string | null) => void;
+  handleSetWeight: (weight: string) => void;
+  handleSetHeight: (feet: string, inches: string) => void;
   name: string;
   photoURI:  | string;
-  weight: string | null;
-  height: { feet: string | null, inches: string | null }
+  weight: string;
+  height: { feet: string, inches: string };
+  emailAddress: string
 };
 
 export type ProfileStackParamList = {

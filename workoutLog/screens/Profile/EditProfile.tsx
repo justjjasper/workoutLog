@@ -1,21 +1,41 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { ProfileStackParamList } from '../../types';
 import React, { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import { LOCALTUNNEL } from '../../config';
+import axios from 'axios';
 
-// create an object that sends the original setter funcs from the parent component to save
-// dont forget to convert into number the weight/ tempHeight.feet & inches
+/*
+Image source cannot be an empty string
+Not able to set a required(png) as a State Value
+
+
+Picking an image logic:
+tempPhotoURI is equal to an empty string
+
+if tempPhotoURI is no longer equal to an empty string
+  tempPhotoURI is equal to
+
+*/
 export default function EditProfile() {
   const route = useRoute<RouteProp<ProfileStackParamList, 'Edit Profile'>>();
   const navigation = useNavigation();
-  const { handleSetName, handleSetPhotoURI, handleSetWeight, handleSetHeight, height, weight, photoURI, name}  = route.params
-  const placeHolderImage = require('../../assets/profileHolder.png');
+  const {
+          handleSetName, handleSetPhotoURI,
+          handleSetWeight, handleSetHeight,
+          height, weight,
+          photoURI, name,
+          emailAddress
+        } = route.params
+
+  let placeHolderImage = '../../assets/profileHolder.png';
 
   const [tempName, setTempName] = useState<string>(name);
-  const [response, setResponse] = useState<string>('');
-  const [tempHeight, setTempHeight] = useState<{feet: string | number; inches: string | number}>({feet: '', inches: ''});
-  const [tempWeight, setTempWeight] = useState<number | string>('');
+  const [tempHeight, setTempHeight] = useState<{feet: string; inches: string}>({feet: height.feet, inches: height.inches});
+  const [tempWeight, setTempWeight] = useState<string>(weight);
+  const [tempPhotoURI, setTempPhotoURI] = useState<string>('');
+
 
   const handleImagePicker = async () => {
     try {
@@ -33,9 +53,7 @@ export default function EditProfile() {
       });
 
       if (!pickerResult.canceled) {
-        // once theres a save button, remove handleSetPhotoURI and implement that into save function button
-        handleSetPhotoURI(pickerResult.assets[0].uri);
-        setResponse((prevResponse => {
+        setTempPhotoURI((prevResponse => {
           prevResponse = pickerResult.assets[0].uri;
           return prevResponse
         }))
@@ -45,26 +63,21 @@ export default function EditProfile() {
     }
   };
 
-  const saveEdits = () => {
-    // create an object that sends the original setter funcs from the parent component to save
-    // dont forget to convert into number the weight/ tempHeight.feet & inches
-  };
-
-  const handleFeetChange = (feetValue: string | number) => {
+  const handleFeetChange = (feetValue: string) => {
     setTempHeight((prevHeight) => ({
       ...prevHeight,
       feet: feetValue,
     }));
   };
 
-  const handleInchesChange = (inchesValue: string | number) => {
+  const handleInchesChange = (inchesValue: string) => {
     setTempHeight((prevHeight) => ({
       ...prevHeight,
       inches: inchesValue,
     }));
   };
 
-  const handleTempWeightChange = (weightValue: number | string) => {
+  const handleTempWeightChange = (weightValue: string) => {
     setTempWeight((prevWeight) => (
       prevWeight = weightValue
     ));
@@ -74,6 +87,60 @@ export default function EditProfile() {
     setTempName((prevName) => (
       prevName = nameValue
     ))
+  };
+
+  const saveEdits = async () => {
+    if (!tempName) {
+      Alert.alert('Please do not leave the name blank.');
+      return
+    };
+
+    if ((height.feet && height.inches) && (!tempHeight.feet || !tempHeight.inches)) {
+      Alert.alert('Please do not leave any of the height measurement fields blank.');
+      return
+    }
+
+    // purpose of this constraint is to prevent user from saving an input if
+      // both height fields are blank initially
+      // and they only input one of the fields
+    if ((!height.feet && !height.inches) && ((!tempHeight.feet && tempHeight.inches) || (tempHeight.feet && !tempHeight.inches))) {
+      Alert.alert('Please dont leave an empty height field.')
+      return
+    }
+
+    try {
+      const payload = {
+        full_name: tempName !== name ? tempName : name,
+        email_address: emailAddress,
+        weight: tempWeight,
+        height: [
+          tempHeight.feet !== height.feet ? tempHeight.feet : height.feet,
+          tempHeight.inches !== height.inches ? tempHeight.inches : height.inches
+        ],
+        photo_uri: photoURI === placeHolderImage ? (!tempPhotoURI ? placeHolderImage : tempPhotoURI) : photoURI
+      }
+
+      await axios.patch(`${LOCALTUNNEL}/saveProfileEdits`, payload)
+
+      handleSetName(tempName);
+
+      // if one of the inputs are null, make the whole height null
+      if (tempHeight.feet === '') {
+        handleSetHeight('', tempHeight.inches);
+      } else if (tempHeight.inches === '') {
+        handleSetHeight(tempHeight.feet, '');
+      } else {
+        tempHeight.feet && tempHeight.inches ? handleSetHeight(tempHeight.feet, tempHeight.inches) : handleSetHeight(height.feet, height.inches);
+      }
+
+      tempWeight === '' ? handleSetWeight('') : (!tempWeight ? handleSetWeight(weight) : handleSetWeight(tempWeight))
+
+      tempPhotoURI === '' ? handleSetPhotoURI(photoURI) : handleSetPhotoURI(tempPhotoURI);
+
+      navigation.goBack();
+    } catch(err) {
+      console.error('Error in updating profile from clientside', err)
+    }
   };
 
   const renderHeaderRight = () => {
@@ -109,7 +176,7 @@ export default function EditProfile() {
         >
         <Image
           style={styles.image}
-          source= { response !== '' ? {uri: response} : ( photoURI === placeHolderImage? placeHolderImage : {uri: photoURI}) }
+          source= { tempPhotoURI !== '' ? { uri: tempPhotoURI} : (photoURI === placeHolderImage ? require(placeHolderImage) : { uri: photoURI}) }
         />
         </TouchableOpacity>
 
@@ -137,7 +204,7 @@ export default function EditProfile() {
           <View style={styles.pickerContainer}>
             <View style={{ width: '35%', height: 35}}>
             <TextInput
-              value={ tempWeight.toString() !== '' ? tempWeight.toString() : (weight?.toString() ? weight.toString() : '') }
+              value={ tempWeight !==  weight ? tempWeight : weight}
               style={styles.pickerInput}
               keyboardType= 'numeric'
               placeholder= '0'
@@ -151,7 +218,7 @@ export default function EditProfile() {
           <View style={styles.pickerContainer}>
             <TextInput
               style= {styles.pickerInput}
-              value= { tempHeight.feet.toString() !== '' ? tempHeight.feet.toString() : ( height.feet?.toString() ? height.feet.toString() : '') }
+              value= { tempHeight.feet !== height.feet ? tempHeight.feet : height.feet}
               keyboardType= 'numeric'
               returnKeyType= {'done'}
               onChangeText= {handleFeetChange}
@@ -160,7 +227,7 @@ export default function EditProfile() {
             <Text style={{marginRight: 5, paddingHorizontal: 5}}>ft</Text>
             <TextInput
               style={styles.pickerInput}
-              value={tempHeight.inches.toString() !== '' ? tempHeight.inches.toString() : ( height.inches?.toString() ? height.inches.toString() : '') }
+              value={tempHeight.inches !== height.inches ? tempHeight.inches : height.inches}
               onChangeText={handleInchesChange}
               keyboardType="number-pad"
               returnKeyType={'done'}

@@ -14,15 +14,15 @@ export default function Profile() {
   const emailAddress = useSelector<RootState, string>(state => state.emailAddress.emailAddress);
   const activities = useSelector<RootState, Activity[]>(state => state.activities.activities).length;
   const navigation = useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
-  const placeHolderImage = require('../../assets/profileHolder.png');
+  const placeHolderImage = '../../assets/profileHolder.png';
   const dispatch = useDispatch();
 
   const [name, setName] = useState<string>('');
-  const [photoURI, setPhotoURI] = useState<  string>(placeHolderImage);
-  const [weight, setWeight] = useState<string | null>(null);
-  const [height, setHeight] = useState<{ feet: string | null; inches: string | null }>({
-    feet: null,
-    inches: null,
+  const [photoURI, setPhotoURI] = useState< string>(placeHolderImage);
+  const [weight, setWeight] = useState<string>('');
+  const [height, setHeight] = useState<{ feet: string; inches: string }>({
+    feet: '',
+    inches: '',
   });
 
 
@@ -37,11 +37,11 @@ export default function Profile() {
     })
   };
 
-  const handleSetWeight = (weight: string | null) => {
+  const handleSetWeight = (weight: string) => {
     setWeight(weight)
   };
 
-  const handleSetHeight = (feet: string | null, inches: string | null) => {
+  const handleSetHeight = (feet: string, inches: string) => {
     setHeight({ feet, inches });
   };
 
@@ -55,7 +55,8 @@ export default function Profile() {
       height,
       weight,
       name,
-      photoURI
+      photoURI,
+      emailAddress
     });
   };
 
@@ -75,26 +76,24 @@ export default function Profile() {
     navigation.setOptions({
       headerRight: renderHeaderRight
     })
-    console.log('activities length:', activities)
   }, [activities, navigation]);
 
   useEffect(() => {
     const getUserInfo = async () => {
-      const userInfo = await axios.get(`${LOCALTUNNEL}/getUserInfo?userEmail=${emailAddress}`)
 
       try {
+        const userInfo = await axios.get(`${LOCALTUNNEL}/getUserInfo?userEmail=${emailAddress}`)
         const { full_name, height, weight, photo_uri } = userInfo.data
         setName(full_name);
-        setWeight(weight);
+        weight ? setWeight(weight.toString()) : setWeight('');
 
         if (height) {
-          const [feet, inches] = height.split(',');
-          handleSetHeight(feet, inches);
+          handleSetHeight(height[0].toString(), height[1].toString());
         } else {
-          handleSetHeight(null, null);
-        }
+          handleSetHeight('', '');
+        };
+
         setPhotoURI(photo_uri || placeHolderImage);
-        console.log('crurent value of photo in profile:', photoURI)
       } catch(err) {
         console.error('Error in retrieving userInfo from client side', err)
       }
@@ -108,7 +107,7 @@ export default function Profile() {
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Image
-                source= { typeof photoURI === 'string' ? { uri: photoURI } : placeHolderImage}
+                source= { photoURI === placeHolderImage ? require(placeHolderImage) : { uri: photoURI } }
                 style={styles.image}
               />
 
@@ -128,12 +127,12 @@ export default function Profile() {
         <View style={styles.infoContainer}>
 
           <View style={styles.firstInfoContainer}>
-            <Text style={styles.infoNumbers}>{weight ? weight : '--'}</Text>
+            <Text style={styles.infoNumbers}>{weight ? `${weight} lbs` : '--'}</Text>
             <Text style={styles.fadedText}>{`Current\nWeight`}</Text>
           </View>
 
           <View style={styles.secondInfoContainer}>
-            <Text style={styles.infoNumbers}>{height.feet && height.inches ? `${height.feet}${height.inches}` : '--'}</Text>
+            <Text style={styles.infoNumbers}>{height.feet || height.inches ? `${height.feet}'${height.inches}"` : '--'}</Text>
             <Text style={styles.fadedText}>{`Current\nHeight`}</Text>
           </View>
 

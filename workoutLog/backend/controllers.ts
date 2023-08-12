@@ -260,6 +260,43 @@ const getUserInfo = async (req: Request, res: Response) => {
   };
 };
 
+const saveProfileEdits = async (req: Request, res: Response) => {
+  let { full_name, weight, height, email_address, photo_uri } = req.body;
+
+  try {
+    if (!weight) weight = null;
+    if (!height[0] || !height[1]) height = null;
+
+    if (weight) weight = parseInt(weight);
+    if (height) {
+      height[0] = parseInt(height[0]);
+      height[1] = parseInt(height[1]);
+    };
+    // Update the user's full_name in the users table
+    const updateUserQuery = `
+    UPDATE users
+    SET full_name = $1
+    WHERE email_address = $2;
+    `;
+    await client.query(updateUserQuery, [full_name, email_address]);
+
+    // Update the user's weight, height, and photo_uri in the profile table
+    const updateProfileQuery = `
+      UPDATE profile
+      SET weight = $1,
+          height = $2,
+          photo_uri = $3
+      WHERE user_id = (SELECT id FROM users WHERE email_address = $4);
+    `;
+    await client.query(updateProfileQuery, [weight, height, photo_uri, email_address]);
+    console.log('Successfully updated users profile info')
+    res.sendStatus(201);
+  } catch (err) {
+    console.error('Error in updating profile:', err);
+    res.sendStatus(500);
+  }
+};
+
 module.exports = {
   getActivities,
   postActivityName,
@@ -269,5 +306,6 @@ module.exports = {
   signUp,
   login,
   confirmAccount,
-  getUserInfo
+  getUserInfo,
+  saveProfileEdits
 };
