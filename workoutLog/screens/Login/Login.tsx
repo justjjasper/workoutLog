@@ -33,10 +33,11 @@ export default function Login () {
       };
 
       try {
-        await axios.post(`${LOCALTUNNEL}/login`, payload);
+        const response = await axios.post(`${LOCALTUNNEL}/login`, payload);
 
         dispatch(toggleAuthenticateLogin())
         dispatch(loginEmailAddress(emailAddress));
+        console.log('what is the token', response.data)
         // TO DO: Implement Action of authentication to true
       } catch(err) {
 

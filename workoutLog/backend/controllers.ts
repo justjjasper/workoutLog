@@ -4,7 +4,8 @@ var client = require('./db');
 var bcrypt = require('./middleware/passwordUtils');
 var confirmationUtils = require('./middleware/confirmationUtils');
 var nodemailer = require('./middleware/nodemailerConfig');
-var auth = require('./middleware/authUtils');
+var auth = require('./middleware/loginAuthUtils');
+var JWT = require('./middleware/JWT');
 
 const getActivities = async (req: Request, res: Response) => {
   const emailAddress = req.query.emailAddressParam;
@@ -208,28 +209,18 @@ JWT payload: id and email
 const login = async (req: Request, res: Response) => {
   try {
     const { emailAddress, password } = req.body;
-    const { compare } = bcrypt;
 
-    if (await auth.verifyEmail(emailAddress)) {
+    if (await auth.verifyEmail(emailAddress)){
       return res.status(404).send('No Emaill Address Found');
-    }
+    };
 
-    const hashPasswordQuery = `
-      SELECT password_hash FROM auth
-      WHERE user_id = (
-        SELECT id FROM users
-        WHERE email_address = $1
-      );
-    `;
-
-    const hashPassword = await client.query(hashPasswordQuery, [emailAddress]);
-
-    if (!(await compare(password, hashPassword.rows[0].password_hash))) {
-      console.log('Incorrect password when logging in from serverside');
+    if (await auth.authHashPassword(emailAddress, password)){
       return res.status(401).send('Incorrect Password')
-    }
+    };
 
-    res.sendStatus(200)
+    const token = await JWT.generateJWTToken(emailAddress);
+
+    res.status(200).send(token);
   } catch(err) {
     console.error('Error in logging in from client side', err);
     res.status(500).send(err);
