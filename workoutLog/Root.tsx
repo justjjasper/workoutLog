@@ -14,23 +14,23 @@ YellowBox.ignoreWarnings([
 ]);
 
 export default function Root() {
-  const emailAddress = useSelector<RootState, string>(state => state.emailAddress.emailAddress);
+  const authenticated = useSelector<RootState, boolean>(state => state.toggleLogin);
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {emailAddress.length === 0 ? (
+        {authenticated ? (
           <Stack.Screen
-            name="Login"
-            children={() => <Login />}
-            options={{
-              headerShown: false,
-            }}
+          name="Bottom Nav"
+          children={() => <BottomTabNav />}
+          options={{
+            headerShown: false,
+          }}
           />
         ) : (
           <Stack.Screen
-            name="Bottom Nav"
-            children={() => <BottomTabNav />}
+            name="Login"
+            children={() => <Login />}
             options={{
               headerShown: false,
             }}

@@ -6,9 +6,9 @@ import { RootStackParamList } from '../../types';
 import { LOCALTUNNEL } from '../../config';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import { loginEmailAddress } from '../../actions';
+import { loginEmailAddress, toggleAuthenticateLogin } from '../../actions';
 
-
+// TO DO: Implement Action of authentication to true
 export default function Login () {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const dispatch = useDispatch();
@@ -23,7 +23,9 @@ export default function Login () {
 
     if (!emailRegex.test(emailAddress)) {
       Alert.alert('Please use a valid emaill address!');
-    } else{
+    } else if (!password) {
+      Alert.alert('Please input a password!')
+    } else {
 
       const payload = {
         emailAddress,
@@ -33,7 +35,9 @@ export default function Login () {
       try {
         await axios.post(`${LOCALTUNNEL}/login`, payload);
 
-        dispatch(loginEmailAddress(emailAddress))
+        dispatch(toggleAuthenticateLogin())
+        dispatch(loginEmailAddress(emailAddress));
+        // TO DO: Implement Action of authentication to true
       } catch(err) {
 
         if ((err as any).response.status === 404) {

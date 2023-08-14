@@ -59,4 +59,10 @@ export const deleteActivities = (activityIds: number[]) => {
     type: ACTIONS.DELETE_ACTIVITY,
     payload: activityIds
   }
+};
+
+export const toggleAuthenticateLogin = () => {
+  return {
+    type: ACTIONS.AUTHENTICATE_LOGIN
+  }
 }

@@ -4,6 +4,7 @@ var client = require('./db');
 var bcrypt = require('./middleware/passwordUtils');
 var confirmationUtils = require('./middleware/confirmationUtils');
 var nodemailer = require('./middleware/nodemailerConfig');
+var auth = require('./middleware/authUtils');
 
 const getActivities = async (req: Request, res: Response) => {
   const emailAddress = req.query.emailAddressParam;
@@ -38,6 +39,12 @@ const getActivities = async (req: Request, res: Response) => {
   }
 };
 
+/*
+AUTH TO DO:
+Remove emailAddress from clientside payload,
+get user EmailAddress via JWT from server side
+  can also use user ID from JWT to add to VALUE, adjust VALUES and insertActivityNameParams
+*/
 const postActivityName = async (req: Request, res: Response) => {
   try {
     const { emailAddress, dateInfo, activityName } = req.body;
@@ -192,23 +199,20 @@ const signUp = async (req: Request, res: Response) => {
   }
 };
 
-// check if email address or password is valid
+// AUTH TODO:
+/*
+ONCE user is verified within login,
+you retrieve email Address from req, also retrieve user id and store it into JWT payload
+JWT payload: id and email
+ */
 const login = async (req: Request, res: Response) => {
   try {
     const { emailAddress, password } = req.body;
     const { compare } = bcrypt;
 
-    // Check if the email address does not exist in database
-    const checkExistingQuery = `
-      SELECT email_address FROM users
-      WHERE email_address = $1
-    `;
-    const existingUser = await client.query(checkExistingQuery, [emailAddress]);
-    if (existingUser.rows.length === 0) {
-      // User email address does not exist
-      console.log('Error from client side with logging in, User email address not found.', existingUser.rows);
+    if (await auth.verifyEmail(emailAddress)) {
       return res.status(404).send('No Emaill Address Found');
-    };
+    }
 
     const hashPasswordQuery = `
       SELECT password_hash FROM auth

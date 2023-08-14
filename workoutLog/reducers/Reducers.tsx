@@ -11,7 +11,8 @@ export const ACTIONS = {
   SET_ACTIVITIES: 'Set Activities Data',
   TOGGLE_HOME_HEADER: 'Toggles home header state',
   POST_ACTIVITY: 'Creates a new Activity Name or Activity Info',
-  DELETE_ACTIVITY: 'Deletes activities'
+  DELETE_ACTIVITY: 'Deletes activities',
+  AUTHENTICATE_LOGIN: 'Authenticates user log in'
 };
 
 interface CurrentDateState {
@@ -165,3 +166,11 @@ export const homeHeaderStatusReducer = (state: boolean = true, action: AnyAction
   }
 };
 
+export const authenticateReducer = (state: boolean = false, action: AnyAction) => {
+  switch(action.type) {
+    case ACTIONS.AUTHENTICATE_LOGIN:
+      return !state
+    default:
+      return state
+  }
+};

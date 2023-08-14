@@ -2,14 +2,14 @@ import { Text, View, StyleSheet, Button, TouchableOpacity, Image } from 'react-n
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginEmailAddress } from '../../actions';
+import { loginEmailAddress, toggleAuthenticateLogin } from '../../actions';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Activity, ProfileStackParamList } from '../../types';
 import { LOCALTUNNEL } from '../../config';
 import axios from 'axios';
 import { RootState } from '../../App';
 
-// figure out why im not able to require images properly
+// TO DO: Implement dispatch of Authenticated to false in logout function
 export default function Profile() {
   const emailAddress = useSelector<RootState, string>(state => state.emailAddress.emailAddress);
   const activities = useSelector<RootState, Activity[]>(state => state.activities.activities).length;
@@ -65,7 +65,10 @@ export default function Profile() {
       <View style={styles.logOutContainer}>
         <Button
           title= 'Log Out'
-          onPress={() => dispatch(loginEmailAddress(''))}
+          onPress={() => {
+            dispatch(loginEmailAddress(''))
+            dispatch(toggleAuthenticateLogin())
+          }}
           color= 'white'
           />
       </View>
