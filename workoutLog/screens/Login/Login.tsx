@@ -5,8 +5,9 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
 import { LOCALTUNNEL } from '../../config';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
 import { loginEmailAddress, toggleAuthenticateLogin } from '../../actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 // TO DO: Implement Action of authentication to true
 export default function Login () {
@@ -33,12 +34,18 @@ export default function Login () {
       };
 
       try {
-        const response = await axios.post(`${LOCALTUNNEL}/login`, payload);
+        const token = await axios.post(`${LOCALTUNNEL}/login`, payload);
 
         dispatch(toggleAuthenticateLogin())
         dispatch(loginEmailAddress(emailAddress));
-        console.log('what is the token', response.data)
-        // TO DO: Implement Action of authentication to true
+
+        try {
+          await AsyncStorage.setItem('jwtToken', token.data);
+          console.log('jwt Token stored successfully within AsyncStorage')
+        } catch(err) {
+          console.error('Error in storing jwt Token within AsyncStorage')
+        }
+
       } catch(err) {
 
         if ((err as any).response.status === 404) {

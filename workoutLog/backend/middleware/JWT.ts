@@ -4,7 +4,7 @@ var client = require('../db');
 var jwt = require('jsonwebtoken');
 
 
-const generateJWTToken = async (email: string) => {
+const generateJwtToken = async (email: string) => {
   const queryString = `
     SELECT id FROM users
     WHERE email_address = $1
@@ -29,6 +29,6 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 };
 
 module.exports = {
-  generateJWTToken,
+  generateJwtToken,
   verifyToken
 }

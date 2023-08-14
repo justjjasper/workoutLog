@@ -5,7 +5,7 @@ var bcrypt = require('./middleware/passwordUtils');
 var confirmationUtils = require('./middleware/confirmationUtils');
 var nodemailer = require('./middleware/nodemailerConfig');
 var auth = require('./middleware/loginAuthUtils');
-var JWT = require('./middleware/JWT');
+var jwt = require('./middleware/jwt');
 
 const getActivities = async (req: Request, res: Response) => {
   const emailAddress = req.query.emailAddressParam;
@@ -218,7 +218,7 @@ const login = async (req: Request, res: Response) => {
       return res.status(401).send('Incorrect Password')
     };
 
-    const token = await JWT.generateJWTToken(emailAddress);
+    const token = await jwt.generateJwtToken(emailAddress);
 
     res.status(200).send(token);
   } catch(err) {
