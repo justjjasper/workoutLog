@@ -61,8 +61,10 @@ export default function Calendar () {
       );
     });
 
+
     dateCells.push(
       <DateCell
+        position ='none'
         key={`prev-month-${i}`}
         day={numDaysInLastMonth - i}
         month={currentMonth - 1}
@@ -85,6 +87,7 @@ export default function Calendar () {
 
     dateCells.push(
       <DateCell
+        position ='none'
         key={dayOfMonth}
         day={dayOfMonth}
         month={currentMonth}
@@ -108,6 +111,7 @@ export default function Calendar () {
 
     dateCells.push(
       <DateCell
+        position ='none'
         key={`next-month-${i}`}
         day={i}
         month={currentMonth + 1}
@@ -131,6 +135,7 @@ export default function Calendar () {
 
     dateCells.unshift(
       <DateCell
+        position ='none'
         key={`prev-month-${i}`}
         day={numDaysInLastMonth - emptyCellsAtStart + i + 1}
         month={currentMonth - 1}
@@ -139,6 +144,11 @@ export default function Calendar () {
       />
     );
   }
+  // Adds the corresponding of the corner dateCells, along with original props
+  dateCells[0] = < DateCell {...dateCells[0].props} position='first' />
+  dateCells[6] = < DateCell {...dateCells[0].props} position='second' />
+  dateCells[28] = < DateCell {...dateCells[0].props} position='third' />
+  dateCells[34] = < DateCell {...dateCells[0].props} position='fourth' />
 
   return (
     <View style={styles.container}>
@@ -154,7 +164,7 @@ export default function Calendar () {
 const styles = StyleSheet.create({
   calendar: {
     flex: 0.5,
-    borderWidth: 2,
+    borderRadius: 10,
     width: '97%',
     backgroundColor: '#FEFEFE',
     justifyContent: 'space-evenly',

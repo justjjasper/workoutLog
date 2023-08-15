@@ -7,6 +7,7 @@ import { RootState } from '../../App';
 import { useSelector } from 'react-redux';
 
 interface DateCellProps {
+  position: string,
   day: string | number | null,
   month: number,
   isOutsideMonth: boolean,
@@ -15,7 +16,7 @@ interface DateCellProps {
 
 export default function DateCell(props: DateCellProps) {
   const currentDate = useSelector<RootState, Date>(state => state.currentDate.currentDate);
-  const { day, month, isOutsideMonth, activities } = props; // might need to incorporate year/ todays date
+  const { position, day, month, isOutsideMonth, activities } = props; // might need to incorporate year/ todays date
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
@@ -32,7 +33,11 @@ export default function DateCell(props: DateCellProps) {
     <TouchableOpacity
       style={[
         styles.dateCell,
-        isOutsideMonth ? styles.outsideMonth : undefined
+        isOutsideMonth ? styles.outsideMonth : undefined,
+        position === 'first' ? {borderTopLeftRadius: 5} : undefined,
+        position === 'second' ? {borderTopRightRadius: 5} : undefined,
+        position === 'third' ? {borderBottomLeftRadius: 10} : undefined,
+        position === 'fourth' ? {borderBottomRightRadius: 10} : undefined,
       ]}
       onPress={toggleModal}
       >
