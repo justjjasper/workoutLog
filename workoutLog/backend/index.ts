@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.get('/activities', jwt.verifyToken, controllers.getActivities);
 
-app.post('/postActivityName', controllers.postActivityName);
+app.post('/postActivityName', jwt.verifyToken, controllers.postActivityName);
 
 app.post('/postNote', controllers.postNote);
 

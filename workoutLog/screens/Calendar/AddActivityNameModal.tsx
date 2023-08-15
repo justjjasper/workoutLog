@@ -8,6 +8,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackParamList } from '../../types';
 import { RootState } from '../../App';
 import { postActivityName } from '../../actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface AddActivityNameModalProps {
   activityNameRef: React.RefObject<TextInput>;
@@ -21,7 +22,7 @@ interface AddActivityNameModalProps {
 };
 
 export default function AddActivityNameModal({ activityNameRef, toggleAddActivityModal, dateInfo, toggleModal }: AddActivityNameModalProps) {
-  const emailAddress = useSelector<RootState, string | null>(state => state.emailAddress.emailAddress);
+  // const emailAddress = useSelector<RootState, string | null>(state => state.emailAddress.emailAddress);
   const [activityName, setActivityName] = useState('Activity Name');
   const dispatch = useDispatch();
   const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList>>();
@@ -38,11 +39,16 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
     const url = `${LOCALTUNNEL}/postActivityName`;
     const payload = {
       activityName,
-      emailAddress,
       dateInfo
     };
+
     try {
-      const response = await axios.post(url, payload)
+      const token = await AsyncStorage.getItem('jwtToken');
+      const headers = {
+        authorization: `Bearer ${token}`
+      };
+
+      const response = await axios.post(url, payload, { headers })
 
       const { id, activity_name, day, month, year } = response.data;
       const newActivity = {

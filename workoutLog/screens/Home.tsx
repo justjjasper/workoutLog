@@ -13,12 +13,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
-// remove email address
-// get jwt from async storage
-// send jwt to server side
-// get it verified
-// server will grab user id or email to do query, be sure to change insertQueryParams
-
 export default function Home () {
   const dispatch = useDispatch();
   // const emailAddress = useSelector<RootState, string | null>(state => state.emailAddress.emailAddress);

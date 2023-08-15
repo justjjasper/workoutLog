@@ -21,7 +21,7 @@ const generateJwtToken = async (email: string) => {
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
-
+    console.log('this is the new generated token when logging in', token)
     return token
   } catch (err) {
     console.error('[generateJwtToken] Error in gathering user id for generating jwt Token from server side', err)
@@ -39,7 +39,7 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-    req.body = decoded;
+    req.body.user = decoded;
     next();
 
   } catch(err) {

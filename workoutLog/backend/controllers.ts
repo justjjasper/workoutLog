@@ -8,7 +8,7 @@ var auth = require('./middleware/loginAuthUtils');
 var jwt = require('./middleware/jwt');
 
 const getActivities = async (req: Request, res: Response) => {
-  const { userId, emailAddress } = req.body
+  const { userId, emailAddress } = req.body.user
 
   // an.user_id = u.id
   const queryString = `SELECT an.activity_name,
@@ -50,15 +50,16 @@ get user EmailAddress via JWT from server side
 */
 const postActivityName = async (req: Request, res: Response) => {
   try {
-    const { emailAddress, dateInfo, activityName } = req.body;
+    const { user, dateInfo, activityName } = req.body;
+    const { userId, emailAddress } = user;
     const { day, month, year } = dateInfo;
-
+    console.log('[postActivityName] what is user', user)
     const queryString = `
       INSERT INTO activity_name (activity_name, day, month, year, user_id)
-      VALUES ($1, $2, $3, $4, (SELECT id FROM users WHERE email_address = $5))
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING id, activity_name, day, month, year
     `;
-    const insertActivityNameParams = [activityName, day, month, year, emailAddress];
+    const insertActivityNameParams = [activityName, day, month, year, userId];
     const results = await client.query(queryString, insertActivityNameParams);
 
     const insertedActivity = results.rows[0]; // Assuming only one row is returned

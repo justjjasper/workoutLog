@@ -4,14 +4,14 @@ import { View, StyleSheet } from 'react-native';
 import { RootState } from '../../App';
 import { useSelector, useDispatch } from 'react-redux';
 import { LOCALTUNNEL } from '../../config';
+import { Activity } from '../../types';
+import { setActivities } from '../../actions';
 import DateCell from './DateCell';
 import Heading from './Heading';
 import Weekdays from './Weekdays';
-import { Activity } from '../../types';
-import { setActivities } from '../../actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Calendar () {
-  const emailAddress = useSelector<RootState, string | null>(state => state.emailAddress.emailAddress);
   const currentDate = useSelector<RootState, Date>(state => state.currentDate.currentDate);
   const currentMonth = useSelector<RootState, number>(state => state.currentDate.currentMonth);
   const activities = useSelector<RootState, Activity[]>(state => state.activities.activities);
@@ -19,7 +19,12 @@ export default function Calendar () {
 
   useEffect(() => {
     const getActivities = async () => {
-      const results = await axios.get(`${LOCALTUNNEL}/activities?emailAddressParam=${emailAddress}`)
+      const token = await AsyncStorage.getItem('jwtToken');
+
+      const headers = {
+        authorization: `Bearer ${token}`
+      }
+      const results = await axios.get(`${LOCALTUNNEL}/activities`, { headers })
       try {
         dispatch(setActivities(results.data))
       } catch(err) {

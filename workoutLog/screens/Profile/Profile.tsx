@@ -2,7 +2,7 @@ import { Text, View, StyleSheet, Button, TouchableOpacity, Image } from 'react-n
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginEmailAddress, toggleAuthenticateLogin } from '../../actions';
+import { loginEmailAddress, setActivities, toggleAuthenticateLogin } from '../../actions';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Activity, ProfileStackParamList } from '../../types';
 import { LOCALTUNNEL } from '../../config';
@@ -69,6 +69,7 @@ export default function Profile() {
           onPress={ async () => {
             dispatch(loginEmailAddress(''))
             dispatch(toggleAuthenticateLogin());
+            dispatch(setActivities([]))
 
             try {
               await AsyncStorage.removeItem('jwtToken')
