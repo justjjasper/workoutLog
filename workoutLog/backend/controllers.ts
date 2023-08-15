@@ -2,14 +2,15 @@ import { Request, Response } from 'express';
 import { LOCALTUNNEL } from '../config';
 var client = require('./db');
 var bcrypt = require('./middleware/passwordUtils');
-var confirmationUtils = require('./middleware/confirmationUtils');
+var emailConfirmationUtils = require('./middleware/emailConfirmationUtils');
 var nodemailer = require('./middleware/nodemailerConfig');
 var auth = require('./middleware/loginAuthUtils');
 var jwt = require('./middleware/jwt');
 
 const getActivities = async (req: Request, res: Response) => {
-  const emailAddress = req.query.emailAddressParam;
+  const { userId, emailAddress } = req.body
 
+  // an.user_id = u.id
   const queryString = `SELECT an.activity_name,
   ai.activity_info AS activity_info,
   an.day,
@@ -18,12 +19,13 @@ const getActivities = async (req: Request, res: Response) => {
   an.id AS activity_id
   FROM activity_name AS an
   LEFT JOIN activity_info AS ai ON an.id = ai.activity_name_id
-  JOIN users AS u ON an.user_id = u.id
+  JOIN users AS u ON an.user_id = $2
   WHERE u.email_address = $1`;
 
-  const results = await client.query(queryString, [emailAddress]);
+  const results = await client.query(queryString, [emailAddress, userId]);
 
   try {
+
     const activities = results.rows.map((row: any) => ({
       activityName: row.activity_name,
       activityInfo: row.activity_info,
@@ -145,7 +147,7 @@ const signUp = async (req: Request, res: Response) => {
   try {
     const { name, emailAddress, password1 } = req.body;
     const { generateSalt, hashPassword } = bcrypt;
-    const { generateConfirmationToken } = confirmationUtils;
+    const { generateConfirmationToken } = emailConfirmationUtils;
     const { sendConfirmationEmail } = nodemailer
     // Check if the email address or full name already exist in the database
     const checkExistingQuery = `
@@ -219,7 +221,11 @@ const login = async (req: Request, res: Response) => {
     };
 
     const token = await jwt.generateJwtToken(emailAddress);
-
+    // *Future Note* may possibly remove constraint
+    // if (!token) {
+    //   return res.status(407).send('Error in generating jwt Token from login controller function')
+    // }
+    console.log('login Controller, successfully generated token from server side', token)
     res.status(200).send(token);
   } catch(err) {
     console.error('Error in logging in from client side', err);

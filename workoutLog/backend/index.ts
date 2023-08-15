@@ -1,11 +1,12 @@
 var express = require('express');
-var controllers = require('./controllers.ts')
+var controllers = require('./controllers.ts');
+var jwt = require('./middleware/jwt.ts');
 
 const app = express();
 const port = 3000;
 app.use(express.json());
 
-app.get('/activities', controllers.getActivities);
+app.get('/activities', jwt.verifyToken, controllers.getActivities);
 
 app.post('/postActivityName', controllers.postActivityName);
 

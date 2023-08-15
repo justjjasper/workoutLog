@@ -8,6 +8,7 @@ import { Activity, ProfileStackParamList } from '../../types';
 import { LOCALTUNNEL } from '../../config';
 import axios from 'axios';
 import { RootState } from '../../App';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // TO DO: Implement dispatch of Authenticated to false in logout function
 export default function Profile() {
@@ -65,9 +66,16 @@ export default function Profile() {
       <View style={styles.logOutContainer}>
         <Button
           title= 'Log Out'
-          onPress={() => {
+          onPress={ async () => {
             dispatch(loginEmailAddress(''))
-            dispatch(toggleAuthenticateLogin())
+            dispatch(toggleAuthenticateLogin());
+
+            try {
+              await AsyncStorage.removeItem('jwtToken')
+              console.log('successfully removed jwtToken from AsyncStorage when logging out')
+            } catch (err) {
+              console.log('could not remove async storage', err)
+            };
           }}
           color= 'white'
           />

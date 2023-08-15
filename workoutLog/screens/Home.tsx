@@ -1,31 +1,52 @@
 import { View, StyleSheet, Button } from 'react-native';
 import React, { useEffect } from 'react';
 import axios from 'axios';
+import Calendar from './Calendar/Calendar';
+import ActivityInfoScreen from './Calendar/ActivityInfoScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActivities } from '../actions';
 import { LOCALTUNNEL } from '../config';
 import { RootState } from '../App';
 import { Activity } from '../types';
-import Calendar from './Calendar/Calendar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ActivityInfoScreen from './Calendar/ActivityInfoScreen';
 
 const Stack = createNativeStackNavigator();
 
+// remove email address
+// get jwt from async storage
+// send jwt to server side
+// get it verified
+// server will grab user id or email to do query, be sure to change insertQueryParams
+
 export default function Home () {
   const dispatch = useDispatch();
-  const emailAddress = useSelector<RootState, string | null>(state => state.emailAddress.emailAddress);
+  // const emailAddress = useSelector<RootState, string | null>(state => state.emailAddress.emailAddress);
   const activities = useSelector<RootState, Activity[]>(state => state.activities.activities);
 
   useEffect(() => {
     const getActivities = async () => {
 
       try {
-        const results = await axios.get(`${LOCALTUNNEL}/activities?emailAddressParam=${emailAddress}`)
+        const token = await AsyncStorage.getItem('jwtToken');
+        console.log('[Home] token', token)
+        /*
+          Its taking the login AsyncStorage a delayed second to store the jwt, causes token from Home
+          end to be null
+        */
+        if (token === null) {
+          throw new Error('No jwt token found, from client side (Home Stack).')
+        };
+
+        const headers = {
+          authorization : `Bearer ${token}`
+        };
+
+        const results = await axios.get(`${LOCALTUNNEL}/activities`, { headers })
         dispatch(setActivities(results.data));
         console.log('wht are activities in Home:', activities)
       } catch(err) {
-        console.log('there was an error in front end', err)
+        console.log('[Home] there was an error in front end', err)
       }
     }
 

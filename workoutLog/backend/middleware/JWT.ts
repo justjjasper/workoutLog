@@ -5,27 +5,47 @@ var jwt = require('jsonwebtoken');
 
 
 const generateJwtToken = async (email: string) => {
-  const queryString = `
+
+  try {
+    const queryString = `
     SELECT id FROM users
-    WHERE email_address = $1
-  `;
+    WHERE email_address = $1;
+    `;
 
-  const userId = await client.query(queryString, [email]);
+    const result = await client.query(queryString, [email]);
+    const userId = result.rows[0].id;
 
-  const payload = {
-    userId,
-    email
-  };
+    const payload = {
+      userId,
+      emailAddress: email
+    };
 
-  const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
 
-  return token
+    return token
+  } catch (err) {
+    console.error('[generateJwtToken] Error in gathering user id for generating jwt Token from server side', err)
+  }
 };
 
-const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization;
+const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) {
+    // Token not present, skip verification
+    next();
+    return;
+  }
 
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
+    req.body = decoded;
+    next();
+
+  } catch(err) {
+    console.error('error here verify token', err)
+    res.status(477).send('[verifyToken] Error in verifying token')
+  }
 };
 
 module.exports = {
