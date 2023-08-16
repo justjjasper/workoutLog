@@ -9,6 +9,7 @@ import { LOCALTUNNEL } from '../../config';
 import axios from 'axios';
 import { RootState } from '../../App';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 // TO DO: Implement dispatch of Authenticated to false in logout function
 export default function Profile() {
@@ -127,7 +128,7 @@ export default function Profile() {
             style={styles.editButton}
             onPress={navigateToEditProfile}
           >
-            <Text>Edit Button</Text>
+            <Icon name= 'edit' color= '#77C7E9' size={35}/>
           </TouchableOpacity>
           <View style={styles.infoTextHeaderContainer}>
 
@@ -193,9 +194,9 @@ const styles = StyleSheet.create({
     bottom: 35
   },
   editButton: {
-    position: 'relative',
+    position: 'absolute',
     alignSelf: 'flex-end',
-    bottom: 50,
+    top: 20,
     paddingRight: 10
   },
   image: {

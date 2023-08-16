@@ -4,6 +4,7 @@ import { ProfileStackParamList } from '../../types';
 import React, { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { LOCALTUNNEL } from '../../config';
+import Icon from 'react-native-vector-icons/Ionicons'
 import axios from 'axios';
 
 /*
@@ -183,7 +184,9 @@ export default function EditProfile() {
         <TouchableOpacity
           onPress={handleImagePicker}
         >
-          <Text style={styles.editProfileText}>Edit Picture</Text>
+          <View style={styles.cameraBackground}>
+           <Icon style={styles.editProfileCamera} name='camera-outline'/>
+          </View>
         </TouchableOpacity>
       </View>
 
@@ -254,10 +257,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     resizeMode: 'cover'
   },
-  editProfileText: {
-    marginTop: 10,
-    fontSize: 18,
-    color: '#1782EF'
+  editProfileCamera: {
+    fontSize: 30,
+    color: 'white',
+  },
+  cameraBackground: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#77C7E9',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 0,
+    left: 12
   },
   headerContainer: {
     alignItems: 'center',
@@ -300,7 +313,7 @@ const styles = StyleSheet.create({
   doneButton: {
     fontWeight: 'bold',
     fontSize: 18,
-    color: '#1782EF'
+    color: '#565758'
   }
 })
 
