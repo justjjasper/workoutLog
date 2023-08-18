@@ -111,7 +111,7 @@ export default function Profile() {
         console.error('Error in retrieving userInfo from client side', err)
       }
     };
-
+    console.log('photuri is :', photoURI)
     getUserInfo();
   }, [emailAddress])
 

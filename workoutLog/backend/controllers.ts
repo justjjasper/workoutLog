@@ -6,6 +6,8 @@ var emailConfirmationUtils = require('./middleware/emailConfirmationUtils');
 var nodemailer = require('./middleware/nodemailerConfig');
 var auth = require('./middleware/loginAuthUtils');
 var jwt = require('./middleware/jwt');
+import {v2 as cloudinary} from 'cloudinary';
+var zlib = require('zlib');
 
 const getActivities = async (req: Request, res: Response) => {
   const { userId, emailAddress } = req.body.user
@@ -254,7 +256,10 @@ const getUserInfo = async (req: Request, res: Response) => {
   const results = await client.query(queryString, [email]);
 
   try {
-    const userInfo = results.rows[0];
+    let userInfo = results.rows[0];
+    const decompressedData = zlib.inflateSync(Buffer.from(userInfo.photo_uri, 'base64')).toString()
+    console.log('what is decompressdata when retrieving', decompressedData)
+    userInfo = {...userInfo, photo_uri: decompressedData}
     res.status(200).send(userInfo);
   }  catch (err) {
     console.error('Error retrieving user info from the database', err);
@@ -263,9 +268,42 @@ const getUserInfo = async (req: Request, res: Response) => {
 };
 
 const saveProfileEdits = async (req: Request, res: Response) => {
-  let { full_name, weight, height, email_address, photo_uri } = req.body;
+  // cloudinary.config({
+  //   cloud_name: 'dkzeszwgm',
+  //   api_key: '416973851316696',
+  //   api_secret: 'FiXTrjgwcmvQzehA5VZ45xffXIU'
+  // });
 
+
+  let { full_name, weight, height, email_address, photo_uri } = req.body;
   try {
+    const compressedData = zlib.deflateSync(photo_uri);
+    console.log('what is compressedData from backend', compressedData)
+  // const formData = new FormData();
+  // formData.append('file', {
+  //   // @ts-ignore
+  //   uri: photo_uri,
+  //   type: 'image/jpeg',
+  // })
+  // formData.append('upload_preset','workoutLog')
+
+  // cloudinary.config({
+  //   cloud_name: 'dkzeszwgm',
+  //   api_key: '416973851316696',
+  //   api_secret: 'FiXTrjgwcmvQzehA5VZ45xffXIU'
+  // });
+
+  // cloudinary.uploader.unsigned_upload(photo_uri, 'workoutLog')
+  //   .then(response => {
+  //     console.log('successfully uploaded an image?')
+  //   })
+  //   .catch(err => {
+  //   console.log('uhh error?',err)
+  //   })
+
+
+
+
     if (!weight) weight = null;
     if (!height[0] || !height[1]) height = null;
 
@@ -290,7 +328,7 @@ const saveProfileEdits = async (req: Request, res: Response) => {
           photo_uri = $3
       WHERE user_id = (SELECT id FROM users WHERE email_address = $4);
     `;
-    await client.query(updateProfileQuery, [weight, height, photo_uri, email_address]);
+    await client.query(updateProfileQuery, [weight, height, compressedData, email_address]);
     console.log('Successfully updated users profile info')
     res.sendStatus(201);
   } catch (err) {

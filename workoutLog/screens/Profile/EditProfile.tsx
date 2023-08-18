@@ -6,7 +6,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { LOCALTUNNEL } from '../../config';
 import Icon from 'react-native-vector-icons/Ionicons'
 import axios from 'axios';
-
+// import { launchImageLibrary, ImageLibraryOptions } from 'react-native-image-picker';
+import { upload } from 'cloudinary-react-native'
 /*
 Image source cannot be an empty string
 Not able to set a required(png) as a State Value
@@ -35,8 +36,42 @@ export default function EditProfile() {
   const [tempName, setTempName] = useState<string>(name);
   const [tempHeight, setTempHeight] = useState<{feet: string; inches: string}>({feet: height.feet, inches: height.inches});
   const [tempWeight, setTempWeight] = useState<string>(weight);
-  const [tempPhotoURI, setTempPhotoURI] = useState<string>('');
+  let [tempPhotoURI, setTempPhotoURI] = useState<string>('');
 
+
+//   const handleCloudinary = async () => {
+
+//     const cld = new Cloudinary({
+//       cloud: {
+//         cloudName: 'dkzeszwgm'
+//       },
+//       url: {
+//         secure: true
+//       }
+//     })
+
+//     type Option = {
+//       upload_preset: string,
+//       unsigned: boolean
+//     }
+//     const options: Option = {
+//       upload_preset: 'workoutLog',
+//       unsigned: true
+//     }
+//     console.log('error occured,', upload)
+//    upload(cld ,{
+//     file: tempPhotoURI,
+//     options: options,
+//     callback: (error: any, response: any) => {
+//       if (error) {
+//         console.error('Upload error:', error);
+//       } else {
+//         console.log('Upload response:', response);
+//       }
+//     },
+//   })
+
+// };
 
   const handleImagePicker = async () => {
     try {
@@ -51,17 +86,20 @@ export default function EditProfile() {
         quality: 0.8,
         allowsEditing: true,
         aspect: [1, 1],
+        base64: true
       });
 
       if (!pickerResult.canceled) {
         setTempPhotoURI((prevResponse => {
           prevResponse = pickerResult.assets[0].uri;
+
           return prevResponse
         }))
       }
     } catch (error) {
       console.log('Image picker error:', error);
     }
+
   };
 
   const handleFeetChange = (feetValue: string) => {
@@ -269,8 +307,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    bottom: 0,
-    left: 12
+    bottom: -5,
+    left: 17
   },
   headerContainer: {
     alignItems: 'center',
@@ -313,7 +351,7 @@ const styles = StyleSheet.create({
   doneButton: {
     fontWeight: 'bold',
     fontSize: 18,
-    color: '#565758'
+    color: 'white'
   }
 })
 
