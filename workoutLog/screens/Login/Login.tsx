@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Touchable, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Touchable, Alert, Image } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { loginEmailAddress, toggleAuthenticateLogin } from '../../actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import {LinearGradient} from 'expo-linear-gradient';
 
 // TO DO: Implement Action of authentication to true
 export default function Login () {
@@ -61,9 +62,21 @@ export default function Login () {
   };
 
   return (
-    <View style={styles.container}>
+    // <View style={styles.container}>
+    <LinearGradient
+      style={styles.container}
+      colors={['#6941C6','#9B78ED','#DDCBEB']}
+      locations= {[0, 0.2, 0.8]}
+      start={{ x: 0.7, y: 0 }}
+    >
+      <View style={styles.headingContainer}>
 
-      <Text style={styles.titleText}>Log In to FitLog+</Text>
+        <Image
+          source= {require('../../assets/workoutLogIcon.png')}
+          style={{ resizeMode: 'contain', height: 75, width: 75}}
+          />
+        <Text style={styles.titleText}>Log In</Text>
+      </View>
 
       <View style={styles.form}>
         <View style={styles.emailContainer}>
@@ -116,7 +129,8 @@ export default function Login () {
         </TouchableOpacity>
       </View>
 
-    </View>
+      </LinearGradient>
+    // </View>
   )
 };
 
@@ -127,14 +141,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  headingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    // backgroundColor: 'white',
+    bottom: 30
+  },
   signUpText: {
-    color: '#77C7E8',
+    color: '#6941C6',
     fontSize: 18
   },
   signUpContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    marginTop: 30
+    marginTop: 30,
   },
   form : {
     height: '45%',
@@ -142,7 +162,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FEFEFE',
     borderRadius: 5,
     justifyContent: 'space-evenly',
-    alignItems: 'center'
+    alignItems: 'center',
+    bottom: 15
   },
   text: {
     color: '#565758',
@@ -151,8 +172,8 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 32,
-    bottom: 60,
-    paddingLeft: 20
+    paddingTop: 20
+    // bottom: 60,
   },
   textInput: {
     borderBottomWidth: 1,
@@ -180,7 +201,7 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 50,
     justifyContent: 'center',
-    backgroundColor: '#AFDBE1',
+    backgroundColor: '#9B78ED',
     borderRadius: 25,
     alignSelf: 'center'
   },
@@ -195,7 +216,7 @@ const styles = StyleSheet.create({
   forgotPasswordText: {
     textDecorationLine: 'underline',
     fontSize: 18,
-    color: '#77C7E8'
+    color: '#6941C6'
   }
 
 })
