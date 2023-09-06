@@ -146,9 +146,9 @@ export default function Calendar () {
   }
   // Adds the corresponding of the corner dateCells, along with original props
   dateCells[0] = < DateCell {...dateCells[0].props} position='first' />
-  dateCells[6] = < DateCell {...dateCells[0].props} position='second' />
-  dateCells[28] = < DateCell {...dateCells[0].props} position='third' />
-  dateCells[34] = < DateCell {...dateCells[0].props} position='fourth' />
+  dateCells[6] = < DateCell {...dateCells[6].props} position='second' />
+  dateCells[28] = < DateCell {...dateCells[28].props} position='third' />
+  dateCells[34] = < DateCell {...dateCells[34].props} position='fourth' />
 
   return (
     <View style={styles.container}>

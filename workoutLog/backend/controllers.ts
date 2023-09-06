@@ -6,8 +6,10 @@ var emailConfirmationUtils = require('./middleware/emailConfirmationUtils');
 var nodemailer = require('./middleware/nodemailerConfig');
 var auth = require('./middleware/loginAuthUtils');
 var jwt = require('./middleware/jwt');
-import {v2 as cloudinary} from 'cloudinary';
+var photoUtils = require('./middleware/photoDirUtils')
 var zlib = require('zlib');
+var axios = require('axios');
+import {v2 as cloudinary} from 'cloudinary';
 
 const getActivities = async (req: Request, res: Response) => {
   const { userId, emailAddress } = req.body.user
@@ -44,12 +46,6 @@ const getActivities = async (req: Request, res: Response) => {
   }
 };
 
-/*
-AUTH TO DO:
-Remove emailAddress from clientside payload,
-get user EmailAddress via JWT from server side
-  can also use user ID from JWT to add to VALUE, adjust VALUES and insertActivityNameParams
-*/
 const postActivityName = async (req: Request, res: Response) => {
   try {
     const { user, dateInfo, activityName } = req.body;
@@ -205,12 +201,6 @@ const signUp = async (req: Request, res: Response) => {
   }
 };
 
-// AUTH TODO:
-/*
-ONCE user is verified within login,
-you retrieve email Address from req, also retrieve user id and store it into JWT payload
-JWT payload: id and email
- */
 const login = async (req: Request, res: Response) => {
   try {
     const { emailAddress, password } = req.body;
@@ -228,7 +218,6 @@ const login = async (req: Request, res: Response) => {
     // if (!token) {
     //   return res.status(407).send('Error in generating jwt Token from login controller function')
     // }
-    console.log('login Controller, successfully generated token from server side', token)
     res.status(200).send(token);
   } catch(err) {
     console.error('Error in logging in from client side', err);
@@ -257,9 +246,7 @@ const getUserInfo = async (req: Request, res: Response) => {
 
   try {
     let userInfo = results.rows[0];
-    const decompressedData = zlib.inflateSync(Buffer.from(userInfo.photo_uri, 'base64')).toString()
-    console.log('what is decompressdata when retrieving', decompressedData)
-    userInfo = {...userInfo, photo_uri: decompressedData}
+
     res.status(200).send(userInfo);
   }  catch (err) {
     console.error('Error retrieving user info from the database', err);
@@ -268,41 +255,29 @@ const getUserInfo = async (req: Request, res: Response) => {
 };
 
 const saveProfileEdits = async (req: Request, res: Response) => {
-  // cloudinary.config({
-  //   cloud_name: 'dkzeszwgm',
-  //   api_key: '416973851316696',
-  //   api_secret: 'FiXTrjgwcmvQzehA5VZ45xffXIU'
-  // });
 
 
-  let { full_name, weight, height, email_address, photo_uri } = req.body;
+  const handleCloudinary = async (image: string) => {
+    cloudinary.config({
+      cloud_name: 'jasjasper',
+      api_key: '416973851316696',
+      api_secret: 'FiXTrjgwcmvQzehA5VZ45xffXIU'
+    });
+
+    cloudinary.uploader.unsigned_upload(image, 'workoutLog')
+    .then((response:any) => {
+      console.log('backend cloud upload show respose', response)
+    })
+    .catch((err:any) => {
+      console.error('loser:', err)
+    })
+
+  }
+
+
+  let { full_name, weight, height, email_address, photo_uri, file } = req.body;
+
   try {
-    const compressedData = zlib.deflateSync(photo_uri);
-    console.log('what is compressedData from backend', compressedData)
-  // const formData = new FormData();
-  // formData.append('file', {
-  //   // @ts-ignore
-  //   uri: photo_uri,
-  //   type: 'image/jpeg',
-  // })
-  // formData.append('upload_preset','workoutLog')
-
-  // cloudinary.config({
-  //   cloud_name: 'dkzeszwgm',
-  //   api_key: '416973851316696',
-  //   api_secret: 'FiXTrjgwcmvQzehA5VZ45xffXIU'
-  // });
-
-  // cloudinary.uploader.unsigned_upload(photo_uri, 'workoutLog')
-  //   .then(response => {
-  //     console.log('successfully uploaded an image?')
-  //   })
-  //   .catch(err => {
-  //   console.log('uhh error?',err)
-  //   })
-
-
-
 
     if (!weight) weight = null;
     if (!height[0] || !height[1]) height = null;
@@ -328,7 +303,7 @@ const saveProfileEdits = async (req: Request, res: Response) => {
           photo_uri = $3
       WHERE user_id = (SELECT id FROM users WHERE email_address = $4);
     `;
-    await client.query(updateProfileQuery, [weight, height, compressedData, email_address]);
+    await client.query(updateProfileQuery, [weight, height, photo_uri, email_address]);
     console.log('Successfully updated users profile info')
     res.sendStatus(201);
   } catch (err) {

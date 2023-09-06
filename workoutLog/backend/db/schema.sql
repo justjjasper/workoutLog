@@ -42,7 +42,7 @@ CREATE INDEX activity_info_activity_name_id_idx ON activity_info (activity_name_
 
 CREATE TABLE IF NOT EXISTS profile (
   id SERIAL PRIMARY KEY NOT NULL,
-  photo_uri BYTEA, -- Change the data type as per the URI type you want to use
+  photo_uri VARCHAR(500), -- Change the data type as per the URI type you want to use
   weight DECIMAL,
   height DECIMAL[],
   user_id INTEGER NOT NULL,

@@ -36,8 +36,6 @@ export default function Login () {
       try {
         const token = await axios.post(`${LOCALTUNNEL}/login`, payload);
 
-
-        console.log('[login] what is token', token.data)
         try {
           await AsyncStorage.setItem('jwtToken', token.data);
           console.log('jwt Token stored successfully within AsyncStorage')

@@ -20,7 +20,7 @@ export default function Profile() {
   const dispatch = useDispatch();
 
   const [name, setName] = useState<string>('');
-  const [photoURI, setPhotoURI] = useState< string>(placeHolderImage);
+  // const [photoURI, setPhotoURI] = useState< string>(placeHolderImage);
   const [weight, setWeight] = useState<string>('');
   const [height, setHeight] = useState<{ feet: string; inches: string }>({
     feet: '',
@@ -32,12 +32,12 @@ export default function Profile() {
     setName(name)
   };
 
-  const handleSetPhotoURI = (URI: string)  => {
-    setPhotoURI(prevResponse => {
-      prevResponse = URI;
-      return prevResponse
-    })
-  };
+  // const handleSetPhotoURI = (URI: string)  => {
+  //   setPhotoURI(prevResponse => {
+  //     prevResponse = URI;
+  //     return prevResponse
+  //   })
+  // };
 
   const handleSetWeight = (weight: string) => {
     setWeight(weight)
@@ -51,13 +51,13 @@ export default function Profile() {
   const navigateToEditProfile = () => {
     navigation.navigate('Edit Profile', {
       handleSetName: (a) => handleSetName(a),
-      handleSetPhotoURI: (a) => handleSetPhotoURI(a),
+      // handleSetPhotoURI: (a) => handleSetPhotoURI(a),
       handleSetWeight: (a) => handleSetWeight(a),
       handleSetHeight: (a, b) => handleSetHeight(a, b),
       height,
       weight,
       name,
-      photoURI,
+      // photoURI,
       emailAddress
     });
   };
@@ -105,13 +105,13 @@ export default function Profile() {
         } else {
           handleSetHeight('', '');
         };
+        // setPhotoURI(photo_uri || placeHolderImage);
 
-        setPhotoURI(photo_uri || placeHolderImage);
       } catch(err) {
         console.error('Error in retrieving userInfo from client side', err)
       }
     };
-    console.log('photuri is :', photoURI)
+    // console.log('photuri is :', photoURI)
     getUserInfo();
   }, [emailAddress])
 
@@ -120,7 +120,9 @@ export default function Profile() {
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Image
-                source= { photoURI === placeHolderImage ? require(placeHolderImage) : { uri: photoURI } }
+                source = { require(placeHolderImage) }
+                // source= { photoURI === placeHolderImage ? require(placeHolderImage) : { uri: photoURI } }
+
                 style={styles.image}
               />
 

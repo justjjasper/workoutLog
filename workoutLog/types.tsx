@@ -27,11 +27,11 @@ export type RootStackParamList = {
 
 export type EditProfileParams = {
   handleSetName: (name: string) => void;
-  handleSetPhotoURI: (photoURI: string) => void;
+  // handleSetPhotoURI: (photoURI: string) => void;
   handleSetWeight: (weight: string) => void;
   handleSetHeight: (feet: string, inches: string) => void;
   name: string;
-  photoURI:  | string;
+  // photoURI:  | string;
   weight: string;
   height: { feet: string, inches: string };
   emailAddress: string

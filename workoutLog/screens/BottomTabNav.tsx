@@ -20,8 +20,9 @@ export default function BottomTabNav() {
         tabBarActiveTintColor: '#77C7E9',
         tabBarInactiveTintColor: 'gray',
         headerStyle: { backgroundColor: '#77C7E9' },
-        headerTitleStyle: { color: 'white' },
+        headerTitleStyle: { color: 'white' }
       })}
+
       >
       <Bottom.Screen name='Calendar' component={Home} options={{ headerShown: false }}/>
       <Bottom.Screen name='Profile' component={ProfileStackNavigator} options={{ headerShown: false }}/>

@@ -1,13 +1,15 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, Button, Alert, Platform } from 'react-native';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { ProfileStackParamList } from '../../types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { LOCALTUNNEL } from '../../config';
 import Icon from 'react-native-vector-icons/Ionicons'
 import axios from 'axios';
+import * as FileSystem from 'expo-file-system';
+import {v2 as cloudinary} from 'cloudinary';
+
 // import { launchImageLibrary, ImageLibraryOptions } from 'react-native-image-picker';
-import { upload } from 'cloudinary-react-native'
 /*
 Image source cannot be an empty string
 Not able to set a required(png) as a State Value
@@ -24,83 +26,51 @@ export default function EditProfile() {
   const route = useRoute<RouteProp<ProfileStackParamList, 'Edit Profile'>>();
   const navigation = useNavigation();
   const {
-          handleSetName, handleSetPhotoURI,
+          handleSetName,
+          // handleSetPhotoURI,
           handleSetWeight, handleSetHeight,
           height, weight,
-          photoURI, name,
+          // photoURI,
+          name,
           emailAddress
-        } = route.params
+  } = route.params
 
   let placeHolderImage = '../../assets/profileHolder.png';
 
   const [tempName, setTempName] = useState<string>(name);
   const [tempHeight, setTempHeight] = useState<{feet: string; inches: string}>({feet: height.feet, inches: height.inches});
   const [tempWeight, setTempWeight] = useState<string>(weight);
-  let [tempPhotoURI, setTempPhotoURI] = useState<string>('');
+  // let [tempPhotoURI, setTempPhotoURI] = useState<string>('');
 
+  // const handleImagePicker = async () => {
+  //   try {
+  //     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  //     if (!permissionResult.granted) {
+  //       alert('Permission to access camera roll is required!');
+  //       return;
+  //     }
 
-//   const handleCloudinary = async () => {
+  //     const pickerResult = await ImagePicker.launchImageLibraryAsync({
+  //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  //       quality: 0.8,
+  //       allowsEditing: true,
+  //       aspect: [1, 1],
+  //       // base64: true
+  //     });
 
-//     const cld = new Cloudinary({
-//       cloud: {
-//         cloudName: 'dkzeszwgm'
-//       },
-//       url: {
-//         secure: true
-//       }
-//     })
+  //     if (!pickerResult.canceled) {
+  //       setTempPhotoURI((prevResponse => {
+  //         prevResponse = pickerResult.assets[0].uri;
 
-//     type Option = {
-//       upload_preset: string,
-//       unsigned: boolean
-//     }
-//     const options: Option = {
-//       upload_preset: 'workoutLog',
-//       unsigned: true
-//     }
-//     console.log('error occured,', upload)
-//    upload(cld ,{
-//     file: tempPhotoURI,
-//     options: options,
-//     callback: (error: any, response: any) => {
-//       if (error) {
-//         console.error('Upload error:', error);
-//       } else {
-//         console.log('Upload response:', response);
-//       }
-//     },
-//   })
+  //         return prevResponse
+  //       }))
 
-// };
+  //     }
+  //   } catch (error) {
+  //     console.log('Image picker error:', error);
+  //   }
 
-  const handleImagePicker = async () => {
-    try {
-      const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (!permissionResult.granted) {
-        alert('Permission to access camera roll is required!');
-        return;
-      }
-
-      const pickerResult = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 0.8,
-        allowsEditing: true,
-        aspect: [1, 1],
-        base64: true
-      });
-
-      if (!pickerResult.canceled) {
-        setTempPhotoURI((prevResponse => {
-          prevResponse = pickerResult.assets[0].uri;
-
-          return prevResponse
-        }))
-      }
-    } catch (error) {
-      console.log('Image picker error:', error);
-    }
-
-  };
+  // };
 
   const handleFeetChange = (feetValue: string) => {
     setTempHeight((prevHeight) => ({
@@ -148,6 +118,19 @@ export default function EditProfile() {
     }
 
     try {
+      // const { makeDirectoryAsync, getInfoAsync, copyAsync } = FileSystem;
+      // const directoryPath = `${FileSystem.documentDirectory}/workoutLog/`;
+      // const timestamp = new Date().getTime();
+      // const fileName = `photo_${timestamp}.png`;
+      // const destinationPath = `${directoryPath}${fileName}`;
+      // await FileSystem.makeDirectoryAsync(directoryPath, { intermediates: true });
+
+      // await copyAsync({
+      //   from: tempPhotoURI,
+      //   to: destinationPath,
+      // });
+
+      // console.log('front end file:', destinationPath)
       const payload = {
         full_name: tempName !== name ? tempName : name,
         email_address: emailAddress,
@@ -156,7 +139,8 @@ export default function EditProfile() {
           tempHeight.feet !== height.feet ? tempHeight.feet : height.feet,
           tempHeight.inches !== height.inches ? tempHeight.inches : height.inches
         ],
-        photo_uri: photoURI === placeHolderImage ? (!tempPhotoURI ? placeHolderImage : tempPhotoURI) : photoURI
+        // photo_uri: photoURI === placeHolderImage ? (!tempPhotoURI ? placeHolderImage : tempPhotoURI) : photoURI,
+        // file: formData
       }
 
       await axios.patch(`${LOCALTUNNEL}/saveProfileEdits`, payload)
@@ -174,7 +158,9 @@ export default function EditProfile() {
 
       tempWeight === '' ? handleSetWeight('') : (!tempWeight ? handleSetWeight(weight) : handleSetWeight(tempWeight))
 
-      tempPhotoURI === '' ? handleSetPhotoURI(photoURI) : handleSetPhotoURI(tempPhotoURI);
+      // tempPhotoURI === '' ? handleSetPhotoURI(photoURI) : handleSetPhotoURI(tempPhotoURI);
+
+
 
       navigation.goBack();
     } catch(err) {
@@ -207,20 +193,22 @@ export default function EditProfile() {
     });
   });
 
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity
-          onPress={handleImagePicker}
+          // onPress={handleImagePicker}
         >
         <Image
           style={styles.image}
-          source= { tempPhotoURI !== '' ? { uri: tempPhotoURI} : (photoURI === placeHolderImage ? require(placeHolderImage) : { uri: photoURI}) }
+          // source= { tempPhotoURI !== '' ? { uri: tempPhotoURI} : (photoURI === placeHolderImage ? require(placeHolderImage) : { uri: photoURI}) }
+          source = {require(placeHolderImage)}
         />
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={handleImagePicker}
+          // onPress={handleImagePicker}
         >
           <View style={styles.cameraBackground}>
            <Icon style={styles.editProfileCamera} name='camera-outline'/>

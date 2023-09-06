@@ -10,12 +10,12 @@ import { LOCALTUNNEL } from '../config';
 import { RootState } from '../App';
 import { Activity } from '../types';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Stack = createNativeStackNavigator();
 
 export default function Home () {
   const dispatch = useDispatch();
-  // const emailAddress = useSelector<RootState, string | null>(state => state.emailAddress.emailAddress);
   const activities = useSelector<RootState, Activity[]>(state => state.activities.activities);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function Home () {
 
       try {
         const token = await AsyncStorage.getItem('jwtToken');
-        console.log('[Home] token', token)
+        // console.log('[Home] token', token)
         /*
           Its taking the login AsyncStorage a delayed second to store the jwt, causes token from Home
           end to be null
