@@ -123,7 +123,7 @@ export default function Signup () {
         <TouchableOpacity
           onPress= {() => navigation.navigate('Login')}
         >
-          <Text style={{color: '#77C7E8', fontSize: 18}}> Sign In</Text>
+          <Text style={{color: '#6941C6', fontSize: 18}}> Sign In</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -133,7 +133,7 @@ export default function Signup () {
 const styles = StyleSheet.create({
   container : {
     flex: 1,
-    backgroundColor: '#E4E5E3',
+    backgroundColor: '#DDCBEB',
     alignItems: 'center',
     justifyContent: 'space-evenly'
   },
@@ -144,12 +144,15 @@ const styles = StyleSheet.create({
   formContainer: {
     width: '90%',
     height: '45%',
-    borderWidth: 1,
     justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 8,
-    bottom: 50
+    bottom: 50,
+    shadowOffset: {width: -10, height: 10},
+    shadowColor: 'black', // Shadow color,
+    shadowOpacity: 0.25, // Opacity (0 to 1)
+    shadowRadius: 10,
   },
   text: {
     color: '#565758',
@@ -180,7 +183,7 @@ const styles = StyleSheet.create({
   signUpButton: {
     height: 50,
     width: '80%',
-    backgroundColor: '#AFDBE1',
+    backgroundColor: '#9B78ED',
     borderRadius: 25,
     alignSelf: 'center',
     justifyContent: 'center'

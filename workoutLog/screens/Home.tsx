@@ -10,7 +10,6 @@ import { LOCALTUNNEL } from '../config';
 import { RootState } from '../App';
 import { Activity } from '../types';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LinearGradient from 'react-native-linear-gradient';
 
 const Stack = createNativeStackNavigator();
 

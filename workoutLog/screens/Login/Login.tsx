@@ -6,11 +6,10 @@ import { RootStackParamList } from '../../types';
 import { LOCALTUNNEL } from '../../config';
 import { useDispatch } from 'react-redux';
 import { loginEmailAddress, toggleAuthenticateLogin } from '../../actions';
+import {LinearGradient} from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {LinearGradient} from 'expo-linear-gradient';
 
-// TO DO: Implement Action of authentication to true
 export default function Login () {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const dispatch = useDispatch();
@@ -62,7 +61,6 @@ export default function Login () {
   };
 
   return (
-    // <View style={styles.container}>
     <LinearGradient
       style={styles.container}
       colors={['#6941C6','#9B78ED','#DDCBEB']}
@@ -128,9 +126,7 @@ export default function Login () {
           <Text style={styles.signUpText}> Sign Up</Text>
         </TouchableOpacity>
       </View>
-
-      </LinearGradient>
-    // </View>
+    </LinearGradient>
   )
 };
 
@@ -144,7 +140,6 @@ const styles = StyleSheet.create({
   headingContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'white',
     bottom: 30
   },
   signUpText: {
@@ -154,7 +149,7 @@ const styles = StyleSheet.create({
   signUpContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    marginTop: 30,
+    marginTop: 30
   },
   form : {
     height: '45%',
@@ -163,7 +158,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    bottom: 15
+    bottom: 15,
+    shadowOffset: {width: -10, height: 10},
+    shadowColor: 'black', // Shadow color,
+    shadowOpacity: 0.25, // Opacity (0 to 1)
+    shadowRadius: 10,
   },
   text: {
     color: '#565758',
@@ -173,7 +172,6 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 32,
     paddingTop: 20
-    // bottom: 60,
   },
   textInput: {
     borderBottomWidth: 1,
