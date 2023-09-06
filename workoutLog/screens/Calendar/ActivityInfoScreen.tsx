@@ -81,11 +81,11 @@ export default function ActivityInfoScreen() {
   const renderHeaderRight = () => {
     if (editing) {
       return (
-        <Button
-          title='Done'
+        <TouchableOpacity
           onPress={handleNoteBlur}
-          color='white'
-          />
+        >
+          <Text style={{color: '#6941C6', fontSize: 18, fontWeight: 'bold'}}>Done</Text>
+        </TouchableOpacity>
       )
     };
     return null;
@@ -127,7 +127,6 @@ export default function ActivityInfoScreen() {
 const styles = StyleSheet.create({
   textInput: {
     height: '100%',
-    borderWidth: 5,
     fontSize: 18,
     padding: 10
   },

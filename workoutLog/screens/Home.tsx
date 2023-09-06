@@ -10,6 +10,19 @@ import { LOCALTUNNEL } from '../config';
 import { RootState } from '../App';
 import { Activity } from '../types';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { LinearGradient } from 'expo-linear-gradient';
+
+const HeaderWithGradient = () => (
+    <LinearGradient
+    style = {styles.header}
+    colors ={['#6941C6', '#9B78ED', '#B89EF3']}
+    start= {{ x: 0, y: 0}}
+    end= {{ x: 0.8, y: 1 }}
+    locations = {[0.3, 0.8, 1]}
+  >
+
+  </LinearGradient>
+);
 
 const Stack = createNativeStackNavigator();
 
@@ -50,7 +63,6 @@ export default function Home () {
     <View style={styles.container}>
       <Stack.Navigator
       screenOptions={{
-        headerStyle: {backgroundColor: '#77C7E9'},
         headerTitleStyle: {color: 'white'},
         headerTintColor: 'white',
       }}
@@ -70,7 +82,10 @@ export default function Home () {
             name= {`ActivityScreen_${activity.activityId}`}
             initialParams={{ activity }}
             component= {ActivityInfoScreen}
-            options= {{title: activity.activityName}}
+            options= {{
+              title: activity.activityName,
+              headerBackground: () => <HeaderWithGradient/>
+            }}
             />
             )
           }
@@ -88,8 +103,12 @@ const styles = StyleSheet.create({
   },
   stacks: {
     position: 'absolute'
+  },
+  header: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
-
 })
 
 

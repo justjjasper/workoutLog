@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   activityNameButton: {
     height: 40,
     width: 250,
-    backgroundColor: '#AFDBE1',
+    backgroundColor: '#DDCBEB',
     borderRadius: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
   footerButton: {
     height: 30,
     width: 60,
-    backgroundColor: '#77C7E8',
+    backgroundColor: '#9B78ED',
     borderRadius: 20,
     justifyContent: 'center'
   },
