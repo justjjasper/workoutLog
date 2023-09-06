@@ -1,7 +1,8 @@
-import { View, Button, StyleSheet, Text } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPrevMonth, setNextMonth } from '../../actions';
 import { RootState } from '../../App';
+import Icon from 'react-native-vector-icons/Ionicons'
 
 export default function Heading() {
   const dispatch = useDispatch();
@@ -9,17 +10,17 @@ export default function Heading() {
 
   return (
     <View style={styles.container}>
-      <Button
-        title='&lt;'
-        color='black'
-        onPress = {() => dispatch(setPrevMonth())}
-        />
+      <TouchableOpacity
+        onPress= {() => dispatch(setPrevMonth())}
+      >
+        <Icon style= {styles.arrowIcon} name='arrow-back-outline'/>
+      </TouchableOpacity>
       <Text style={styles.font}>{currentDate.toLocaleString('default', { month: 'long' })} {currentDate.getFullYear()} </Text>
-      <Button
-        title='&gt;'
-        color='black'
-        onPress = {() => dispatch(setNextMonth())}
-        />
+      <TouchableOpacity
+        onPress= {() => dispatch(setNextMonth())}
+      >
+        <Icon style= {styles.arrowIcon} name='arrow-forward-outline'/>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -33,5 +34,9 @@ const styles = StyleSheet.create({
   font: {
     fontSize: 24,
     alignSelf: 'center'
+  },
+  arrowIcon: {
+    fontSize: 24,
+    color: '#6941C6'
   }
 })

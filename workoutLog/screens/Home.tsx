@@ -37,7 +37,7 @@ export default function Home () {
 
         const results = await axios.get(`${LOCALTUNNEL}/activities`, { headers })
         dispatch(setActivities(results.data));
-        console.log('wht are activities in Home:', activities)
+        // console.log('wht are activities in Home:', activities)
       } catch(err) {
         console.log('[Home] there was an error in front end', err)
       }
@@ -48,8 +48,6 @@ export default function Home () {
 
   return (
     <View style={styles.container}>
-
-
       <Stack.Navigator
       screenOptions={{
         headerStyle: {backgroundColor: '#77C7E9'},
@@ -58,25 +56,27 @@ export default function Home () {
       }}
       >
         <Stack.Screen
-          name= 'Calendar'
+          name= 'Calendar2'
           component= {Calendar}
-        />
+          options = {{
+            headerShown: false
+          }}
+          />
         {activities?.map((activity: Activity) => {
           // console.log('what are the mapped activities',  activity)
           return (
-          <Stack.Screen
-          key={activity.activityId}
-          name= {`ActivityScreen_${activity.activityId}`}
-          initialParams={{ activity }}
-          component= {ActivityInfoScreen}
-          options= {{title: activity.activityName}}
-          />
-          )
-        }
+            <Stack.Screen
+            key={activity.activityId}
+            name= {`ActivityScreen_${activity.activityId}`}
+            initialParams={{ activity }}
+            component= {ActivityInfoScreen}
+            options= {{title: activity.activityName}}
+            />
+            )
+          }
 
-        )}
+          )}
       </Stack.Navigator>
-
     </View>
   );
 }
@@ -84,7 +84,7 @@ export default function Home () {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E4E5E3'
+    backgroundColor: 'black'
   },
   stacks: {
     position: 'absolute'

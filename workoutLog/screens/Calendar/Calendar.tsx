@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { RootState } from '../../App';
 import { useSelector, useDispatch } from 'react-redux';
 import { LOCALTUNNEL } from '../../config';
 import { Activity } from '../../types';
 import { setActivities } from '../../actions';
+import { LinearGradient } from 'expo-linear-gradient';
 import DateCell from './DateCell';
 import Heading from './Heading';
 import Weekdays from './Weekdays';
@@ -151,13 +152,19 @@ export default function Calendar () {
   dateCells[34] = < DateCell {...dateCells[34].props} position='fourth' />
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['#6941C6','#9B78ED','#DDCBEB']}
+      locations= {[0, 0.2, 0.8]}
+      start={{ x: 0.7, y: 0 }}
+      style={styles.container}
+    >
+      <Text style={styles.headingText}>Calendar</Text>
       <View style={styles.calendar}>
         <Heading />
         <Weekdays />
         <View style={styles.dateCellsContainer}>{dateCells}</View>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -168,7 +175,11 @@ const styles = StyleSheet.create({
     width: '97%',
     backgroundColor: '#FEFEFE',
     justifyContent: 'space-evenly',
-    alignItems: 'center'
+    alignItems: 'center',
+    shadowOffset: {width: -10, height: 10},
+    shadowColor: 'black', // Shadow color,
+    shadowOpacity: 0.25, // Opacity (0 to 1)
+    shadowRadius: 10,
   },
   dateCellsContainer: {
     flexWrap: 'wrap',
@@ -183,6 +194,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#E4E5E3',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-evenly',
   },
+  headingText: {
+    fontSize: 30,
+    color: 'white',
+    bottom: 50
+  }
 })

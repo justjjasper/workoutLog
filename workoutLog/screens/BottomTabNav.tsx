@@ -13,11 +13,11 @@ export default function BottomTabNav() {
 
           if (route.name === 'Calendar') {
             return <Icon name='calendar-sharp' size={25} color={color} />;
-          } else if (route.name === 'Profile') {
+          } else if (route.name === 'ProfileBottomTab') {
             return <Icon name='person-sharp' size={25} color={color} />;
           }
         },
-        tabBarActiveTintColor: '#77C7E9',
+        tabBarActiveTintColor: '#9B78ED',
         tabBarInactiveTintColor: 'gray',
         headerStyle: { backgroundColor: '#77C7E9' },
         headerTitleStyle: { color: 'white' }
@@ -25,7 +25,7 @@ export default function BottomTabNav() {
 
       >
       <Bottom.Screen name='Calendar' component={Home} options={{ headerShown: false }}/>
-      <Bottom.Screen name='Profile' component={ProfileStackNavigator} options={{ headerShown: false }}/>
+      <Bottom.Screen name='ProfileBottomTab' component={ProfileStackNavigator} options={{ headerShown: false, title: 'Profile' }}/>
     </Bottom.Navigator>
   )
 };
