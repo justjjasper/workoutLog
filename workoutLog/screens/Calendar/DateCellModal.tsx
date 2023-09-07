@@ -8,6 +8,7 @@ import AddActivityNameModal from './AddActivityNameModal';
 import { LOCALTUNNEL } from '../../config';
 import { useDispatch } from 'react-redux';
 import { deleteActivities } from '../../actions';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 
 /*
@@ -59,10 +60,11 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
   const handleDeleteActivities = async () => {
     const url = `${LOCALTUNNEL}/deleteActivity`;
 
-    if (Object.keys(selectedItems).length === 0) {
+    if (Object.keys(selectedItems).length === 0 || !Object.values(selectedItems)[0]) {
       Alert.alert('Please select an activity to delete.')
       return
     }
+    console.log('what is length of object', Object.values(selectedItems)[0] )
     try {
        // filter selected Checkboxes and then convert the array of strings into integers
       const selectedActivityIds = Object.keys(selectedItems).filter(
@@ -98,7 +100,7 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
       <View style={styles.headingContainer}>
         <Text style={styles.modalHeading}>Activity List</Text>
         <TouchableOpacity onPress={toggleModal}>
-          <Text style={styles.closeButtonText}>x</Text>
+          <Icon style={styles.closeButtonText} name='close'/>
         </TouchableOpacity>
       </View>
 
@@ -162,12 +164,14 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
         <TouchableOpacity style={styles.footerButton} onPress={handleCreatePress}>
           <Text style={styles.footerText}>Create</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.footerButton}
-          onPress={() => setIsDelete(!isDelete)}>
-          <Text style={styles.footerText}>Delete</Text>
-        </TouchableOpacity>
-      </View>
+        { activities.length === 0 ? null : (
+          <TouchableOpacity
+            style={styles.footerButton}
+            onPress={() => setIsDelete(!isDelete)}>
+            <Text style={styles.footerText}>Delete</Text>
+          </TouchableOpacity>
+        )}
+        </View>
       )}
 
       <Modal isVisible={isAddModalVisible} onBackdropPress={toggleAddActivityModal}>
@@ -225,7 +229,7 @@ const styles = StyleSheet.create({
   activityNameContainer: {
     width: '100%',
     height: 270,
-    borderWidth: 2,
+    borderWidth: 1,
     backgroundColor: 'white',
     borderRadius: 8,
     alignItems: 'center'

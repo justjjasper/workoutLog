@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackParamList } from '../../types';
 import { postActivityName } from '../../actions';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import throttle from '../../backend/middleware/throttleUtil';
 
@@ -80,7 +81,7 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={styles.modalContainer}>
       <TouchableOpacity onPress={toggleAddActivityModal} style={styles.closeButton}>
-        <Text style={styles.closeButtonText}>x</Text>
+        <Icon style={styles.closeButtonText} name='close'/>
       </TouchableOpacity>
         <Text style={styles.header}>Enter Activity Name</Text>
         <TextInput
@@ -129,13 +130,13 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: 10,
+    top: 20,
     right: 10,
     zIndex: 1,
     paddingRight: 7
   },
   closeButtonText: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
     color: '#565758'
   },
