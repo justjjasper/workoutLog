@@ -7,6 +7,7 @@ import { LOCALTUNNEL } from '../../config';
 import { useDispatch } from 'react-redux';
 import { loginEmailAddress, toggleAuthenticateLogin } from '../../actions';
 import {LinearGradient} from 'expo-linear-gradient';
+import AppLoading from './AppLoading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import throttle from '../../backend/middleware/throttleUtil';
 import axios from 'axios';
@@ -20,7 +21,6 @@ export default function Login () {
   const [show, setShow] = useState<boolean>(true);
   const [emailAddress, setEmailAddress] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-
 
   const handleLogin = throttle(async () => {
     const emailRegex = /\S+@\S+\.\S+/;
@@ -73,78 +73,86 @@ export default function Login () {
     loadCustomFont();
   }, []);
 
-  return (
-    <LinearGradient
-      style={styles.container}
-      colors={['#6941C6','#9B78ED','#DDCBEB']}
-      locations= {[0, 0.2, 0.8]}
-      start={{ x: 0.7, y: 0 }}
-    >
-      <View style={styles.headingContainer}>
+  let [fontsLoaded] = useFonts({
+    ContrailOne_400Regular
+  });
 
-        <Image
-          source= {require('../../assets/images/workoutLogIcon.png')}
-          style={{ resizeMode: 'contain', height: 75, width: 75}}
-          />
+  // return (<AppLoading/>)
+  if (!fontsLoaded) {
+    return <AppLoading/>
+  } else {
+    return (
+      <LinearGradient
+        style={styles.container}
+        colors={['#6941C6','#9B78ED','#DDCBEB']}
+        locations= {[0, 0.2, 0.8]}
+        start={{ x: 0.7, y: 0 }}
+      >
+        <View style={styles.headingContainer}>
+          <Image
+            source= {require('../../assets/images/workoutLogIcon.png')}
+            style={{ resizeMode: 'contain', height: 75, width: 75}}
+            />
 
-        <View style={styles.headingTextContainer}>
-          <Text style={styles.titleText}>Log In to</Text>
-          <Text style={styles.fontText}> FitLog+</Text>
-        </View>
-      </View>
-
-      <View style={styles.form}>
-        <View style={styles.emailContainer}>
-          <Text style={styles.text}>Email Address</Text>
-          <TextInput
-            style={styles.textInput}
-            onChangeText= {setEmailAddress}
-            value= {emailAddress}
-          />
+          <View style={styles.headingTextContainer}>
+            <Text style={styles.titleText}>Log In to</Text>
+            <Text style={styles.fontText}> FitLog+</Text>
+          </View>
         </View>
 
-        <View style={styles.passwordContainer}>
-          <Text style={styles.text}>Password</Text>
-          <TextInput
-            style={styles.textInput}
-            secureTextEntry= {show}
-            onChangeText= {setPassword}
-            value= {password}
-          />
+        <View style={styles.form}>
+          <View style={styles.emailContainer}>
+            <Text style={styles.text}>Email Address</Text>
+            <TextInput
+              style={styles.textInput}
+              onChangeText= {setEmailAddress}
+              value= {emailAddress}
+            />
+          </View>
+
+          <View style={styles.passwordContainer}>
+            <Text style={styles.text}>Password</Text>
+            <TextInput
+              style={styles.textInput}
+              secureTextEntry= {show}
+              onChangeText= {setPassword}
+              value= {password}
+            />
+            <TouchableOpacity
+              style={styles.showTextContainer}
+              onPress={() => setShow(!show)}
+            >
+              <Text style={styles.showText}>Show</Text>
+            </TouchableOpacity>
+          </View>
+
+        <View style={styles.loginContainer}>
           <TouchableOpacity
-            style={styles.showTextContainer}
-            onPress={() => setShow(!show)}
+            style={styles.loginButton}
+            onPress={handleLogin}
           >
-            <Text style={styles.showText}>Show</Text>
+            <Text style={styles.loginText}>Log In</Text>
           </TouchableOpacity>
-         </View>
+        </View>
 
-      <View style={styles.loginContainer}>
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={handleLogin}
-        >
-          <Text style={styles.loginText}>Log In</Text>
-        </TouchableOpacity>
-      </View>
+        <View>
+          <TouchableOpacity>
+            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+          </TouchableOpacity>
+        </View>
+        </View>
 
-      <View>
-        <TouchableOpacity>
-          <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-        </TouchableOpacity>
-      </View>
-      </View>
-
-      <View style={styles.signUpContainer}>
-        <Text style={{fontSize: 18}}>Don't have an account?</Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Sign Up Page')}
-        >
-          <Text style={styles.signUpText}> Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-    </LinearGradient>
-  )
+        <View style={styles.signUpContainer}>
+          <Text style={{fontSize: 18}}>Don't have an account?</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Sign Up Page')}
+          >
+            <Text style={styles.signUpText}> Sign Up</Text>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
+    )
+  }
 };
 
 const styles = StyleSheet.create({
