@@ -207,13 +207,13 @@ export default function EditProfile() {
         />
         </TouchableOpacity>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           // onPress={handleImagePicker}
         >
           <View style={styles.cameraBackground}>
            <Icon style={styles.editProfileCamera} name='camera-outline'/>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <View style={styles.formContainer}>
@@ -274,13 +274,13 @@ export default function EditProfile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#DDCBEB'
   },
   image: {
     width: 110,
     height: 110,
     borderRadius: 55,
-    borderWidth: 1,
     resizeMode: 'cover'
   },
   editProfileCamera: {
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#77C7E9',
+    backgroundColor: '#9B78ED',
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
@@ -310,7 +310,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FEFEFE',
     top: 23,
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    shadowOffset: {width: -10, height: 10},
+    shadowColor: 'black', // Shadow color,
+    shadowOpacity: 0.25, // Opacity (0 to 1)
+    shadowRadius: 10
   },
   textInput: {
     borderBottomWidth: 0.2,
@@ -339,7 +343,7 @@ const styles = StyleSheet.create({
   doneButton: {
     fontWeight: 'bold',
     fontSize: 18,
-    color: 'white'
+    color: '#6941C6'
   }
 })
 

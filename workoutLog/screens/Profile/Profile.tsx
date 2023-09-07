@@ -130,7 +130,7 @@ export default function Profile() {
             style={styles.editButton}
             onPress={navigateToEditProfile}
           >
-            <Icon name= 'edit' color= '#77C7E9' size={35}/>
+            <Icon name= 'edit' color= '#9B78ED' size={35}/>
           </TouchableOpacity>
           <View style={styles.infoTextHeaderContainer}>
 
@@ -170,26 +170,29 @@ const styles = StyleSheet.create({
   },
   smallContainer: {
     flex: 0.33,
-    backgroundColor: '#E4E5E3'
+    backgroundColor: '#DDCBEB'
   },
   container: {
     flex: 0.67,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#E4E5E3'
+    backgroundColor: '#DDCBEB'
   },
   logOutContainer: {
     paddingRight: 10
   },
   headerContainer: {
-    borderWidth: 1,
     alignItems: 'center',
     borderRadius: 8,
     marginBottom: 10,
     width: '75%',
     height: '35%',
     justifyContent: 'flex-start',
-    backgroundColor: '#FEFEFE'
+    backgroundColor: '#FEFEFE',
+    shadowOffset: {width: -10, height: 10},
+    shadowColor: 'black', // Shadow color,
+    shadowOpacity: 0.25, // Opacity (0 to 1)
+    shadowRadius: 10,
   },
   infoTextHeaderContainer: {
     alignItems: 'center',
@@ -208,7 +211,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     position: 'relative',
     bottom: 50,
-    borderWidth: 1
   },
   imageContainer: {
     position: 'relative',
@@ -226,10 +228,13 @@ const styles = StyleSheet.create({
     height: '35%',
     top: 30,
     backgroundColor: '#FEFEFE',
-    borderRadius: 8
+    borderRadius: 8,
+    shadowOffset: {width: -10, height: 10},
+    shadowColor: 'black', // Shadow color,
+    shadowOpacity: 0.25, // Opacity (0 to 1)
+    shadowRadius: 10,
   },
   firstInfoContainer: {
-    borderWidth: 1,
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
     alignItems: 'center',
@@ -237,14 +242,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   secondInfoContainer: {
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
+    borderLeftWidth: 0.2,
+    borderRightWidth: 0.2,
+    borderColor: 'gray',
     alignItems: 'center',
     width: '33.33%',
     justifyContent: 'center'
   },
   thirdInfoContainer: {
-    borderWidth: 1,
     borderTopRightRadius: 8,
     borderBottomRightRadius: 8,
     alignItems: 'center',
