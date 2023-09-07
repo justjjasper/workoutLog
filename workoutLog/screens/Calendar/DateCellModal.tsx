@@ -8,7 +8,7 @@ import AddActivityNameModal from './AddActivityNameModal';
 import { LOCALTUNNEL } from '../../config';
 import { useDispatch } from 'react-redux';
 import { deleteActivities } from '../../actions';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 
 /*
@@ -60,11 +60,11 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
   const handleDeleteActivities = async () => {
     const url = `${LOCALTUNNEL}/deleteActivity`;
 
-    if (Object.keys(selectedItems).length === 0 || !Object.values(selectedItems)[0]) {
+    if (Object.keys(selectedItems).length === 0 || !Object.values(selectedItems).includes(true)) {
       Alert.alert('Please select an activity to delete.')
       return
     }
-    console.log('what is length of object', Object.values(selectedItems)[0] )
+
     try {
        // filter selected Checkboxes and then convert the array of strings into integers
       const selectedActivityIds = Object.keys(selectedItems).filter(
@@ -120,7 +120,13 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
                 onPress={() => handleActivityPress(activity)}
                 >
                 {isDelete && (
-                  <View style={[styles.emptyCheckbox, selectedItems[activity.activityId] && styles.selectedCheckbox]} />
+                  // <View style={[styles.emptyCheckbox, selectedItems[activity.activityId] && styles.selectedCheckbox]} />
+
+                  selectedItems[activity.activityId] ?
+                  <Icon style={{fontSize: 20}} name='checkbox-outline'/>
+                  :
+                  <Icon style={{fontSize: 20}} name='checkbox-blank-outline'/>
+
                 )}
                 <Text style={styles.activityName}>{activity.activityName}</Text>
                 <Text style={styles.activityName}>&gt;</Text>
@@ -137,7 +143,11 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
               onPress={() => handleActivityPress(activity)}
               >
               {isDelete && (
-                 <View style={[styles.emptyCheckbox, selectedItems[activity.activityId] && styles.selectedCheckbox]} />
+                //  <View style={[styles.emptyCheckbox, selectedItems[activity.activityId] && styles.selectedCheckbox]} />
+                selectedItems[activity.activityId] ?
+                  <Icon style={{fontSize: 20}} name='checkbox-outline'/>
+                  :
+                  <Icon style={{fontSize: 20}} name='checkbox-blank-outline'/>
                )}
               <Text style={styles.activityName}>{activity.activityName}</Text>
               <Text style={styles.activityName}>&gt;</Text>
