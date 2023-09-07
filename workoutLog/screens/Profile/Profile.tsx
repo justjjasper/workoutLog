@@ -16,7 +16,7 @@ export default function Profile() {
   const emailAddress = useSelector<RootState, string>(state => state.emailAddress.emailAddress);
   const activities = useSelector<RootState, Activity[]>(state => state.activities.activities).length;
   const navigation = useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
-  const placeHolderImage = '../../assets/profileHolder.png';
+  const placeHolderImage = '../../assets/images/profileHolder.png';
   const dispatch = useDispatch();
 
   const [name, setName] = useState<string>('');

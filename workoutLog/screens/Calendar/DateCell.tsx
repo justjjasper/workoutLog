@@ -47,11 +47,15 @@ export default function DateCell(props: DateCellProps) {
 
       ) : (
         <View style={styles.activityNamesContainer}>
-        {activities.map((activity: Activity) => {
-          return (
-            <Text key={activity.activityId} style={styles.activityName}> {activity.activityName}</Text>
-          )
-        })}
+        {activities.map((activity: Activity) => (
+
+          activity.activityName.length > 7 ?
+          <Text key={activity.activityId} style={styles.activityName}> {activity.activityName.substring(0,7)}...</Text>
+
+          :
+          <Text key={activity.activityId} style={styles.activityName}> {activity.activityName}</Text>
+
+        ))}
       </View>
       )}
 

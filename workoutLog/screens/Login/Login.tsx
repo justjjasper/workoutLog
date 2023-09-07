@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Touchable, Alert, Image } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
@@ -8,7 +8,10 @@ import { useDispatch } from 'react-redux';
 import { loginEmailAddress, toggleAuthenticateLogin } from '../../actions';
 import {LinearGradient} from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import throttle from '../../backend/middleware/throttleUtil';
 import axios from 'axios';
+import * as Font from 'expo-font';
+import { useFonts, ContrailOne_400Regular } from '@expo-google-fonts/contrail-one';
 
 export default function Login () {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -19,7 +22,7 @@ export default function Login () {
   const [password, setPassword] = useState<string>('');
 
 
-  const handleLogin = async () => {
+  const handleLogin = throttle(async () => {
     const emailRegex = /\S+@\S+\.\S+/;
 
     if (!emailRegex.test(emailAddress)) {
@@ -58,7 +61,17 @@ export default function Login () {
       }
 
     }
+  }, 2000);
+
+  const loadCustomFont = async () => {
+    await Font.loadAsync({
+      'ContrailOne_400Regular': require('../../assets/fonts/ContrailOne-Regular.ttf'),
+    });
   };
+
+  useEffect(() => {
+    loadCustomFont();
+  }, []);
 
   return (
     <LinearGradient
@@ -70,10 +83,14 @@ export default function Login () {
       <View style={styles.headingContainer}>
 
         <Image
-          source= {require('../../assets/workoutLogIcon.png')}
+          source= {require('../../assets/images/workoutLogIcon.png')}
           style={{ resizeMode: 'contain', height: 75, width: 75}}
           />
-        <Text style={styles.titleText}>Log In</Text>
+
+        <View style={styles.headingTextContainer}>
+          <Text style={styles.titleText}>Log In to</Text>
+          <Text style={styles.fontText}> FitLog+</Text>
+        </View>
       </View>
 
       <View style={styles.form}>
@@ -171,7 +188,13 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 32,
-    paddingTop: 20
+  },
+  fontText: {
+    fontFamily: 'ContrailOne_400Regular',
+    fontSize: 32
+  },
+  headingTextContainer: {
+    flexDirection: 'row',
   },
   textInput: {
     borderBottomWidth: 1,
@@ -215,6 +238,6 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontSize: 18,
     color: '#6941C6'
-  }
+  },
 
 })

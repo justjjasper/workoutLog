@@ -6,9 +6,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackParamList } from '../../types';
-import { RootState } from '../../App';
 import { postActivityName } from '../../actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import throttle from '../../backend/middleware/throttleUtil';
 
 interface AddActivityNameModalProps {
   activityNameRef: React.RefObject<TextInput>;
@@ -22,7 +22,6 @@ interface AddActivityNameModalProps {
 };
 
 export default function AddActivityNameModal({ activityNameRef, toggleAddActivityModal, dateInfo, toggleModal }: AddActivityNameModalProps) {
-  // const emailAddress = useSelector<RootState, string | null>(state => state.emailAddress.emailAddress);
   const [activityName, setActivityName] = useState('Activity Name');
   const dispatch = useDispatch();
   const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList>>();
@@ -35,7 +34,7 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = throttle(async () => {
     const url = `${LOCALTUNNEL}/postActivityName`;
     const payload = {
       activityName,
@@ -43,6 +42,8 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
     };
 
     try {
+      toggleAddActivityModal();
+      toggleModal();
       const token = await AsyncStorage.getItem('jwtToken');
       const headers = {
         authorization: `Bearer ${token}`
@@ -59,16 +60,13 @@ export default function AddActivityNameModal({ activityNameRef, toggleAddActivit
         year,
         activityId: id
       };
-
       dispatch(postActivityName(newActivity));
 
       navigation.navigate(`ActivityScreen_${id}`, { activity: newActivity })
-      toggleAddActivityModal();
-      toggleModal();
     } catch(err) {
       console.error('Error posting activityName fron Client side', err);
     }
-  };
+  }, 3000);
 
   useEffect(() => {
     if (activityNameRef.current) {

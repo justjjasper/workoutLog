@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
 import { LOCALTUNNEL } from '../../config';
+import throttle from '../../backend/middleware/throttleUtil';
 import axois from 'axios';
 
 export default function Signup () {
@@ -17,7 +18,7 @@ export default function Signup () {
   const [password1, setPassword1] = useState<string>('');
   const [password2, setPassword2] = useState<string>('');
 
-  const handleSignUp = async () => {
+  const handleSignUp = throttle(async () => {
     const emailRegex = /\S+@\S+\.\S+/;
 
     if (!name || !emailAddress || !password1 || !password2) {
@@ -27,8 +28,6 @@ export default function Signup () {
     } else if (password1 !== password2) {
       Alert.alert('Passwords do not match!');
     } else {
-      // Proceed with sign-up logic
-      // axios.post(...); // You can send data to the backend here
       const payload = {
         name,
         emailAddress,
@@ -47,7 +46,7 @@ export default function Signup () {
       }
     };
 
-  };
+  }, 1000);
 
   return (
     <View style={styles.container}>

@@ -35,7 +35,7 @@ export default function EditProfile() {
           emailAddress
   } = route.params
 
-  let placeHolderImage = '../../assets/profileHolder.png';
+  let placeHolderImage = '../../assets/images/profileHolder.png';
 
   const [tempName, setTempName] = useState<string>(name);
   const [tempHeight, setTempHeight] = useState<{feet: string; inches: string}>({feet: height.feet, inches: height.inches});

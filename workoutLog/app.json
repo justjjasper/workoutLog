@@ -4,10 +4,10 @@
     "slug": "workoutLog",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/splashArt.png",
+    "icon": "./assets/images/splashArt.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splashArt.png",
+      "image": "./assets/images/splashArt.png",
       "resizeMode": "cover",
       "backgroundColor": "#DDCBEB"
     },
@@ -20,12 +20,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/images/favicon.png"
     }
   }
 }

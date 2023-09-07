@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Activity, HomeStackParamList } from '../../types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -59,6 +59,10 @@ const DateCellModal: React.FC<DateCellModalProps> = ({ day, month, year, monthNa
   const handleDeleteActivities = async () => {
     const url = `${LOCALTUNNEL}/deleteActivity`;
 
+    if (Object.keys(selectedItems).length === 0) {
+      Alert.alert('Please select an activity to delete.')
+      return
+    }
     try {
        // filter selected Checkboxes and then convert the array of strings into integers
       const selectedActivityIds = Object.keys(selectedItems).filter(

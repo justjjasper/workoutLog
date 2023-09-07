@@ -11,6 +11,7 @@
     "postinstall": "npx react-native config"
   },
   "dependencies": {
+    "@expo-google-fonts/contrail-one": "^0.2.3",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-picker/picker": "2.4.10",
     "@react-navigation/bottom-tabs": "^6.5.7",
@@ -27,6 +28,7 @@
     "dotenv": "^16.0.3",
     "expo": "^49.0.0",
     "expo-file-system": "~15.4.3",
+    "expo-font": "^11.4.0",
     "expo-image-picker": "~14.3.2",
     "expo-linear-gradient": "~12.3.0",
     "expo-status-bar": "~1.6.0",
@@ -35,6 +37,7 @@
     "install": "^0.13.0",
     "jsonwebtoken": "^9.0.1",
     "localtunnel": "^2.0.2",
+    "lodash": "^4.17.21",
     "nodemailer": "^6.9.4",
     "npm": "^9.8.1",
     "pg": "^8.10.0",
@@ -55,6 +58,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.22.10",
+    "@types/lodash": "^4.14.198",
     "@types/react": "~18.2.14",
     "@types/react-native": "^0.72.0",
     "@types/react-native-vector-icons": "^6.4.14",
