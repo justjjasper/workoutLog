@@ -90,10 +90,6 @@ Fitspo is a fitness mobile application built with React Native and TypeScript. I
 <img width="287" alt="Screen Shot 2024-05-28 at 2 56 09 PM" src="https://github.com/justjjasper/workoutLog/assets/98243819/275604ee-fe1b-4caf-8199-2b0880a62b4b">
 <img width="291" alt="Screen Shot 2024-05-28 at 2 56 35 PM" src="https://github.com/justjjasper/workoutLog/assets/98243819/e93f26af-0b01-4ff1-becf-e420e73fe6f0">
 
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
-
 ## Contact
 
 If you have any questions or feedback, please feel free to reach out:
