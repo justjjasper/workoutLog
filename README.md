@@ -1,6 +1,6 @@
-# Fitspo
+# Fitlog+
 
-Fitspo is a fitness mobile application built with React Native and TypeScript. It allows users to sign up or log in, and provides a calendar interface for tracking their workouts. Users can add, delete, and edit their workout records for each date.
+Fitlog+ is a fitness mobile application built with React Native and TypeScript. It allows users to sign up or log in, and provides a calendar interface for tracking their workouts. Users can add, delete, and edit their workout records for each date.
 <img width="284" alt="Screen Shot 2024-05-28 at 2 53 42 PM" src="https://github.com/justjjasper/workoutLog/assets/98243819/64c731bc-1fdb-4823-a694-491423adccb5">
 
 ## Features
